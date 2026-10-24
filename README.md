@@ -53,6 +53,25 @@ nidhipati-reconcile run examples/invoices.example.csv examples/transactions.exam
 
 Details: [docs/RECONCILIATION.md](docs/RECONCILIATION.md).
 
+## MCP server (for agents, not shells)
+
+The same five checks over the Model Context Protocol: `verify_receipt`, `audit_spend`,
+`reserve_report`, `resolve_report`, `reconcile_books`. Input is data, never a file path and never
+a network call; the answers are the same reports the CLIs produce, including the refusal to print
+a backing ratio when a line has no price.
+
+```json
+{"jsonrpc":"2.0","id":1,"method":"tools/call",
+ "params":{"name":"reserve_report","arguments":{"reserve":{...}}}}
+```
+
+```bash
+python3 -m nidhipati_proof.mcp_stdio      # stdio transport
+docker build -t nidhipati-mcp . && docker run -i --rm nidhipati-mcp
+```
+
+Five tools, all read-only: no custody, no keys, no chain read.
+
 ## Free scan, and what it costs after
 
 Send records of what your agents spent and get the audit back — no card, no account:
