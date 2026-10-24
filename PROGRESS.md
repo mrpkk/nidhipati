@@ -92,18 +92,19 @@
 
 ---
 
-## S3 — Reserve / RWA report
+## S3 — Reserve / RWA report (закрыт 25.10.2026)
 
 **Боль:** «чем обеспечен токен и верен ли NAV?»
 
-- [ ] Input: reserve composition, custodian/bank statement hash, NAV inputs, price sources.
-- [ ] Compute NAV with explicit formulas; mark missing data.
-- [ ] Signed JSON/Markdown report; `attest`-style evidence hashes.
-- [ ] Disclaimer: not a statutory audit.
-- [ ] 6 tests.
-- [ ] Partner/legal checklist.
+- [x] Вход: состав резерва, хеш выписки кастодиана, входы NAV, источники цен, обязательства. Всё в JSON, деньги — Decimal-строки, `as_of` обязателен.
+- [x] Формулы явные и опубликованы: `value = quantity × price × (1 − haircut)`, `NAV = Σ резерв − Σ обязательства`, `ratio = NAV / supply`.
+- [x] **Отказ вместо догадки:** если хоть одна строка без цены — вердикт `incomplete`, `backing_ratio: null`. Исключить строку молча — занизить NAV; подставить цену — выдумать.
+- [x] Подписанный JSON + Markdown, `sha256:` доказательство на каждую строку, хеш выписки сверяется с файлом (расхождение — ошибка `statement_hash_mismatch`).
+- [x] Дисклеймер внутри подписанного документа: «не статутарный аудит, на цепи не проверялось», вынести его из подписи нельзя.
+- [x] 14 тестов: backed/underbacked/incomplete, отсутствие источника, устаревшая цена старше 3 дней, хеш выписки (совпал/не совпал), haircut вне [0,1), подпись и её поломка при подмене NAV, коды возврата CLI.
+- [x] Партнёрско-юридический чеклист — `docs/RESERVE-REPORT.md`: юрлицо и юрисдикция, канал подтверждения кастодиана, разрешение называть кастодиана, методология NAV, отказы (нет юрлица, нет источника, «сделайте чтобы сошлось»).
 
-**Критерий:** synthetic reserve report; all inputs sourced; no fake numbers.
+**Критерий:** синтетический отчёт собран и подписан — NAV `1 017 900.00`, ratio `1.0179`, вердикт `backed`; каждая строка с источником и хешем. Ни одного выдуманного числа.
 
 ---
 

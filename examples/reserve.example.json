@@ -1,0 +1,42 @@
+{
+  "issuer": "Example RWA Issuer (synthetic)",
+  "token": "EXUSD",
+  "as_of": "2026-10-25T00:00:00Z",
+  "supply": {
+    "value": "1000000.00",
+    "source": "contract 0x0000…EXAMPLE, block 21000000"
+  },
+  "statement": {
+    "hash": "sha256:c1908365cb8e427e8492156fc6a9a9392737554be7dad4be4842404a691d9476",
+    "path": "reserve-statement.txt",
+    "custodian": "Example Custodian Bank (synthetic)"
+  },
+  "reserve": [
+    {
+      "asset": "USDC",
+      "kind": "stablecoin",
+      "quantity": "620000.00",
+      "price": "1.00",
+      "price_as_of": "2026-10-25T00:00:00Z",
+      "custodian": "Example Custodian Bank",
+      "source": "custodian statement, line 'USDC balance'"
+    },
+    {
+      "asset": "T-BILL-3M",
+      "kind": "treasury",
+      "quantity": "400000.00",
+      "price": "0.9985",
+      "price_as_of": "2026-10-24T00:00:00Z",
+      "custodian": "Example Custodian Bank",
+      "source": "custodian statement, line 'T-bills 3M'; price: market mid 24.10.2026"
+    }
+  ],
+  "liabilities": [
+    {
+      "asset": "accrued management fee",
+      "quantity": "1500.00",
+      "price": "1.00",
+      "source": "fee schedule, 0.15% annualised, 30 days"
+    }
+  ]
+}
