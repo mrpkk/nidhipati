@@ -69,6 +69,17 @@
   <p>RWA.xyz, Chainstack rwa-sdk, RedStone, custodian statements, on-chain supply, issuer NAV files. If a source is missing, the report says “missing” — it does not invent a number.</p>
 </div></section>
 
+<section><div class="wrap">
+<h2>Run it yourself</h2>
+  <pre><code>nidhipati-reserve report examples/reserve.example.json --markdown report.md
+
+NAV: 1017900.00
+Backing ratio: 1.0179
+Verdict: backed</code></pre>
+  <p class="micro">Synthetic inputs, every line with a source and a sha256 evidence hash. Remove one
+  price and the verdict becomes <b>incomplete</b> with the ratio set to null — the tool refuses to
+  compute over half a reserve instead of guessing.</p>
+</div></section>
 </main>
 
 <footer><div class="wrap">
