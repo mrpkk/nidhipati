@@ -1,0 +1,28 @@
+{
+  "market_id": "EX-2026-001 (synthetic)",
+  "question": "Did the example protocol ship v2 before 1 November 2026?",
+  "rules_url": "https://example.org/market/EX-2026-001/rules",
+  "rules_hash": "",
+  "deadline": "2026-11-01T00:00:00Z",
+  "declared": {
+    "outcome": "YES",
+    "at": "2026-11-02T10:00:00Z",
+    "by": "Example resolver (synthetic)"
+  },
+  "sources": [
+    {
+      "name": "Release notes (synthetic)",
+      "claim": "YES",
+      "quote": "v2.0.0 released 2026-10-29: changelog, migration guide, mainnet deployment hash.",
+      "url": "https://example.org/releases/v2.0.0",
+      "retrieved_at": "2026-11-02T09:40:00Z"
+    },
+    {
+      "name": "Independent explorer (synthetic)",
+      "claim": "YES",
+      "quote": "First transaction of the v2 contract at block 21 000 000, timestamp 2026-10-30.",
+      "url": "https://example.org/explorer/address/0xv2",
+      "retrieved_at": "2026-11-02T09:50:00Z"
+    }
+  ]
+}

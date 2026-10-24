@@ -108,16 +108,18 @@
 
 ---
 
-## S4 — Resolve / prediction evidence
+## S4 — Resolve / prediction evidence (закрыт 25.10.2026)
 
-**Боль:** «какой исход рынка и чем доказано?»
+**Боль:** «на каком основании рынок так разрешён?»
 
-- [ ] Input: market rules, resolution sources, timestamps, evidence hashes.
-- [ ] Check source agreement/conflict; output signed report.
-- [ ] No market operation, no betting.
-- [ ] 6 tests.
+- [x] Вход: рынок, правила (URL + хеш), объявленный исход, время и автор; источники — имя, claim, цитата, URL, время получения.
+- [x] Сверка: расхождение источников между собой (`sources_conflict`), все против объявленного (`source_contradicts`), отсутствие цитаты (`missing_evidence`), нет источников (`no_sources`), исход вне YES/NO/INVALID/VOID.
+- [x] Хеш правил сверяется с файлом; расхождение — ошибка. Источник, прочитанный до дедлайна, помечается: он не может решать вопрос.
+- [x] Подписанный JSON + Markdown, `sha256:` доказательство на источник, дисклеймер внутри подписи.
+- [x] **Никакой торговли и ставок** — только взвешивание предоставленных документов; конфликт объявляется конфликтом, а не усредняется.
+- [x] 13 тестов: supported / disputed / single_source / insufficient, правила, дедлайн, коды возврата CLI.
 
-**Критерий:** sample market resolution report; conflicts flagged.
+**Критерий:** четыре вердикта, ни одного «вероятно»; синтетический пример — `supported` (2 согласных источника).
 
 ---
 

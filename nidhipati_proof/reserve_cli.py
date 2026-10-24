@@ -46,12 +46,12 @@ def main(argv: list[str] | None = None) -> int:
     text = json.dumps(document, indent=2, ensure_ascii=False)
     if args.out:
         Path(args.out).write_text(text + "\n", encoding="utf-8")
-        print(f"wrote {args.out}")
+        print(f"wrote {args.out}", file=sys.stderr)
     else:
         print(text)
     if args.markdown:
         Path(args.markdown).write_text(report.to_markdown() + "\n", encoding="utf-8")
-        print(f"wrote {args.markdown}")
+        print(f"wrote {args.markdown}", file=sys.stderr)
 
     return 0 if not report.errors() else 1
 

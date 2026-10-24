@@ -28,6 +28,19 @@ ratio = NAV / supply
 The statement hash is compared with the file if you provide it. The disclaimer travels inside
 the signed document. Details and the partner/legal checklist: [docs/RESERVE-REPORT.md](docs/RESERVE-REPORT.md).
 
+## Resolution evidence
+
+When a market resolves and someone disagrees, the question is whether the resolver's sources
+say what the resolver claims and whether they agree with each other. The report answers with
+four verdicts — `supported`, `disputed`, `single_source`, `insufficient` — and never picks a
+winner.
+
+```bash
+nidhipati-resolve report examples/resolve.example.json --key keys/private.pem --markdown report.md
+```
+
+Details: [docs/RESOLUTION-EVIDENCE.md](docs/RESOLUTION-EVIDENCE.md).
+
 ## Free scan, and what it costs after
 
 Send records of what your agents spent and get the audit back — no card, no account:
