@@ -22,3 +22,5 @@ https://github.com/mrpkk/nidhipati/blob/main/docs/PROOF-OF-SPEND.md
 Free scan. Audit $2,500 or 20% of verified savings. Control retainer $1,500/mo. USDC on Base/Solana. No custody.
 - https://mrpkk.github.io/nidhipati/pricing.html
 - https://mrpkk.github.io/nidhipati/security.html
+- https://mrpkk.github.io/nidhipati/vs-ai-finops.html
+- https://mrpkk.github.io/nidhipati/agent-spend-audit-checklist.html
