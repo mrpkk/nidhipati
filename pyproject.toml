@@ -26,6 +26,7 @@ nidhipati-reserve = "nidhipati_proof.reserve_cli:main"
 nidhipati-resolve = "nidhipati_proof.resolve_cli:main"
 nidhipati-reconcile = "nidhipati_proof.reconcile_cli:main"
 nidhipati-mcp = "nidhipati_proof.mcp_stdio:main"
+nidhipati-mcp-http = "nidhipati_proof.http_mcp:main"
 
 [tool.setuptools.packages.find]
 include = ["nidhipati_proof*"]

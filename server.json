@@ -1,20 +1,17 @@
 {
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
   "name": "io.github.mrpkk/nidhipati",
-  "title": "Nidhipati Proof of Spend",
-  "description": "Verify agent spend, receipts, RWA NAV, prediction evidence and books. Read-only, no keys.",
-  "version": "0.6.0",
+  "title": "nidhipati — proof of spend for AI agents",
+  "description": "Proof-of-spend and reserve checks for AI agents: receipts, spend audit, NAV, reconciliation.",
   "repository": {
     "url": "https://github.com/mrpkk/nidhipati",
     "source": "github"
   },
-  "packages": [
+  "version": "0.6.0",
+  "remotes": [
     {
-      "registryType": "oci",
-      "identifier": "ghcr.io/mrpkk/nidhipati:0.6.0",
-      "transport": {
-        "type": "stdio"
-      }
+      "type": "streamable-http",
+      "url": "https://rta.lat/nidhipati/mcp"
     }
   ]
 }

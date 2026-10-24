@@ -274,3 +274,10 @@ python3 -m nidhipati_proof.cli verify examples/proof-of-spend.example.json --pub
 - Workflow run **40136359532 — success**; Registry API `search=nidhipati` отдаёт запись, status `active`, `isLatest: true`.
 - Публичный образ проверен `docker manifest inspect`.
 - Это бесплатный официальный канал; PulseMCP/агрегаторы подхватывают его автоматически. Glama по-прежнему требует вход владельца.
+
+### S9.02 — Glama: листинг уже живой
+
+- https://glama.ai/mcp/servers/mrpkk/nidhipati
+- Glama подхватил сервер из официального MCP Registry; капча/ручная заявка не понадобились.
+- На странице: 5 tools, Python/Remote, Apache-2.0, рейтинг качества, «Try in Browser», «Admin» (владелец распознан).
+- Это второй бесплатный каталог после mcpservers.org; официальный Registry остаётся главным мостом.
