@@ -40,7 +40,28 @@ def build_parser() -> argparse.ArgumentParser:
     return parser
 
 
+def _join_leading_dash(argv: list[str]) -> list[str]:
+    """`--pubkey -abc…`: base64url может начинаться с дефиса, и argparse читает его как флаг.
+
+    Около 1.5 % ключей (1/64) начинаются с `-`. Склеиваем значение с флагом через `=`,
+    чтобы такой ключ принимался как обычный.
+    """
+    out: list[str] = []
+    i = 0
+    while i < len(argv):
+        item = argv[i]
+        if item.startswith("--") and "=" not in item and i + 1 < len(argv) \
+                and argv[i + 1].startswith("-") and argv[i + 1] != "-":
+            out.append(f"{item}={argv[i + 1]}")
+            i += 2
+            continue
+        out.append(item)
+        i += 1
+    return out
+
+
 def main(argv: list[str] | None = None) -> int:
+    argv = _join_leading_dash(list(sys.argv[1:] if argv is None else argv))
     args = build_parser().parse_args(argv)
     if args.command == "keygen":
         private_path, public_path, public_b64 = write_keypair(args.out_dir)

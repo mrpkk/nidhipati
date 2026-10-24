@@ -177,14 +177,27 @@
       }
     }
 
-    // budget: optional per-agent monthly limit
-    const budget = num(options && options.budgetPerAgent);
-    if (budget !== null && budget > 0) {
+    // Budget: same policy file the CLI reads ({agents: {name: {limit_usd}}}), so the
+    // browser and the CLI cannot disagree on the same inputs.
+    const policyAgents = (options && options.policy && options.policy.agents) || null;
+    const flatBudget = num(options && options.budgetPerAgent);
+    const limits = new Map();
+    if (policyAgents) {
+      for (const [agent, cfg] of Object.entries(policyAgents)) {
+        const limit = num(cfg && cfg.limit_usd);
+        if (limit !== null && limit > 0) limits.set(agent, limit);
+      }
+    } else if (flatBudget !== null && flatBudget > 0) {
+      for (const item of items) limits.set(item.agent, flatBudget);
+    }
+    if (limits.size) {
       const totals = new Map();
       for (const item of items) totals.set(item.agent, (totals.get(item.agent) || 0) + item.settled);
       for (const [agent, total] of totals) {
-        if (total > budget) add({ row: 1, agent, tx: "" }, "budget_exceeded", "error", total - budget,
-          "spent " + money(total) + " against a limit of " + money(budget), "");
+        const limit = limits.get(agent);
+        if (limit === undefined) continue;
+        if (total > limit) add({ row: 1, agent, tx: "" }, "budget_exceeded", "error", total - limit,
+          "spent " + money(total) + " against a limit of " + money(limit), "");
       }
     } else {
       findings.push({ row: 0, code: "budget_bypass", severity: "warning", agent: "-", amount: 0,
@@ -193,7 +206,7 @@
 
     findings.sort((a, b) => a.row - b.row || a.code.localeCompare(b.code));
     const spent = items.reduce((s, x) => s + x.settled, 0);
-    const noReasonCodes = new Set(["duplicate_charge", "failed_but_billed", "missing_refund"]);
+    const noReasonCodes = new Set(["duplicate_charge", "price_escalation", "failed_but_billed", "missing_refund"]);
     const noReason = findings.filter((f) => noReasonCodes.has(f.code)).reduce((s, f) => s + f.amount, 0);
     const aboveUsual = findings.filter((f) => f.code === "model_overpay").reduce((s, f) => s + f.amount, 0);
     const overBudget = findings.filter((f) => f.code === "budget_exceeded").reduce((s, f) => s + f.amount, 0);
