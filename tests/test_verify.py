@@ -115,3 +115,15 @@ def test_cli_verify_valid_and_invalid(tmp_path):
     bad_path = tmp_path / "bad.json"
     bad_path.write_text(json.dumps(bad), encoding="utf-8")
     assert main(["verify", str(bad_path), "--pubkey", pubkey, "--json"]) == 1
+
+
+def test_pubkey_starting_with_a_dash_is_not_eaten_as_a_flag(tmp_path):
+    """base64url может начинаться с '-': argparse принимал его за флаг и падал с кодом 2."""
+    import json as _json
+    from nidhipati_proof.cli import main as _main
+    private, _public = generate_keypair()
+    doc = signed(base_doc(), private)
+    path = tmp_path / "doc.json"
+    path.write_text(_json.dumps(doc), encoding="utf-8")
+    # ключ заведомо негодный: ждём код 1 (проверка не прошла), а не SystemExit(2) от разбора аргументов
+    assert _main(["verify", str(path), "--pubkey", "-not-a-real-key", "--json"]) == 1
