@@ -9,6 +9,25 @@
 **Site:** https://mrpkk.github.io/nidhipati/  
 **Free scan:** https://github.com/mrpkk/nidhipati/issues/new?template=free-spend-audit.yml
 
+## Reserve and NAV report
+
+For tokenised assets: the issuer's own numbers turned into a NAV with explicit formulas and an
+evidence hash per line. The verdict is `backed`, `underbacked`, or `incomplete` — and the ratio
+is **refused** when any line has no price, because a number computed over half a reserve is not
+a number.
+
+```bash
+nidhipati-reserve report examples/reserve.example.json --key keys/private.pem --markdown report.md
+```
+
+```
+NAV = Σ quantity × price × (1 − haircut) − liabilities
+ratio = NAV / supply
+```
+
+The statement hash is compared with the file if you provide it. The disclaimer travels inside
+the signed document. Details and the partner/legal checklist: [docs/RESERVE-REPORT.md](docs/RESERVE-REPORT.md).
+
 ## Free scan, and what it costs after
 
 Send records of what your agents spent and get the audit back — no card, no account:

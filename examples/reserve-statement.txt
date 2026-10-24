@@ -1,0 +1,5 @@
+Custodian statement (SYNTHETIC EXAMPLE, not a real bank document)
+Account: 000-000-EXAMPLE
+As of: 2026-10-25T00:00:00Z
+USDC balance: 620,000.00
+T-bills 3M, face 400,000.00
