@@ -308,3 +308,10 @@ python3 -m nidhipati_proof.cli verify examples/proof-of-spend.example.json --pub
 - Он **не claimed**: `/admin` просит GitHub OAuth (scope read:user, user:email, read:org). Агент не авторизует OAuth без прямого слова владельца.
 - Контент страницы — кэш README v0.2; после claim нажать **Request a re-sync**, чтобы подтянуть v0.6.
 - Шаги: Glama → страница сервера → Admin → Login with GitHub → Request a re-sync.
+
+## S9.04 — browser Proof of Spend verifier (25.10.2026)
+
+- `/verify-receipt.html` + `docs/proof-verify.js`: Ed25519 WebCrypto, canonical JSON, mandate/amount/usage/refund/verdict checks; no upload, no keys, no network.
+- Real signed sample embedded; private key discarded. Node test `tools/test_proof_verify.cjs`; CI runs it.
+- 13 SEO URLs; links from home/x402/MCP; IndexNow 200.
+- This is the second zero-friction demo after the free spend audit.
