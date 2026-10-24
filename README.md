@@ -6,6 +6,9 @@
 
 **Status:** v0.2. Proof validator (signed receipts) and agent spend audit, both with tests.
 
+**Site:** https://mrpkk.github.io/nidhipati/  
+**Free scan:** https://github.com/mrpkk/nidhipati/issues/new?template=free-spend-audit.yml
+
 ## Free scan, and what it costs after
 
 Send records of what your agents spent and get the audit back — no card, no account:
