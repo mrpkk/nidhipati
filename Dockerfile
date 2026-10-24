@@ -12,4 +12,5 @@ COPY --from=build /install /usr/local
 RUN useradd --create-home --uid 10001 nidhipati
 USER nidhipati
 # No EXPOSE: this is a stdio server, it opens no port.
+LABEL io.modelcontextprotocol.server.name="io.github.mrpkk/nidhipati"
 ENTRYPOINT ["python", "-m", "nidhipati_proof.mcp_stdio"]
