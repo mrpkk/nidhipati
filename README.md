@@ -6,6 +6,22 @@
 
 **Status:** v0.2. Proof validator (signed receipts) and agent spend audit, both with tests.
 
+## Free scan, and what it costs after
+
+Send records of what your agents spent and get the audit back — no card, no account:
+[open a free-scan issue](https://github.com/mrpkk/nidhipati/issues/new?template=free-spend-audit.yml).
+Paid: $2,500 fixed audit, $1,500/mo retainer, or 20% of verified savings. Full terms,
+including what is *not* included: [docs/OFFER.md](docs/OFFER.md).
+
+In CI, on every run:
+
+```yaml
+- uses: mrpkk/nidhipati@v0.2.0
+  with:
+    records: billing/agent-spend.csv
+    policy: billing/policy.json
+```
+
 ## Quick start
 
 ```bash

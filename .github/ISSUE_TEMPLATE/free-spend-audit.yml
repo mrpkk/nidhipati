@@ -1,0 +1,59 @@
+name: Free spend audit
+description: Send records of what your agents spent; get an audit report back.
+title: "[free scan] "
+labels: ["free-scan"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        One row per charge. Do not paste secrets, API keys or private keys — we do not need
+        them and will ask you to remove them.
+
+        You can also run the same checks yourself: `nidhipati-spend audit your.csv`.
+  - type: textarea
+    id: records
+    attributes:
+      label: Records (CSV or JSON)
+      description: |
+        Required columns: ts, agent_id, tool, quote, settled, status.
+        Optional: model, actual, refund, asset, network, tx_hash, payee.
+        Twenty rows are enough for a first look; a full file can be attached after the issue is open.
+      render: csv
+      placeholder: |
+        ts,agent_id,tool,model,quote,settled,actual,refund,asset,network,tx_hash,payee,status
+        2026-10-01T10:00:00Z,writer,llm.complete,gpt-4o-mini,0.02,0.02,0.02,0,USDC,base,0xaaa1,0xpayee,ok
+        2026-10-01T10:05:00Z,writer,llm.complete,gpt-4o-mini,0.02,0.05,0.05,0,USDC,base,0xaaa2,0xpayee,ok
+    validations:
+      required: true
+  - type: input
+    id: spend
+    attributes:
+      label: Roughly how much do your agents spend a month?
+      placeholder: "e.g. 2,000 USDC"
+  - type: input
+    id: providers
+    attributes:
+      label: Which providers bill you?
+      placeholder: "e.g. OpenAI, Anthropic, x402 endpoints, a tool marketplace"
+  - type: textarea
+    id: question
+    attributes:
+      label: What do you want answered?
+      placeholder: "e.g. are we paying twice for retries / did our budget hold / why is the bill 3x the estimate"
+  - type: dropdown
+    id: access
+    attributes:
+      label: Can you share provider invoices (not just your own records)?
+      options:
+        - "Yes, I can share invoices"
+        - "Only my own records for now"
+        - "Not sure yet"
+  - type: checkboxes
+    id: honesty
+    attributes:
+      label: Before you send
+      options:
+        - label: I removed keys, tokens and personal data from the records.
+          required: true
+        - label: I understand this is an estimate from my records, not a legal or statutory audit.
+          required: true
