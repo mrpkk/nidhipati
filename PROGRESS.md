@@ -211,3 +211,12 @@ python3 -m nidhipati_proof.cli verify examples/proof-of-spend.example.json --pub
 - 6 SEO pages, `robots.txt`, `sitemap.xml`, `llms.txt`, JSON-LD, canonical, GitHub Pages 200.
 - Site: https://mrpkk.github.io/nidhipati/
 - Pages are hand-edited after generation; do not run `tools/build_site.py` without diff.
+
+
+## S7 — SEO indexing and money pages (25.10.2026)
+
+- Added `/pricing.html` and `/security.html`; nav/sitemap/llms updated.
+- IndexNow key `7743f3db96c86ccc41dec8fdd99a234c`; submission accepted 202.
+- Pages: 8 (6 modules + pricing + security).
+- No paid ads; no fake numbers; offer/limits remain in `docs/OFFER.md`.
+- Still pending: first 5 free scans and first paid audit/retainer.
