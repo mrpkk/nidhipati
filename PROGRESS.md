@@ -147,10 +147,11 @@
 
 ## S7 — Monetization / launch
 
-- [ ] Free scan form (GitHub issue template).
-- [ ] Pricing page: free / $2,500 / 20% / $1,500/mo.
-- [ ] USDC invoice template + card on-ramp instructions.
-- [ ] 10 partner messages (ClawRouter, x402scan, Kertivo, Composio, Langfuse, Helicone, Bitwave, Request Finance, RWA data, prediction data).
+- [x] Free scan form: `.github/ISSUE_TEMPLATE/free-spend-audit.yml`, метка `free-scan`, форма открывается (200). Просит записи без ключей и прямо говорит: те же проверки можно запустить самому — если инструмент отвечает, мы не нужны.
+- [x] Оффер `docs/OFFER.md`: бесплатный скан → $2,500 фикс (10 рабочих дней) → $1,500/мес → 20 % подтверждённой экономии; Индия $1,250 / $750. Отдельным блоком «чего нет»: не юруслуга, возврат не гарантирован, кастоди нет.
+- [x] Счёт `docs/INVOICE-USDC.md`: подписанный JSON, проверяется `nidhipati-proof verify`; адрес только из счёта, никогда из чата; правила возврата.
+- [x] Action `action.yml` (v0.2.0): аудит в пайплайне, отчёт в `$GITHUB_STEP_SUMMARY`, сборка падает на ошибках.
+- [ ] 10 partner messages (ClawRouter, x402scan, Kertivo, Composio, Langfuse, Helicone, Bitwave, Request Finance, RWA data, prediction data). **Пауза:** холодные обращения в attest — 0 ответов из 76; сначала проверить, что оффер вообще открывается и читается.
 - [ ] 5 free scans → 1–2 paid.
 - [ ] Launch kit for owner: Show HN, Reddit, Product Hunt; agent does not create accounts.
 - [ ] Channel attribution.
