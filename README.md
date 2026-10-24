@@ -41,6 +41,18 @@ nidhipati-resolve report examples/resolve.example.json --key keys/private.pem --
 
 Details: [docs/RESOLUTION-EVIDENCE.md](docs/RESOLUTION-EVIDENCE.md).
 
+## Reconciliation
+
+Invoices on one side, transfers on the other. The report names what is closed, what nobody
+paid, and what arrived without an invoice — a transfer that duplicates a payment is counted
+once, never twice.
+
+```bash
+nidhipati-reconcile run examples/invoices.example.csv examples/transactions.example.csv --csv matches.csv
+```
+
+Details: [docs/RECONCILIATION.md](docs/RECONCILIATION.md).
+
 ## Free scan, and what it costs after
 
 Send records of what your agents spent and get the audit back — no card, no account:

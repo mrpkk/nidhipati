@@ -1,0 +1,5 @@
+id,amount,asset,created_at,due_at,payee,memo
+INV-001,2500.00,USDC,2026-10-01T00:00:00Z,2026-10-15T00:00:00Z,0xpayee1,spend audit
+INV-002,1500.00,USDC,2026-10-05T00:00:00Z,2026-10-20T00:00:00Z,0xpayee1,retainer October
+INV-003,900.00,USDC,2026-10-10T00:00:00Z,2026-10-24T00:00:00Z,0xpayee1,reserve report
+INV-004,500.00,USDC,2026-10-12T00:00:00Z,2026-10-26T00:00:00Z,0xpayee1,resolution report
