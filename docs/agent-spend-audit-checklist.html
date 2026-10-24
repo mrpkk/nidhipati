@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Agent spend audit checklist — 10 checks before you pay</title>
+<meta name="description" content="Ten checks for AI-agent spend: duplicates, price escalation, failed-but-billed, runaway loops, refunds, unknown asset/network, missing payee, model overpay, budget bypass. Free scan.">
+<link rel="canonical" href="https://mrpkk.github.io/nidhipati/agent-spend-audit-checklist.html">
+<meta property="og:title" content="Agent spend audit checklist — 10 checks before you pay">
+<meta property="og:description" content="Ten checks for AI-agent spend: duplicates, price escalation, failed-but-billed, runaway loops, refunds, unknown asset/network, missing payee, model overpay, budget bypass. Free scan.">
+<meta property="og:url" content="https://mrpkk.github.io/nidhipati/agent-spend-audit-checklist.html">
+<meta property="og:type" content="website">
+<link rel="stylesheet" href="styles.css">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Nidhipati", "applicationCategory": "BusinessApplication", "operatingSystem": "Web, CLI", "description": "Proof of Spend and spend audit for AI agents. Verify mandate, amount, asset, network, payee and refund in a signed receipt.", "url": "https://mrpkk.github.io/nidhipati/agent-spend-audit-checklist.html", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD", "description": "Free scan"}}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Can I run this myself?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. The CLI is open source: nidhipati-spend audit your.csv. If it answers your question, you do not need the paid audit."}}, {"@type": "Question", "name": "What data do I need?", "acceptedAnswer": {"@type": "Answer", "text": "One row per charge: ts, agent_id, tool, quote, settled, status; optional model, actual, refund, asset, network, tx_hash, payee."}}, {"@type": "Question", "name": "What if there are no findings?", "acceptedAnswer": {"@type": "Answer", "text": "The report says so. There is no success fee without a verified finding."}}]}</script>
+</head>
+<body>
+
+<header><div class="wrap nav">
+  <a class="brand" href="index.html"><span class="mark">N</span> Nidhipati</a>
+  <nav class="navlinks">
+    <a href="agent-spend-audit.html">Spend audit</a>
+    <a href="x402-receipt.html">x402 receipt</a>
+    <a href="rwa-proof-of-reserve.html">RWA reserve</a>
+    <a href="prediction-resolution.html">Prediction</a>
+    <a href="stablecoin-reconciliation.html">Stablecoin</a>
+    <a href="https://github.com/mrpkk/nidhipati">GitHub</a>
+    <a class="btn primary" href="https://github.com/mrpkk/nidhipati/issues/new?template=scan-request.yml">Free scan</a>
+  </nav>
+</div></header>
+
+<main>
+<section class="hero"><div class="wrap">
+  <span class="kicker"><span class="dot"></span> Draft v0.1 · open spec · no custody</span>
+  <h1>Agent spend audit checklist</h1>
+  <div class="lede">Ten checks for AI-agent spend: duplicates, price escalation, failed-but-billed, runaway loops, refunds, unknown asset/network, missing payee, model overpay, budget bypass. Free scan.</div>
+  <div class="actions">
+    <a class="btn primary" href="https://github.com/mrpkk/nidhipati/issues/new?template=scan-request.yml">Request a free scan</a>
+    <a class="btn" href="https://github.com/mrpkk/nidhipati/blob/main/docs/PROOF-OF-SPEND.md">Read the spec</a>
+  </div>
+  <div class="micro">Written scope and written report — no calls. No wallet access for the first scan.</div>
+</div></section>
+
+<section><div class="wrap">
+  <h2>Ten checks before you pay the agent bill</h2>
+  <ul class="checks">
+    <li><b>Duplicate retries</b> — same tx hash, or equal payment within 120s without a receipt on both rows.</li>
+    <li><b>Price escalation</b> — settled above quote by more than 1%.</li>
+    <li><b>Failed-but-billed</b> — status failed/error/timeout/5xx while settled &gt; 0.</li>
+    <li><b>Runaway loop</b> — more than 30 calls in any 60s window for one agent.</li>
+    <li><b>Missing refund</b> — charged more than actual, refund not recorded.</li>
+    <li><b>Unknown asset/network</b> — the row does not say where the money went.</li>
+    <li><b>Missing payee</b> — no recipient recorded.</li>
+    <li><b>Model overpay</b> — above 3× the same agent’s median for the same tool/model.</li>
+    <li><b>Budget bypass</b> — no policy file; the budget lives in a prompt.</li>
+    <li><b>Budget exceeded</b> — settled above the per-agent limit.</li>
+  </ul>
+  <p class="sub">Run the same checks yourself: <code>nidhipati-spend audit your.csv</code>. If the tool answers your question, you do not need us.</p>
+</div></section>
+<section><div class="wrap two">
+  <div><h2>What a report looks like</h2><p class="sub">Every finding has a row number, the rule, the amount, and the evidence. Three amounts stay separate: money without a reason, above the usual price, over the budget. Adding them into one “saved” number would be dishonest.</p></div>
+  <div class="panel"><h3>Free scan</h3><p>48 hours, one flow, written report. No keys.</p><div style="height:12px"></div><a class="btn primary" href="https://github.com/mrpkk/nidhipati/issues/new?template=scan-request.yml">Request a free scan</a></div>
+</div></section>
+
+</main>
+
+<footer><div class="wrap">
+  <div class="foot">
+    <div>© 2026 Nidhipati · <a href="https://github.com/mrpkk/nidhipati">GitHub</a> · <a href="https://github.com/mrpkk/nidhipati/blob/main/SPEC.md">Spec</a></div>
+    <div>No custody · no money transmission · no token</div>
+  </div>
+  <div class="fine" style="margin-top:12px">Nidhipati is a draft product. Reports are technical evidence, not statutory audits, legal, tax, or investment advice. Figures are from public 2026 reports and are context, not a guarantee. If no finding is verified, the report says so.</div>
+</div></footer>
+
+</body>
+</html>

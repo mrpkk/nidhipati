@@ -220,3 +220,11 @@ python3 -m nidhipati_proof.cli verify examples/proof-of-spend.example.json --pub
 - Pages: 8 (6 modules + pricing + security).
 - No paid ads; no fake numbers; offer/limits remain in `docs/OFFER.md`.
 - Still pending: first 5 free scans and first paid audit/retainer.
+
+
+## S7 — SEO content cluster (25.10.2026)
+
+- Added `/vs-ai-finops.html` — honest comparison: dashboard shows spend; Nidhipati audits correctness/recovery.
+- Added `/agent-spend-audit-checklist.html` — 10 checks; same rules the CLI runs.
+- Internal links from home/audit; sitemap 10 URLs; llms updated; IndexNow 202.
+- No fake reviews, no competitor bashing, no paid ads.
