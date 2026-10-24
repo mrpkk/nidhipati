@@ -1,0 +1,22 @@
+# Nidhipati
+
+> Proof of Spend for AI agents: verify mandate, amount, asset, network, payee, usage and refund in a signed receipt.
+
+Nidhipati is a draft product with an open spec and a reference validator. It is not a payment rail, not a token, and not custody.
+
+## Pages
+
+- https://mrpkk.github.io/nidhipati/
+- https://mrpkk.github.io/nidhipati/agent-spend-audit.html
+- https://mrpkk.github.io/nidhipati/x402-receipt.html
+- https://mrpkk.github.io/nidhipati/rwa-proof-of-reserve.html
+- https://mrpkk.github.io/nidhipati/prediction-resolution.html
+- https://mrpkk.github.io/nidhipati/stablecoin-reconciliation.html
+
+## Spec
+
+https://github.com/mrpkk/nidhipati/blob/main/docs/PROOF-OF-SPEND.md
+
+## Pricing
+
+Free scan. Audit $2,500 or 20% of verified savings. Control retainer $1,500/mo. USDC on Base/Solana. No custody.

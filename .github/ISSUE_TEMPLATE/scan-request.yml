@@ -1,0 +1,62 @@
+name: Free Proof / Spend scan
+description: Request a free read-only scan of an agent payment flow, spend export, RWA reserve or prediction evidence.
+title: "[scan] "
+labels: ["scan-request"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **Do not paste private keys, seed phrases, API tokens, or customer data.**
+        A public repo, a usage export, or a short description is enough.
+  - type: dropdown
+    id: kind
+    attributes:
+      label: What do you want checked?
+      options:
+        - Agent spend / duplicate calls / refunds
+        - Proof of Spend receipt
+        - RWA proof of reserve / NAV
+        - Prediction market resolution evidence
+        - Stablecoin reconciliation
+        - Agent wallet security
+    validations:
+      required: true
+  - type: input
+    id: project
+    attributes:
+      label: Project / product
+      placeholder: https://example.com
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: What looks wrong?
+      description: Duplicates, price changes, failed calls, refunds, missing reserve data, disputed outcome.
+    validations:
+      required: true
+  - type: dropdown
+    id: data
+    attributes:
+      label: What can you share?
+      options:
+        - Public transaction hashes
+        - CSV / invoice export
+        - Aggregated numbers only
+        - Description only
+    validations:
+      required: true
+  - type: input
+    id: contact
+    attributes:
+      label: Contact (optional)
+      placeholder: "@handle"
+  - type: checkboxes
+    id: consent
+    attributes:
+      label: Consent
+      options:
+        - label: I have permission to share this data.
+          required: true
+        - label: I understand this is a heuristic scan, not a guarantee or a statutory audit.
+          required: true

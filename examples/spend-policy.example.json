@@ -1,0 +1,6 @@
+{
+  "agents": {
+    "agent-writer": {"limit_usd": "0.20"},
+    "agent-loop": {"limit_usd": "0.05"}
+  }
+}

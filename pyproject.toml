@@ -21,6 +21,7 @@ dev = ["pytest>=8"]
 
 [project.scripts]
 nidhipati-proof = "nidhipati_proof.cli:main"
+nidhipati-spend = "nidhipati_proof.spend_cli:main"
 
 [tool.setuptools.packages.find]
 include = ["nidhipati_proof*"]
