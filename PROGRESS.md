@@ -292,7 +292,7 @@ python3 -m nidhipati_proof.cli verify examples/proof-of-spend.example.json --pub
 
 - https://glama.ai/mcp/servers/mrpkk/nidhipati
 - Glama подхватил сервер из официального MCP Registry; капча/ручная заявка не понадобились.
-- На странице: 5 tools, Python/Remote, Apache-2.0, рейтинг качества, «Try in Browser», «Admin» (владелец распознан).
+- На странице: 5 tools, Python/Remote, Apache-2.0, рейтинг качества, «Try in Browser». Листинг **auto-ingested из official registry, но не claimed**: Admin требует GitHub OAuth; контент ещё кэш v0.2.
 - Это второй бесплатный каталог после mcpservers.org; официальный Registry остаётся главным мостом.
 
 ### S9.03 — Glama listing content refreshed
@@ -300,3 +300,11 @@ python3 -m nidhipati_proof.cli verify examples/proof-of-spend.example.json --pub
 - README status fixed from v0.2 to v0.6; 89 tests, MCP server, official registry, Glama badges.
 - Glama reads the README; listing content will refresh from source.
 - No new accounts, no captcha, no paid listing.
+
+
+### S9.02a — Glama: что осталось владельцу
+
+- Листинг живой: https://glama.ai/mcp/servers/mrpkk/nidhipati
+- Он **не claimed**: `/admin` просит GitHub OAuth (scope read:user, user:email, read:org). Агент не авторизует OAuth без прямого слова владельца.
+- Контент страницы — кэш README v0.2; после claim нажать **Request a re-sync**, чтобы подтянуть v0.6.
+- Шаги: Glama → страница сервера → Admin → Login with GitHub → Request a re-sync.
