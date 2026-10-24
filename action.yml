@@ -1,0 +1,43 @@
+name: Agent spend audit
+description: >-
+  Read a CSV or JSON of agent charges and fail the build when money left without
+  a reason: duplicates, escalation, failed-but-billed, refunds not returned.
+branding:
+  icon: 'search'
+  color: 'yellow'
+inputs:
+  records:
+    description: 'Path to the records file (CSV or JSON)'
+    required: true
+  policy:
+    description: 'Path to a policy file with per-agent limits (optional)'
+    required: false
+    default: ''
+  report:
+    description: 'Where to write the Markdown report'
+    required: false
+    default: 'spend-audit.md'
+runs:
+  using: 'composite'
+  steps:
+    - name: Install
+      shell: bash
+      run: python3 -m pip install --quiet "${{ github.action_path }}"
+    - name: Audit
+      shell: bash
+      env:
+        RECORDS: ${{ inputs.records }}
+        POLICY: ${{ inputs.policy }}
+        REPORT: ${{ inputs.report }}
+      run: |
+        if [ -n "$POLICY" ]; then
+          nidhipati-spend audit "$RECORDS" --policy "$POLICY" --out "$REPORT"
+        else
+          nidhipati-spend audit "$RECORDS" --out "$REPORT"
+        fi
+    - name: Show the report
+      if: always()
+      shell: bash
+      env:
+        REPORT: ${{ inputs.report }}
+      run: cat "$REPORT" >> "$GITHUB_STEP_SUMMARY" 2>/dev/null || true
