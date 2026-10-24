@@ -228,3 +228,11 @@ python3 -m nidhipati_proof.cli verify examples/proof-of-spend.example.json --pub
 - Added `/agent-spend-audit-checklist.html` — 10 checks; same rules the CLI runs.
 - Internal links from home/audit; sitemap 10 URLs; llms updated; IndexNow 202.
 - No fake reviews, no competitor bashing, no paid ads.
+
+
+## S7 — free browser audit (25.10.2026)
+
+- Added `/free-spend-audit.html` + `docs/spend-audit.js`: client-side CSV audit, no upload, same public rules.
+- Node test `tools/test_spend_audit.cjs`; CI runs it before pytest.
+- Nav/sitemap (11 URLs)/llms updated; IndexNow 200.
+- The page lets a visitor get value before opening an issue; paid audit CTA remains.

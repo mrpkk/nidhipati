@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Free AI agent spend audit in your browser</title>
+<meta name="description" content="Paste a CSV of agent charges and run the same audit rules locally: duplicates, price escalation, failed-but-billed, refunds, runaway loops, model overpay. No upload, no keys.">
+<link rel="canonical" href="https://mrpkk.github.io/nidhipati/free-spend-audit.html">
+<meta property="og:title" content="Free AI agent spend audit in your browser">
+<meta property="og:description" content="Paste a CSV of agent charges and run the same audit rules locally: duplicates, price escalation, failed-but-billed, refunds, runaway loops, model overpay. No upload, no keys.">
+<meta property="og:url" content="https://mrpkk.github.io/nidhipati/free-spend-audit.html">
+<meta property="og:type" content="website">
+<link rel="stylesheet" href="styles.css">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Nidhipati", "applicationCategory": "BusinessApplication", "operatingSystem": "Web, CLI", "description": "Proof of Spend and spend audit for AI agents. Verify mandate, amount, asset, network, payee and refund in a signed receipt.", "url": "https://mrpkk.github.io/nidhipati/free-spend-audit.html", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD", "description": "Free scan"}}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Is my data uploaded?", "acceptedAnswer": {"@type": "Answer", "text": "No. The audit runs in your browser; the file never leaves the page. There is no server call."}}, {"@type": "Question", "name": "Is this the same as the paid audit?", "acceptedAnswer": {"@type": "Answer", "text": "It runs the same public rules on your records. The paid audit adds provider reconciliation, an evidence file, a recovery pack, and written review."}}, {"@type": "Question", "name": "Do I need to install anything?", "acceptedAnswer": {"@type": "Answer", "text": "No. Paste a CSV or choose a file. The CLI is available for CI and larger files."}}]}</script>
+</head>
+<body>
+
+<header><div class="wrap nav">
+  <a class="brand" href="index.html"><span class="mark">N</span> Nidhipati</a>
+  <nav class="navlinks">
+    <a href="agent-spend-audit.html">Spend audit</a>
+    <a href="x402-receipt.html">x402 receipt</a>
+    <a href="rwa-proof-of-reserve.html">RWA reserve</a>
+    <a href="prediction-resolution.html">Prediction</a>
+    <a href="stablecoin-reconciliation.html">Stablecoin</a>
+    <a href="https://github.com/mrpkk/nidhipati">GitHub</a>
+    <a class="btn primary" href="https://github.com/mrpkk/nidhipati/issues/new?template=scan-request.yml">Free scan</a>
+  </nav>
+</div></header>
+
+<main>
+<section class="hero"><div class="wrap">
+  <span class="kicker"><span class="dot"></span> Draft v0.1 · open spec · no custody</span>
+  <h1>Free AI agent spend audit</h1>
+  <div class="lede">Paste a CSV of agent charges and run the same audit rules locally: duplicates, price escalation, failed-but-billed, refunds, runaway loops, model overpay. No upload, no keys.</div>
+  <div class="actions">
+    <a class="btn primary" href="https://github.com/mrpkk/nidhipati/issues/new?template=scan-request.yml">Request a free scan</a>
+    <a class="btn" href="https://github.com/mrpkk/nidhipati/blob/main/docs/PROOF-OF-SPEND.md">Read the spec</a>
+  </div>
+  <div class="micro">Written scope and written report — no calls. No wallet access for the first scan.</div>
+</div></section>
+
+<section><div class="wrap two">
+  <div>
+    <h2>Paste a CSV. Get the findings.</h2>
+    <p class="sub">The same rules as <code>nidhipati-spend</code>, running in your browser. Nothing is uploaded; the file never leaves this page. Estimates only — confirm each row against the provider invoice.</p>
+    <p><label><b>Records (CSV)</b><br><input id="file" type="file" accept=".csv,text/csv"></label></p>
+    <p><label><b>Monthly budget per agent (optional)</b><br><input id="budget" type="number" min="0" step="0.01" placeholder="e.g. 100"></label></p>
+    <textarea id="records" spellcheck="false" style="width:100%;min-height:220px;background:#080c0f;color:#cfe9dd;border:1px solid #233038;border-radius:12px;padding:12px;font:12px/1.5 ui-monospace,Menlo,Consolas,monospace"></textarea>
+    <div class="actions" style="margin-top:12px">
+      <button class="btn primary" id="run" type="button">Run audit</button>
+      <button class="btn" id="sample" type="button">Load synthetic sample</button>
+      <button class="btn" id="download" type="button">Download report</button>
+    </div>
+    <p class="micro">No keys, no account, no network. If the tool answers your question, you do not need the paid audit.</p>
+  </div>
+  <div class="panel">
+    <h3>What it checks</h3>
+    <ul class="checks">
+      <li>Duplicate charges</li>
+      <li>Price escalation</li>
+      <li>Failed-but-billed</li>
+      <li>Runaway loops</li>
+      <li>Missing refunds</li>
+      <li>Unknown asset/network</li>
+      <li>Missing payee</li>
+      <li>Model overpay</li>
+      <li>Budget exceeded</li>
+    </ul>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <h2>Result</h2>
+  <div id="summary" class="sub">No file yet.</div>
+  <div style="overflow:auto"><table id="findings"><thead><tr><th>row</th><th>code</th><th>severity</th><th>agent</th><th>$</th><th>detail</th><th>evidence</th></tr></thead><tbody></tbody></table></div>
+  <pre id="errors" style="display:none"></pre>
+</div></section>
+
+<section><div class="wrap cta">
+  <div><h2 style="margin-bottom:6px">Want it checked, not just computed?</h2><p class="sub" style="margin:0">Paid audit: $2,500 fixed or 20% of verified savings. Written report, evidence, recovery pack. No custody.</p></div>
+  <a class="btn primary" href="https://github.com/mrpkk/nidhipati/issues/new?template=scan-request.yml">Request a free scan</a>
+</div></section>
+
+<script src="spend-audit.js"></script>
+<script>
+(function(){
+  var sample = "ts,agent_id,tool,model,quote,settled,actual,refund,asset,network,tx_hash,payee,status\n" +
+    "2026-10-01T10:00:00Z,writer,llm,gpt-4o-mini,0.02,0.02,0.02,0,USDC,base,0xaaa1,0xpayee,ok\n" +
+    "2026-10-01T10:01:00Z,writer,llm,gpt-4o-mini,0.02,0.05,0.05,0,USDC,base,0xaaa2,0xpayee,ok\n" +
+    "2026-10-01T10:02:00Z,writer,llm,gpt-4o-mini,0.02,0.02,0.02,0,USDC,base,0xaaa1,0xpayee,ok\n" +
+    "2026-10-01T10:03:00Z,writer,llm,gpt-4o-mini,0.02,0.02,0.02,0,USDC,base,,0xpayee,failed\n" +
+    "2026-10-01T10:04:00Z,writer,llm,gpt-4o-mini,0.10,0.10,0.04,0,USDC,base,0xaaa3,0xpayee,ok\n" +
+    "2026-10-01T10:05:00Z,writer,llm,gpt-4o-mini,0.02,0.02,0.02,0,MOON,moonnet,0xaaa4,,ok";
+  var lastReport = "";
+  function el(id){ return document.getElementById(id); }
+  function esc(s){ return String(s).replace(/[&<>"']/g, function(c){ return ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"})[c]; }); }
+  function render(result){
+    var tb = el("findings").querySelector("tbody");
+    tb.innerHTML = "";
+    el("errors").style.display = "none";
+    if (!result.ok) {
+      el("summary").textContent = "Cannot read the file.";
+      el("errors").style.display = "block";
+      el("errors").textContent = result.errors.join("\n");
+      lastReport = "";
+      return;
+    }
+    var s = result.summary;
+    el("summary").textContent = "Rows " + result.rows + " · settled $" + s.settled.toFixed(2) +
+      " · without a reason $" + s.no_reason.toFixed(2) +
+      " · above usual $" + s.above_usual.toFixed(2) +
+      " · over budget $" + s.over_budget.toFixed(2) +
+      " · errors " + s.errors + ", warnings " + s.warnings;
+    result.findings.forEach(function(f){
+      var tr = document.createElement("tr");
+      [f.row, f.code, f.severity, f.agent, "$" + f.amount.toFixed(2), f.detail, f.evidence].forEach(function(v){
+        var td = document.createElement("td"); td.textContent = v; tr.appendChild(td);
+      });
+      tb.appendChild(tr);
+    });
+    lastReport = SpendAudit.reportMarkdown(result);
+  }
+  function run(){
+    var text = el("records").value;
+    var budget = el("budget").value;
+    render(SpendAudit.analyzeCSV(text, {budgetPerAgent: budget}));
+  }
+  el("sample").addEventListener("click", function(){ el("records").value = sample; run(); });
+  el("run").addEventListener("click", run);
+  el("file").addEventListener("change", function(){
+    var f = el("file").files[0]; if (!f) return;
+    var r = new FileReader();
+    r.onload = function(){ el("records").value = r.result; run(); };
+    r.readAsText(f);
+  });
+  el("download").addEventListener("click", function(){
+    if (!lastReport) return;
+    var blob = new Blob([lastReport], {type:"text/markdown"});
+    var a = document.createElement("a");
+    a.href = URL.createObjectURL(blob); a.download = "nidhipati-spend-audit.md"; a.click();
+    setTimeout(function(){ URL.revokeObjectURL(a.href); }, 1000);
+  });
+})();
+</script>
+
+</main>
+
+<footer><div class="wrap">
+  <div class="foot">
+    <div>© 2026 Nidhipati · <a href="https://github.com/mrpkk/nidhipati">GitHub</a> · <a href="https://github.com/mrpkk/nidhipati/blob/main/SPEC.md">Spec</a></div>
+    <div>No custody · no money transmission · no token</div>
+  </div>
+  <div class="fine" style="margin-top:12px">Nidhipati is a draft product. Reports are technical evidence, not statutory audits, legal, tax, or investment advice. Figures are from public 2026 reports and are context, not a guarantee. If no finding is verified, the report says so.</div>
+</div></footer>
+
+</body>
+</html>
