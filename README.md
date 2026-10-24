@@ -9,6 +9,8 @@
 **Site:** https://mrpkk.github.io/nidhipati/  
 **Free scan:** https://github.com/mrpkk/nidhipati/issues/new?template=free-spend-audit.yml
 
+![Free browser audit](docs/screenshot-free-audit.png)
+
 ## Reserve and NAV report
 
 For tokenised assets: the issuer's own numbers turned into a NAV with explicit formulas and an

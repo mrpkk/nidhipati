@@ -2,6 +2,8 @@
 
 Агент не создаёт аккаунты и не постит от твоего имени. Здесь готовые тексты и порядок.
 
+**Screenshot:** `docs/screenshot-free-audit.png` — synthetic sample, no client data.
+
 ---
 
 ## 1. Hacker News (главный шанс)
