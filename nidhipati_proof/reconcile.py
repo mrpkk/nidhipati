@@ -203,33 +203,41 @@ def _rows(path: str | Path, required: Iterable[str]) -> list[dict[str, Any]]:
     return rows
 
 
+def invoice_from_row(raw: dict[str, Any]) -> Invoice:
+    missing = [c for c in INVOICE_COLUMNS if str(raw.get(c) or "").strip() == ""]
+    if missing:
+        raise ValueError(f"invoice: empty {', '.join(missing)}")
+    return Invoice(
+        id=str(raw["id"]).strip(),
+        amount=_dec(raw["amount"], "invoice amount"),
+        asset=str(raw["asset"]).strip().upper(),
+        created_at=_ts(raw["created_at"], "invoice created_at"),
+        due_at=_ts(raw["due_at"], "invoice due_at") if raw.get("due_at") else None,
+        payee=str(raw.get("payee") or "").strip(),
+        memo=str(raw.get("memo") or "").strip(),
+    )
+
+
+def tx_from_row(raw: dict[str, Any]) -> Tx:
+    missing = [c for c in TX_COLUMNS if str(raw.get(c) or "").strip() == ""]
+    if missing:
+        raise ValueError(f"transaction: empty {', '.join(missing)}")
+    return Tx(
+        tx_hash=str(raw["tx_hash"]).strip(),
+        amount=_dec(raw["amount"], "tx amount"),
+        asset=str(raw["asset"]).strip().upper(),
+        ts=_ts(raw["timestamp"], "tx timestamp"),
+        to=str(raw.get("to") or "").strip(),
+        memo=str(raw.get("memo") or "").strip(),
+    )
+
+
 def load_invoices(path: str | Path) -> list[Invoice]:
-    out = []
-    for raw in _rows(path, INVOICE_COLUMNS):
-        out.append(Invoice(
-            id=str(raw["id"]).strip(),
-            amount=_dec(raw["amount"], "invoice amount"),
-            asset=str(raw["asset"]).strip().upper(),
-            created_at=_ts(raw["created_at"], "invoice created_at"),
-            due_at=_ts(raw["due_at"], "invoice due_at") if raw.get("due_at") else None,
-            payee=str(raw.get("payee") or "").strip(),
-            memo=str(raw.get("memo") or "").strip(),
-        ))
-    return out
+    return [invoice_from_row(raw) for raw in _rows(path, INVOICE_COLUMNS)]
 
 
 def load_transactions(path: str | Path) -> list[Tx]:
-    out = []
-    for raw in _rows(path, TX_COLUMNS):
-        out.append(Tx(
-            tx_hash=str(raw["tx_hash"]).strip(),
-            amount=_dec(raw["amount"], "tx amount"),
-            asset=str(raw["asset"]).strip().upper(),
-            ts=_ts(raw["timestamp"], "tx timestamp"),
-            to=str(raw.get("to") or "").strip(),
-            memo=str(raw.get("memo") or "").strip(),
-        ))
-    return out
+    return [tx_from_row(raw) for raw in _rows(path, TX_COLUMNS)]
 
 
 def _window(invoice: Invoice) -> tuple[datetime, datetime]:

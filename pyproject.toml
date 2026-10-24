@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "nidhipati-proof"
-version = "0.5.0"
+version = "0.6.0"
 description = "Proof of Spend for AI agents: verify mandate, amount, asset, network, payee and refund in a signed receipt."
 readme = "README.md"
 requires-python = ">=3.10"
@@ -25,6 +25,7 @@ nidhipati-spend = "nidhipati_proof.spend_cli:main"
 nidhipati-reserve = "nidhipati_proof.reserve_cli:main"
 nidhipati-resolve = "nidhipati_proof.resolve_cli:main"
 nidhipati-reconcile = "nidhipati_proof.reconcile_cli:main"
+nidhipati-mcp = "nidhipati_proof.mcp_stdio:main"
 
 [tool.setuptools.packages.find]
 include = ["nidhipati_proof*"]
