@@ -266,3 +266,11 @@ python3 -m nidhipati_proof.cli verify examples/proof-of-spend.example.json --pub
 - Added `/mcp.html`: five tools, stdio/docker run, client config, read-only boundary, CTA.
 - Nav/sitemap (12 URLs)/llms updated; IndexNow 200.
 - Catalog status: mcpservers.org submitted; Glama needs owner captcha; PulseMCP submissions paused; mcp.so paid $39 — not paying before revenue.
+
+### S9.01 — Official MCP Registry: опубликован
+
+- `server.json` (`io.github.mrpkk/nidhipati`, OCI `ghcr.io/mrpkk/nidhipati:0.6.0`), `LABEL io.modelcontextprotocol.server.name` в Dockerfile.
+- GitHub Actions `publish-mcp.yml`: OIDC (`id-token: write`), GHCR push, `mcp-publisher validate/login github-oidc/publish`.
+- Workflow run **40136359532 — success**; Registry API `search=nidhipati` отдаёт запись, status `active`, `isLatest: true`.
+- Публичный образ проверен `docker manifest inspect`.
+- Это бесплатный официальный канал; PulseMCP/агрегаторы подхватывают его автоматически. Glama по-прежнему требует вход владельца.

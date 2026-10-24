@@ -74,6 +74,8 @@ docker build -t nidhipati-mcp . && docker run -i --rm nidhipati-mcp
 
 Five tools, all read-only: no custody, no keys, no chain read.
 
+Official MCP Registry: <https://registry.modelcontextprotocol.io/v0/servers?search=nidhipati> (`io.github.mrpkk/nidhipati`, OCI `ghcr.io/mrpkk/nidhipati:0.6.0`).
+
 ## Free scan, and what it costs after
 
 Send records of what your agents spent and get the audit back — no card, no account:
