@@ -132,6 +132,9 @@ a report looks like before trusting it with real invoices.
 - `PROGRESS.md` — slices, acceptance, metrics.
 - `docs/PROMPT-AND-IDEAS.md` — prompt and decisions for RAG.
 - `docs/SEO-MONETIZATION.md` — keywords, pages, funnel, pricing.
+- `docs/LAUNCH-KIT.md` — Show HN, Reddit, Product Hunt, X/LinkedIn copy.
+- `docs/DEMO.md` — real commands and sample output.
+- `docs/AGENT-SPEND-AUDIT.md`, `docs/RESERVE-REPORT.md`, `docs/RESOLUTION-EVIDENCE.md`, `docs/RECONCILIATION.md` — module rules.
 - `schemas/proof-of-spend.schema.json` — v0.1 schema.
 - `examples/proof-of-spend.example.json` — example.
 

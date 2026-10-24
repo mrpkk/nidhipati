@@ -160,7 +160,8 @@
 - [x] Action `action.yml` (v0.2.0): аудит в пайплайне, отчёт в `$GITHUB_STEP_SUMMARY`, сборка падает на ошибках.
 - [ ] 10 partner messages (ClawRouter, x402scan, Kertivo, Composio, Langfuse, Helicone, Bitwave, Request Finance, RWA data, prediction data). **Пауза:** холодные обращения в attest — 0 ответов из 76; сначала проверить, что оффер вообще открывается и читается.
 - [ ] 5 free scans → 1–2 paid.
-- [ ] Launch kit for owner: Show HN, Reddit, Product Hunt; agent does not create accounts.
+- [x] Launch kit `docs/LAUNCH-KIT.md`: заголовок и комментарий для HN, пост для r/RWA, правило «сначала ответ в треде» для r/ethdev, PH отложен до первого платежа (повторный запуск запрещён), «чего не делать».
+      **Блокер:** HN 25.10 ответил `You're posting too fast` — лимит частоты, снимается сам; повтор после паузы, лучше в будни 15–17 МСК.
 - [x] Channel attribution: поле «Where did you find this?» в форме заявки. Счётчик посещений не ставили — атрибутика честная, от самого человека.
 
 **Критерий:** first paid audit or retainer; if not, report why.
