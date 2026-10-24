@@ -161,29 +161,31 @@
 - [ ] 10 partner messages (ClawRouter, x402scan, Kertivo, Composio, Langfuse, Helicone, Bitwave, Request Finance, RWA data, prediction data). **Пауза:** холодные обращения в attest — 0 ответов из 76; сначала проверить, что оффер вообще открывается и читается.
 - [ ] 5 free scans → 1–2 paid.
 - [ ] Launch kit for owner: Show HN, Reddit, Product Hunt; agent does not create accounts.
-- [ ] Channel attribution.
+- [x] Channel attribution: поле «Where did you find this?» в форме заявки. Счётчик посещений не ставили — атрибутика честная, от самого человека.
 
 **Критерий:** first paid audit or retainer; if not, report why.
 
 ---
 
-## S8 — Hygiene
+## S8 — Hygiene (закрыт 25.10.2026)
 
-- [ ] Obsidian daily/project note.
-- [ ] RAG skill `nidhipati` + rebuild index.
-- [ ] `soma_remember`.
-- [ ] Git commit/push each slice.
-- [ ] Backup local + GDrive after each major slice.
-- [ ] Update `LATEST.md`/market feed if needed.
+- [x] Obsidian: записи в `6-daily/2026-10-25.md` по S2 и по S3–S5 (что сделано, что проверено, что дальше).
+- [x] RAG-скилл `nidhipati` обновлён (S0–S5 закрыты, следующий шаг — сканы), индекс пересобран: 164 скилла.
+- [x] `soma_remember`: факты 53, 54, 58, 59 (аудит, оффер, релизы, сайт).
+- [x] Git: каждый слайс отдельным коммитом, всё запушено; дерево чистое.
+- [x] Бэкап: локальный полный архив запущен 25.10 (`full-backup.sh --no-gdrive`), прошлый — 24.10 03:49 (924 МБ).
+- [x] `LATEST.md` / market feed — файла нет и он не нужен: рыночный дозор здесь не ведётся, выдумывать ленту не будем.
 
 ---
 
 ## Immediate next steps
 
-1. S1/S2/S6 closed.
-2. S3 Reserve report, S4 Resolve, S5 Reconcile.
-3. S7 partner letters are paused: 0 responses from 76 cold outreach; first verify the offer is readable.
-4. First paid audit/retainer.
+1. S0–S6 и S8 закрыты. Пять CLI, 64 теста, релизы v0.2.0–v0.5.0.
+2. S7: форма бесплатного скана, оффер, подписанный счёт, Action — готовы. Осталось получить первые 5 сканов.
+3. Партнёрские письма на паузе: 0 ответов из 76 холодных обращений. Повторять измеренную неудачу не будем.
+4. **HN: владелец получил «You're posting too fast» (25.10).** Лимит временный; текст готов, повтор после паузы.
+5. Атрибутика: в форме заявки есть поле «откуда узнали» — счётчиков на сайте нет, и выдумывать цифры не станем.
+6. Первый платный аудит или ретейнер.
 
 ---
 
