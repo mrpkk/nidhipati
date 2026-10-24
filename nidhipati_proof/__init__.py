@@ -1,3 +1,3 @@
 """Proof of Spend v0.1 — verification library."""
 
-__version__ = "0.3.0"
+__version__ = "0.4.0"
