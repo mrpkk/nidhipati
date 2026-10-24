@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "nidhipati-proof"
-version = "0.6.0"
+version = "0.6.1"
 description = "Proof of Spend for AI agents: verify mandate, amount, asset, network, payee and refund in a signed receipt."
 readme = "README.md"
 requires-python = ">=3.10"
