@@ -64,31 +64,31 @@
 
 ---
 
-## S2 — Spend audit CLI
+## S2 — Spend audit CLI (закрыт 25.10.2026)
 
 **Боль:** «где переплатили?»
 
 ### S2.01 — input model
-- [ ] CSV/JSON schema: timestamp, agent_id, model/tool, quote, settled, asset/network, tx_hash, status, refund.
-- [ ] Sample data (synthetic, labelled).
-- [ ] Parsing + validation.
+- [x] CSV/JSON: `ts, agent_id, tool, quote, settled, status` обязательны; `model, actual, refund, asset, network, tx_hash, payee` — по наличию. Пропущенная колонка — ошибка, а не пустое значение (`load_records`).
+- [x] Синтетический пример `examples/spend-sample.csv` (44 строки, помечен как синтетика): каждая находка ровно один раз. Политика — `examples/spend-policy.example.json`.
+- [x] Разбор и валидация: ISO-8601, Decimal (не float) для денег.
 
 ### S2.02 — rules
-- [ ] duplicate (same agent/action within window).
-- [ ] price escalation (settled > quote + tolerance).
-- [ ] failed-but-billed (status failed/500, settlement exists).
-- [ ] runaway loop (calls/min > threshold).
-- [ ] missing refund (upto/actual < quote, no refund).
-- [ ] model overpay (small task + frontier price).
-- [ ] unknown asset/network/payee.
-- [ ] budget bypass (limit in prompt only) — flag if no policy file.
+- [x] `duplicate_charge` — тот же `tx_hash`; либо равный платёж в 120 с **при отсутствии квитанции у обеих строк**. Две квитанции — два платежа: 25.10 аудит считал цикл из 20 вызовов 190 дублями и давал «переплату» больше самих расходов; есть регрессионный тест.
+- [x] `price_escalation` — `settled > quote × 1.01`, сумма превышения в находке.
+- [x] `failed_but_billed` — статус failed/error/rejected/timeout/5xx при `settled > 0`.
+- [x] `runaway_loop` — больше 30 вызовов в любом окне 60 с на агента.
+- [x] `missing_refund` — `settled > actual` и возврат не записан.
+- [x] `model_overpay` — выше 3× медианы **самого агента** по тому же инструменту и модели (не по чужим агентам: у них другая задача).
+- [x] `unknown_asset` / `unknown_network` / `missing_payee` — запись не говорит, куда ушли деньги.
+- [x] `budget_bypass` (нет файла политики) и `budget_exceeded` (превышен `limit_usd`).
 
 ### S2.03 — report
-- [ ] Markdown + JSON; total estimated overpay; evidence per finding.
-- [ ] Honest: estimates, not recovered until verified.
-- [ ] 8 tests.
+- [x] Markdown + JSON, доказательство в каждой находке (номер строки + `tx_hash`).
+- [x] Три суммы раздельно: `estimated_overpay` (деньги без основания), `overpay_vs_median` (оценка), `budget_overrun` (лимит). Складывать их в одно «мы вернули $X» — нечестно.
+- [x] 14 тестов (`tests/test_spend.py`), включая тест на ложные дубли.
 
-**Критерий S2:** sample report with 5+ findings; tests; CLI.
+**Критерий S2:** пример даёт 10 типов находок, 5 из них — ошибки; CLI `nidhipati-spend audit`; код возврата 0/1/2. `docs/AGENT-SPEND-AUDIT.md`, README.
 
 ---
 

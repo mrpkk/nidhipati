@@ -44,6 +44,16 @@ def test_duplicate_tx_is_an_error_with_evidence():
     assert "0xdead" in dup[0].evidence
 
 
+def test_two_receipts_are_two_payments_not_a_duplicate():
+    """Баг 25.10: одинаковые суммы в цикле считались дублями и раздували отчёт."""
+    rows = [row(f"2026-10-01T10:00:{i:02d}Z", agent="agent-loop",
+                quote="0.001", settled="0.001", actual="0.001",
+                tx_hash=f"0x{i:04d}") for i in range(20)]
+    report = audit(rows)
+    assert "duplicate_charge" not in codes(report)
+    assert report.estimated_overpay == D("0")
+
+
 def test_equal_charge_within_window_is_a_duplicate():
     report = audit([row("2026-10-01T10:00:00Z"), row("2026-10-01T10:00:40Z")])
     assert "duplicate_charge" in codes(report)
@@ -81,13 +91,16 @@ def test_unknown_asset_network_and_missing_payee_are_warnings():
 
 
 def test_model_overpay_is_an_estimate_above_the_median():
-    rows = [row("2026-10-01T10:00:00Z"), row("2026-10-01T10:01:00Z"),
-            row("2026-10-01T10:02:00Z"), row("2026-10-01T10:03:00Z",
+    rows = [row("2026-10-01T10:00:00Z"), row("2026-10-01T10:10:00Z"),
+            row("2026-10-01T10:20:00Z"), row("2026-10-01T10:30:00Z",
                                             settled="0.30", actual="0.30", quote="0.30")]
     report = audit(rows)
     finding = next(f for f in report.findings if f.code == "model_overpay")
     assert finding.severity == "warning"
     assert finding.amount == D("0.28")
+    # оценка «дороже обычного» не смешивается с деньгами без основания
+    assert report.estimated_overpay == D("0")
+    assert report.overpay_vs_median == D("0.28")
 
 
 def test_policy_turns_a_prompt_limit_into_a_real_one():
@@ -99,6 +112,8 @@ def test_policy_turns_a_prompt_limit_into_a_real_one():
     exceeded = next(f for f in with_policy.findings if f.code == "budget_exceeded")
     assert exceeded.severity == "error"
     assert exceeded.amount == D("0.03")
+    assert with_policy.budget_overrun == D("0.03")
+    assert with_policy.estimated_overpay == D("0")
 
 
 def test_loader_refuses_a_file_without_the_required_column(tmp_path):
@@ -132,6 +147,6 @@ def test_cli_exit_codes_follow_the_money(tmp_path, capsys):
 def test_markdown_says_it_is_an_estimate():
     report = audit([row(settled="0.05", actual="0.05")])
     text = report.to_markdown()
-    assert "estimated overpay" in text
+    assert "spent without a reason" in text
     assert "Estimates from the records provided" in text
     assert "nothing was verified on-chain" in text.lower()

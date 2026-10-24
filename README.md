@@ -4,7 +4,7 @@
 
 > Рельсы двигают деньги. Nidhipati доказывает, что движение было правильным.
 
-**Status:** draft v0.1. Spec + JSON Schema + example. Validator in progress.
+**Status:** v0.2. Proof validator (signed receipts) and agent spend audit, both with tests.
 
 ## Quick start
 
@@ -24,6 +24,37 @@ python3 -m nidhipati_proof.cli verify examples/proof-of-spend.example.json --pub
 - refund ≤ payment;
 - verdict `allow` for a settled payment;
 - receipt ID/replay (v0.2 store).
+
+
+## Agent spend audit
+
+A signed receipt proves one charge. A bill proves a month. The audit reads the records
+you already have (CSV or JSON) and names the rows where money left without a reason:
+
+| Finding | What it means |
+|---|---|
+| `duplicate_charge` | the same receipt twice, or an equal charge within 120s with no receipt at all |
+| `price_escalation` | settled above the authorised quote by more than 1% |
+| `failed_but_billed` | status failed/error and still charged |
+| `missing_refund` | authorised 10, used 4, nothing returned |
+| `runaway_loop` | more than 30 calls a minute from one agent |
+| `model_overpay` | far above *this agent's own* median for the same tool and model (an estimate) |
+| `unknown_asset` / `unknown_network` / `missing_payee` | the record does not say where the money went |
+| `budget_bypass` / `budget_exceeded` | no policy file: the limit lives in a prompt; with a policy, the agent is over it |
+
+```bash
+python3 -m pip install -e .
+nidhipati-spend audit examples/spend-sample.csv --policy examples/spend-policy.example.json
+nidhipati-spend audit records.csv --json > report.json
+```
+
+Exit code `1` when there is an error — a pipeline can fail on it. The report keeps three
+amounts apart on purpose: **spent without a reason** (duplicates, escalation, failed calls,
+refunds not returned), **above the usual price** (an estimate, not proof), and **over the
+limit** (the money may have been spent on real work).
+
+The sample is synthetic and labelled: it contains every finding once, so you can see what
+a report looks like before trusting it with real invoices.
 
 ## Honest limits
 
