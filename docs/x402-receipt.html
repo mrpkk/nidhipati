@@ -73,6 +73,25 @@
   <p class="micro">v0.1 does not query the chain; it says <code>onchain_verified=false</code> explicitly. That is the honest boundary.</p>
 </div></section>
 
+<section><div class="wrap">
+<h2>Run it yourself</h2>
+  <p>No account and no key of ours: generate a keypair, sign the example receipt, verify it.
+  Then move the amount by one cent and watch the signature break.</p>
+  <pre><code>python3 -m nidhipati_proof keygen --out-dir keys
+python3 -m nidhipati_proof sign examples/proof-of-spend.example.json --key keys/private.pem
+nidhipati-proof verify examples/proof-of-spend.example.json.signed.json --pubkey &lt;b64 from keygen&gt;
+
+# OK
+#   ✓ schema   ✓ signature_alg: Ed25519   ✓ signature: Ed25519
+#   ✓ mandate_expiry: settled &lt;= expires  ✓ usage_amount: quantity * unit_price == amount
+#   ✓ refund: 0 &lt;= refund &lt;= amount
+
+# after changing the amount by one cent:
+# error: signature: invalid
+# error: usage: quantity * unit_price does not match payment amount
+# exit code 1</code></pre>
+  <p class="micro">Synthetic example; the verification is real, local, and needs no service of ours.</p>
+</div></section>
 </main>
 
 <footer><div class="wrap">
