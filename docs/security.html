@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Agent wallet security review — ten checks</title>
+<meta name="description" content="Agent wallet security review: keys, limits, allowlist, approval, kill switch, audit log, tool-output trust, MCP inventory, x402 flow and incident plan. $2,500, no custody.">
+<link rel="canonical" href="https://mrpkk.github.io/nidhipati/security.html">
+<meta property="og:title" content="Agent wallet security review — ten checks">
+<meta property="og:description" content="Agent wallet security review: keys, limits, allowlist, approval, kill switch, audit log, tool-output trust, MCP inventory, x402 flow and incident plan. $2,500, no custody.">
+<meta property="og:url" content="https://mrpkk.github.io/nidhipati/security.html">
+<meta property="og:type" content="website">
+<link rel="stylesheet" href="styles.css">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Nidhipati", "applicationCategory": "BusinessApplication", "operatingSystem": "Web, CLI", "description": "Proof of Spend and spend audit for AI agents. Verify mandate, amount, asset, network, payee and refund in a signed receipt.", "url": "https://mrpkk.github.io/nidhipati/security.html", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD", "description": "Free scan"}}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Is this a penetration test?", "acceptedAnswer": {"@type": "Answer", "text": "It is a scoped security review of the agent payment path, with prompt-injection tests where agreed. It is not a full red-team engagement."}}, {"@type": "Question", "name": "Do you need keys?", "acceptedAnswer": {"@type": "Answer", "text": "No. We do not ask for keys or seed phrases."}}, {"@type": "Question", "name": "What do I get?", "acceptedAnswer": {"@type": "Answer", "text": "A written report with severity, file/line or flow evidence, fixes, and one retest."}}]}</script>
+</head>
+<body>
+
+<header><div class="wrap nav">
+  <a class="brand" href="index.html"><span class="mark">N</span> Nidhipati</a>
+  <nav class="navlinks">
+    <a href="agent-spend-audit.html">Spend audit</a>
+    <a href="x402-receipt.html">x402 receipt</a>
+    <a href="rwa-proof-of-reserve.html">RWA reserve</a>
+    <a href="prediction-resolution.html">Prediction</a>
+    <a href="stablecoin-reconciliation.html">Stablecoin</a><a href="pricing.html">Pricing</a><a href="security.html">Security</a>
+    <a href="https://github.com/mrpkk/nidhipati">GitHub</a>
+    <a class="btn primary" href="https://github.com/mrpkk/nidhipati/issues/new?template=scan-request.yml">Free scan</a>
+  </nav>
+</div></header>
+
+<main>
+<section class="hero"><div class="wrap">
+  <span class="kicker"><span class="dot"></span> Draft v0.1 · open spec · no custody</span>
+  <h1>Agent wallet security review</h1>
+  <div class="lede">Agent wallet security review: keys, limits, allowlist, approval, kill switch, audit log, tool-output trust, MCP inventory, x402 flow and incident plan. $2,500, no custody.</div>
+  <div class="actions">
+    <a class="btn primary" href="https://github.com/mrpkk/nidhipati/issues/new?template=scan-request.yml">Request a free scan</a>
+    <a class="btn" href="https://github.com/mrpkk/nidhipati/blob/main/docs/PROOF-OF-SPEND.md">Read the spec</a>
+  </div>
+  <div class="micro">Written scope and written report — no calls. No wallet access for the first scan.</div>
+</div></section>
+
+<section><div class="wrap two">
+  <div>
+    <h2>Ten checks before the agent touches money</h2>
+    <ul class="checks">
+      <li>Keys and hot wallets outside prompts/config</li>
+      <li>Per-transaction and daily limits</li>
+      <li>Recipient/asset/network allowlist</li>
+      <li>Human approval above a threshold</li>
+      <li>Kill switch that stops the signer</li>
+      <li>Append-only audit log / receipts</li>
+      <li>Tool output treated as untrusted data</li>
+      <li>MCP servers and packages inventoried</li>
+      <li>x402 price/payee/replay/receipt checks</li>
+      <li>Incident plan: revoke, rotate, recover</li>
+    </ul>
+  </div>
+  <div class="panel"><h3>Review</h3><p>Agent Wallet Security Review: $2,500. Threat model, live prompt-injection tests, wallet permissions, limits, kill switch, x402 flow, report and retest. No custody.</p><div style="height:12px"></div><a class="btn primary" href="https://github.com/mrpkk/nidhipati/issues/new?template=scan-request.yml">Request a review</a></div>
+</div></section>
+
+<section><div class="wrap"><h2>Why this is not a scanner report</h2><p class="sub">A static scan is the first 30 minutes. The review reads the actual payment path, tests the prompts that can move money, and retests the fixes. If no finding is verified, the report says so.</p></div></section>
+
+</main>
+
+<footer><div class="wrap">
+  <div class="foot">
+    <div>© 2026 Nidhipati · <a href="https://github.com/mrpkk/nidhipati">GitHub</a> · <a href="https://github.com/mrpkk/nidhipati/blob/main/SPEC.md">Spec</a></div>
+    <div>No custody · no money transmission · no token</div>
+  </div>
+  <div class="fine" style="margin-top:12px">Nidhipati is a draft product. Reports are technical evidence, not statutory audits, legal, tax, or investment advice. Figures are from public 2026 reports and are context, not a guarantee. If no finding is verified, the report says so.</div>
+</div></footer>
+
+</body>
+</html>
