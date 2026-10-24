@@ -132,16 +132,16 @@
 
 ---
 
-## S6 — SEO site
+## S6 — SEO site (закрыт 25.10.2026)
 
-- [ ] 6 pages: `/`, `/agent-spend-audit`, `/x402-receipt`, `/rwa-proof-of-reserve`, `/prediction-resolution`, `/stablecoin-reconciliation`.
-- [ ] `robots.txt`, `sitemap.xml`, canonical, OG, JSON-LD.
-- [ ] `llms.txt`.
-- [ ] Internal links to spec/free scan/pricing.
-- [ ] No fake reviews; “draft” labels.
-- [ ] GitHub Pages + custom domain later (after revenue).
+- [x] Страницы: `/` (index), `agent-spend-audit`, `x402-receipt`, `rwa-proof-of-reserve`, `prediction-resolution`, `stablecoin-reconciliation`. Опубликованы GitHub Pages из `/docs`: https://mrpkk.github.io/nidhipati/
+- [x] `robots.txt`, `sitemap.xml` (6 адресов), canonical, OG, JSON-LD (FAQPage) — на месте.
+- [x] `llms.txt` есть.
+- [x] Внутренние ссылки: **были битые** — все кнопки «Free scan» вели на `scan-request.yml`, которого нет; исправлено на `free-spend-audit.yml` (6 файлов), форма отвечает 200.
+- [x] Без выдуманных отзывов: на странице аудита стояла «illustrative report» с придуманными процентами и суммой $4,510. Заменено на настоящий вывод `nidhipati-spend` по синтетическому примеру + команда, которой его получить. Цена ретейнера на странице stablecoin приведена к офферу (без минимального срока).
+- [x] GitHub Pages уже включён (ветка `main`, папка `/docs`); домен — после выручки, как и записано.
 
-**Критерий:** Pages 200, sitemap valid, 3 pages indexed (later), no broken links.
+**Критерий:** Pages 200, sitemap валиден, битых ссылок нет, ни одного придуманного числа на сайте.
 
 ---
 
@@ -173,10 +173,10 @@
 
 ## Immediate next steps
 
-1. S1.01–S1.04 validator.
-2. S2 spend audit.
-3. S6 3 SEO pages.
-4. S7 5 partner messages.
+1. S1/S2/S6 closed.
+2. S3 Reserve report, S4 Resolve, S5 Reconcile.
+3. S7 partner letters are paused: 0 responses from 76 cold outreach; first verify the offer is readable.
+4. First paid audit/retainer.
 
 ---
 
@@ -194,3 +194,10 @@ python3 -m nidhipati_proof.cli verify examples/proof-of-spend.example.json --pub
 - 10 tests green; CLI `keygen/sign/verify`; package install in clean venv verified.
 - Schema/example validate; `onchain_verified=false` explicit.
 - Next: S2 Spend audit CLI.
+
+
+## S6 closed — 25.10.2026
+
+- 6 SEO pages, `robots.txt`, `sitemap.xml`, `llms.txt`, JSON-LD, canonical, GitHub Pages 200.
+- Site: https://mrpkk.github.io/nidhipati/
+- Pages are hand-edited after generation; do not run `tools/build_site.py` without diff.
