@@ -1,0 +1,104 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mrpkk.github.io/agent-trust-scan/proof-of-spend.schema.json",
+  "title": "Proof of Spend",
+  "version": "pos/0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "receipt_id", "issued_at", "agent", "mandate", "action", "payment", "usage", "verdict", "signature"],
+  "properties": {
+    "version": {"const": "pos/0.1"},
+    "receipt_id": {"type": "string", "minLength": 8},
+    "issued_at": {"type": "string", "format": "date-time"},
+    "agent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "operator", "key_id"],
+      "properties": {
+        "id": {"type": "string"},
+        "operator": {"type": "string"},
+        "key_id": {"type": "string"}
+      }
+    },
+    "mandate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["hash", "policy_id", "expires_at"],
+      "properties": {
+        "hash": {"type": "string"},
+        "policy_id": {"type": "string"},
+        "expires_at": {"type": "string", "format": "date-time"}
+      }
+    },
+    "action": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "resource", "quote_id"],
+      "properties": {
+        "type": {"type": "string"},
+        "resource": {"type": "string"},
+        "quote_id": {"type": "string"}
+      }
+    },
+    "payment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["amount", "asset", "network", "payee", "tx_hash", "settled_at"],
+      "properties": {
+        "amount": {"type": "string", "pattern": "^[0-9]+(\\.[0-9]+)?$"},
+        "asset": {"type": "string"},
+        "network": {"type": "string"},
+        "payee": {"type": "string"},
+        "tx_hash": {"type": "string"},
+        "settled_at": {"type": "string", "format": "date-time"}
+      }
+    },
+    "usage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["unit", "quantity", "unit_price"],
+      "properties": {
+        "unit": {"type": "string"},
+        "quantity": {"type": "string", "pattern": "^[0-9]+(\\.[0-9]+)?$"},
+        "unit_price": {"type": "string", "pattern": "^[0-9]+(\\.[0-9]+)?$"}
+      }
+    },
+    "refund": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["amount"],
+      "properties": {
+        "amount": {"type": "string", "pattern": "^[0-9]+(\\.[0-9]+)?$"},
+        "tx_hash": {"type": ["string", "null"]}
+      }
+    },
+    "verdict": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["decision", "policy_version"],
+      "properties": {
+        "decision": {"enum": ["allow", "deny", "require_approval"]},
+        "policy_version": {"type": "string"},
+        "reasons": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "artifact_hash": {"type": "string"},
+        "attestation_id": {"type": "string"}
+      }
+    },
+    "signature": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["alg", "key_id", "value"],
+      "properties": {
+        "alg": {"type": "string"},
+        "key_id": {"type": "string"},
+        "value": {"type": "string"}
+      }
+    }
+  }
+}

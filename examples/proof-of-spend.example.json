@@ -1,0 +1,51 @@
+{
+  "version": "pos/0.1",
+  "receipt_id": "pos_example_0001",
+  "issued_at": "2026-10-24T12:00:00Z",
+  "agent": {
+    "id": "agent://example/research-1",
+    "operator": "did:web:example.com",
+    "key_id": "ed25519:example"
+  },
+  "mandate": {
+    "hash": "sha256:example-mandate-hash",
+    "policy_id": "policy://example/agent-spend-v3",
+    "expires_at": "2026-10-25T00:00:00Z"
+  },
+  "action": {
+    "type": "api.call",
+    "resource": "https://api.example.com/v1/search",
+    "quote_id": "quote_example_001"
+  },
+  "payment": {
+    "amount": "0.05",
+    "asset": "USDC",
+    "network": "eip155:8453",
+    "payee": "0x0000000000000000000000000000000000000001",
+    "tx_hash": "0xexample",
+    "settled_at": "2026-10-24T12:00:03Z"
+  },
+  "usage": {
+    "unit": "request",
+    "quantity": "1",
+    "unit_price": "0.05"
+  },
+  "refund": {
+    "amount": "0",
+    "tx_hash": null
+  },
+  "verdict": {
+    "decision": "allow",
+    "policy_version": "3",
+    "reasons": ["amount_within_daily_limit", "payee_allowlisted"]
+  },
+  "evidence": {
+    "artifact_hash": "sha256:example-artifact-hash",
+    "attestation_id": "att_example"
+  },
+  "signature": {
+    "alg": "Ed25519",
+    "key_id": "ed25519:example",
+    "value": "base64url-example-signature"
+  }
+}
