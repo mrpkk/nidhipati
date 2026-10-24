@@ -2,7 +2,7 @@
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
   "name": "io.github.mrpkk/nidhipati",
   "title": "Nidhipati Proof of Spend",
-  "description": "Verify agent spend, receipts, RWA NAV, prediction evidence and stablecoin books. Read-only, no keys.",
+  "description": "Verify agent spend, receipts, RWA NAV, prediction evidence and books. Read-only, no keys.",
   "version": "0.6.0",
   "repository": {
     "url": "https://github.com/mrpkk/nidhipati",
