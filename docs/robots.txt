@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://mrpkk.github.io/nidhipati/sitemap.xml
