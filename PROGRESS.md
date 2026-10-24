@@ -256,3 +256,10 @@ python3 -m nidhipati_proof.cli verify examples/proof-of-spend.example.json --pub
 - Node test `tools/test_spend_audit.cjs`; CI runs it before pytest.
 - Nav/sitemap (11 URLs)/llms updated; IndexNow 200.
 - The page lets a visitor get value before opening an issue; paid audit CTA remains.
+
+
+## S9 — MCP landing page (25.10.2026)
+
+- Added `/mcp.html`: five tools, stdio/docker run, client config, read-only boundary, CTA.
+- Nav/sitemap (12 URLs)/llms updated; IndexNow 200.
+- Catalog status: mcpservers.org submitted; Glama needs owner captcha; PulseMCP submissions paused; mcp.so paid $39 — not paying before revenue.

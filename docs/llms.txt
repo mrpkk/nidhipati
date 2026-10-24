@@ -25,3 +25,4 @@ Free scan. Audit $2,500 or 20% of verified savings. Control retainer $1,500/mo. 
 - https://mrpkk.github.io/nidhipati/vs-ai-finops.html
 - https://mrpkk.github.io/nidhipati/agent-spend-audit-checklist.html
 - https://mrpkk.github.io/nidhipati/free-spend-audit.html
+- https://mrpkk.github.io/nidhipati/mcp.html
