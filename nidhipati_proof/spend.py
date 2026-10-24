@@ -66,6 +66,8 @@ class SpendReport:
     findings: list[Finding] = field(default_factory=list)
     total_settled: Decimal = Decimal("0")
     estimated_overpay: Decimal = Decimal("0")
+    overpay_vs_median: Decimal = Decimal("0")
+    budget_overrun: Decimal = Decimal("0")
     disclaimer: str = (
         "Estimates from the records provided. Nothing was recovered; nothing was "
         "verified on-chain in v0.2. Confirm each row against the provider's invoice "
@@ -85,6 +87,8 @@ class SpendReport:
             "rows_read": self.rows_read,
             "total_settled_usd": str(self.total_settled),
             "estimated_overpay_usd": str(self.estimated_overpay),
+            "overpay_vs_median_usd": str(self.overpay_vs_median),
+            "budget_overrun_usd": str(self.budget_overrun),
             "errors": len(self.errors),
             "warnings": len(self.warnings),
             "findings": [f.as_dict() for f in self.findings],
@@ -96,7 +100,9 @@ class SpendReport:
             "# Agent spend audit",
             "",
             f"Rows read: **{self.rows_read}** · settled **${self.total_settled}** · "
-            f"estimated overpay **${self.estimated_overpay}** · "
+            f"spent without a reason **${self.estimated_overpay}** · "
+            f"above the usual price **${self.overpay_vs_median}** · "
+            f"over the limit **${self.budget_overrun}** · "
             f"errors {len(self.errors)}, warnings {len(self.warnings)}",
             "",
         ]
@@ -202,14 +208,20 @@ def audit(records: Iterable[dict[str, Any]], policy: dict[str, Any] | None = Non
                     f"same tx_hash as row {seen_tx[r['tx_hash']]}")
             else:
                 seen_tx[r["tx_hash"]] = r["row"]
+    # Две разные квитанции — это два разных платежа, даже если суммы равны.
+    # Подозрительно только повторение без квитанции: тогда проверить нечем.
     for i, a in enumerate(rows):
+        if a["tx_hash"]:
+            continue
         for b in rows[i + 1:]:
+            if b["tx_hash"]:
+                continue
             same = (a["agent_id"], a["tool"], a["settled"], a["asset"]) == \
                    (b["agent_id"], b["tool"], b["settled"], b["asset"])
             close = abs((b["ts"] - a["ts"]).total_seconds()) <= DUPLICATE_WINDOW_SECONDS
-            if same and close and not (a["tx_hash"] and a["tx_hash"] == b["tx_hash"]):
+            if same and close:
                 add("duplicate_charge", "error", b, b["settled"],
-                    f"equal charge within {DUPLICATE_WINDOW_SECONDS}s of row {a['row']}")
+                    f"equal charge within {DUPLICATE_WINDOW_SECONDS}s of row {a['row']}, no receipt")
 
     # 2. Charged above the authorised maximum.
     for r in rows:
@@ -242,12 +254,13 @@ def audit(records: Iterable[dict[str, Any]], policy: dict[str, Any] | None = Non
             add("missing_refund", "error", r, r["settled"] - r["actual"],
                 f"charged {r['settled']} for actual {r['actual']}, refund not recorded")
 
-    # 6. The same tool and model priced far above its own median: an estimate.
-    groups: dict[tuple[str, str], list[dict[str, Any]]] = {}
+    # 6. The same tool and model priced far above *this agent's* own median.
+    # Сравнивать с чужими агентами нельзя: у другого агента другая задача и другая цена.
+    groups: dict[tuple[str, str, str], list[dict[str, Any]]] = {}
     for r in rows:
         if r["model"]:
-            groups.setdefault((r["tool"], r["model"]), []).append(r)
-    for (_tool, _model), group in groups.items():
+            groups.setdefault((r["agent_id"], r["tool"], r["model"]), []).append(r)
+    for (_agent, _tool, _model), group in groups.items():
         if len(group) < 3:
             continue
         median = Decimal(str(statistics.median(float(g["settled"]) for g in group)))
@@ -287,9 +300,16 @@ def audit(records: Iterable[dict[str, Any]], policy: dict[str, Any] | None = Non
                     f"spent {spent} against a limit of {limit}"))
 
     report.findings = sorted(findings, key=lambda f: (f.severity != "error", f.row))
+    # Три разные вещи, которые нельзя складывать в одно число:
+    #   overpay_due     — деньги ушли без основания (это и есть предмет иска/возврата);
+    #   overpay_vs_median — оценка «дороже обычного», не доказательство;
+    #   budget_overrun — превышение лимита, деньги могли быть потрачены по делу.
     report.estimated_overpay = sum(
         (f.amount for f in report.findings if f.code in {
-            "duplicate_charge", "price_escalation", "failed_but_billed",
-            "missing_refund", "model_overpay", "budget_exceeded"}),
+            "duplicate_charge", "price_escalation", "failed_but_billed", "missing_refund"}),
         Decimal("0"))
+    report.overpay_vs_median = sum(
+        (f.amount for f in report.findings if f.code == "model_overpay"), Decimal("0"))
+    report.budget_overrun = sum(
+        (f.amount for f in report.findings if f.code == "budget_exceeded"), Decimal("0"))
     return report
