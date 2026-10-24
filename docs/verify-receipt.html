@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Verify a Proof of Spend receipt in your browser</title>
+<meta name="description" content="Paste a signed Proof of Spend JSON and an Ed25519 public key. Verify signature, mandate, amount, usage, refund and verdict locally. No upload, no keys, no custody.">
+<link rel="canonical" href="https://mrpkk.github.io/nidhipati/verify-receipt.html">
+<meta property="og:title" content="Verify a Proof of Spend receipt in your browser">
+<meta property="og:description" content="Paste a signed Proof of Spend JSON and an Ed25519 public key. Verify signature, mandate, amount, usage, refund and verdict locally. No upload, no keys, no custody.">
+<meta property="og:url" content="https://mrpkk.github.io/nidhipati/verify-receipt.html">
+<meta property="og:type" content="website">
+<link rel="stylesheet" href="styles.css">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Nidhipati", "applicationCategory": "BusinessApplication", "operatingSystem": "Web, CLI", "description": "Proof of Spend and spend audit for AI agents. Verify mandate, amount, asset, network, payee and refund in a signed receipt.", "url": "https://mrpkk.github.io/nidhipati/verify-receipt.html", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD", "description": "Free scan"}}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Is the receipt uploaded?", "acceptedAnswer": {"@type": "Answer", "text": "No. Verification runs in the browser with WebCrypto; there is no server call."}}, {"@type": "Question", "name": "Does it check the chain?", "acceptedAnswer": {"@type": "Answer", "text": "No. It verifies the signature and internal consistency. On-chain settlement is not checked in this build; the report says so."}}, {"@type": "Question", "name": "Can I use it for a merchant payment?", "acceptedAnswer": {"@type": "Answer", "text": "It gives you evidence that the receipt was signed and internally valid. Pair it with the mandate/policy and, where needed, an on-chain check."}}]}</script>
+</head>
+<body>
+
+<header><div class="wrap nav">
+  <a class="brand" href="index.html"><span class="mark">N</span> Nidhipati</a>
+  <nav class="navlinks">
+    <a href="agent-spend-audit.html">Spend audit</a>
+    <a href="x402-receipt.html">x402 receipt</a>
+    <a href="rwa-proof-of-reserve.html">RWA reserve</a>
+    <a href="prediction-resolution.html">Prediction</a>
+    <a href="stablecoin-reconciliation.html">Stablecoin</a>
+    <a href="https://github.com/mrpkk/nidhipati">GitHub</a>
+    <a class="btn primary" href="https://github.com/mrpkk/nidhipati/issues/new?template=scan-request.yml">Free scan</a>
+  </nav>
+</div></header>
+
+<main>
+<section class="hero"><div class="wrap">
+  <span class="kicker"><span class="dot"></span> Draft v0.1 · open spec · no custody</span>
+  <h1>Verify a Proof of Spend receipt</h1>
+  <div class="lede">Paste a signed Proof of Spend JSON and an Ed25519 public key. Verify signature, mandate, amount, usage, refund and verdict locally. No upload, no keys, no custody.</div>
+  <div class="actions">
+    <a class="btn primary" href="https://github.com/mrpkk/nidhipati/issues/new?template=scan-request.yml">Request a free scan</a>
+    <a class="btn" href="https://github.com/mrpkk/nidhipati/blob/main/docs/PROOF-OF-SPEND.md">Read the spec</a>
+  </div>
+  <div class="micro">Written scope and written report — no calls. No wallet access for the first scan.</div>
+</div></section>
+
+<section><div class="wrap two">
+  <div>
+    <h2>Paste a receipt. Verify it locally.</h2>
+    <p class="sub">Ed25519 via the browser WebCrypto API. No upload, no keys, no network. The same checks as the CLI: signature, mandate expiry, amount, usage, refund, verdict.</p>
+    <p><label><b>Receipt JSON</b><br><textarea id="receipt" spellcheck="false" style="width:100%;min-height:240px;background:#080c0f;color:#cfe9dd;border:1px solid #233038;border-radius:12px;padding:12px;font:12px/1.5 ui-monospace,Menlo,Consolas,monospace"></textarea></label></p>
+    <p><label><b>Ed25519 public key (base64url or hex)</b><br><input id="pubkey" spellcheck="false" style="width:100%;background:#080c0f;color:#cfe9dd;border:1px solid #233038;border-radius:10px;padding:10px;font:13px ui-monospace,Menlo,Consolas,monospace"></label></p>
+    <div class="actions" style="margin-top:12px">
+      <button class="btn primary" id="verify" type="button">Verify</button>
+      <button class="btn" id="sample" type="button">Load signed sample</button>
+    </div>
+    <p class="micro">The sample signature is real; its private key was discarded. Nothing here proves the service was good or the chain settled — only that the receipt is internally valid and signed.</p>
+  </div>
+  <div class="panel">
+    <h3>What is checked</h3>
+    <ul class="checks">
+      <li>Schema/required fields</li>
+      <li>Ed25519 signature</li>
+      <li>Mandate expiry</li>
+      <li>Positive amount</li>
+      <li>Usage × unit price</li>
+      <li>Refund ≤ payment</li>
+      <li>Verdict = allow</li>
+      <li>Receipt ID</li>
+    </ul>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <h2>Result</h2>
+  <div id="summary" class="sub">No receipt yet.</div>
+  <div style="overflow:auto"><table id="checks"><thead><tr><th>check</th><th>ok</th><th>detail</th></tr></thead><tbody></tbody></table></div>
+  <pre id="errors" style="display:none"></pre>
+</div></section>
+
+<section><div class="wrap cta">
+  <div><h2 style="margin-bottom:6px">Want a written review of the payment path?</h2><p class="sub" style="margin:0">Agent Wallet Security Review: $2,500. Spend audit: $2,500 or 20% of verified savings. No custody.</p></div>
+  <a class="btn primary" href="https://github.com/mrpkk/nidhipati/issues/new?template=scan-request.yml">Request a free scan</a>
+</div></section>
+
+<script src="proof-verify.js"></script>
+<script>
+(function(){
+  var SAMPLE = {
+  "version": "pos/0.1",
+  "receipt_id": "pos_example_0001",
+  "issued_at": "2026-10-24T12:00:00Z",
+  "agent": {
+    "id": "agent://example/research-1",
+    "operator": "did:web:example.com",
+    "key_id": "ed25519:example"
+  },
+  "mandate": {
+    "hash": "sha256:example-mandate-hash",
+    "policy_id": "policy://example/agent-spend-v3",
+    "expires_at": "2026-10-25T00:00:00Z"
+  },
+  "action": {
+    "type": "api.call",
+    "resource": "https://api.example.com/v1/search",
+    "quote_id": "quote_example_001"
+  },
+  "payment": {
+    "amount": "0.05",
+    "asset": "USDC",
+    "network": "eip155:8453",
+    "payee": "0x0000000000000000000000000000000000000001",
+    "tx_hash": "0xexample",
+    "settled_at": "2026-10-24T12:00:03Z"
+  },
+  "usage": {
+    "unit": "request",
+    "quantity": "1",
+    "unit_price": "0.05"
+  },
+  "refund": {
+    "amount": "0",
+    "tx_hash": null
+  },
+  "verdict": {
+    "decision": "allow",
+    "policy_version": "3",
+    "reasons": [
+      "amount_within_daily_limit",
+      "payee_allowlisted"
+    ]
+  },
+  "evidence": {
+    "artifact_hash": "sha256:example-artifact-hash",
+    "attestation_id": "att_example"
+  },
+  "signature": {
+    "alg": "Ed25519",
+    "key_id": "ed25519:demo",
+    "value": "hALKqFEnrIODf_-rWeR0rZZkXPx3kZA0aYLVXB8IF1d290VWBS5KIQ8w2gBJBsjO9sXzadHa4XwOMvD7VKtsCA"
+  }
+};
+  var PUB = "rxzNBqPd3dZnVz9eDb5VBTJBjER9Kzv3HNphrT2u70g";
+  function el(id){ return document.getElementById(id); }
+  function render(result){
+    el("summary").textContent = (result.ok ? "VALID" : "INVALID") + " · receipt " + (result.receipt_id || "(none)") + " · errors " + result.errors.length;
+    var tb = el("checks").querySelector("tbody"); tb.innerHTML = "";
+    Object.keys(result.checks).forEach(function(k){
+      var c = result.checks[k];
+      var tr = document.createElement("tr");
+      [k, c.ok ? "yes" : "no", c.detail].forEach(function(v){ var td=document.createElement("td"); td.textContent=v; tr.appendChild(td); });
+      tb.appendChild(tr);
+    });
+    var err = el("errors");
+    if (result.errors.length) { err.style.display="block"; err.textContent = result.errors.join("\n"); }
+    else { err.style.display="none"; err.textContent=""; }
+  }
+  function run(){
+    ProofVerify.verifyReceipt(el("receipt").value, el("pubkey").value.trim()).then(render).catch(function(e){
+      render({ok:false,receipt_id:"",checks:{},errors:[String(e)],warnings:[]});
+    });
+  }
+  el("sample").addEventListener("click", function(){
+    el("receipt").value = JSON.stringify(SAMPLE, null, 2);
+    el("pubkey").value = PUB;
+    run();
+  });
+  el("verify").addEventListener("click", run);
+})();
+</script>
+
+</main>
+
+<footer><div class="wrap">
+  <div class="foot">
+    <div>© 2026 Nidhipati · <a href="https://github.com/mrpkk/nidhipati">GitHub</a> · <a href="https://github.com/mrpkk/nidhipati/blob/main/SPEC.md">Spec</a></div>
+    <div>No custody · no money transmission · no token</div>
+  </div>
+  <div class="fine" style="margin-top:12px">Nidhipati is a draft product. Reports are technical evidence, not statutory audits, legal, tax, or investment advice. Figures are from public 2026 reports and are context, not a guarantee. If no finding is verified, the report says so.</div>
+</div></footer>
+
+</body>
+</html>

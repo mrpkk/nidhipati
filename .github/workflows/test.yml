@@ -16,5 +16,6 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - run: python -m pip install -e ".[dev]"
       - run: node tools/test_spend_audit.cjs
+      - run: node tools/test_proof_verify.cjs
       - run: python -m pytest -q
       - run: python -m nidhipati_proof.cli --version
