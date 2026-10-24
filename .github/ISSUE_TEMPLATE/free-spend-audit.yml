@@ -48,6 +48,17 @@ body:
         - "Yes, I can share invoices"
         - "Only my own records for now"
         - "Not sure yet"
+  - type: dropdown
+    id: source
+    attributes:
+      label: Where did you find this? (optional, honest answer)
+      description: Attribution we cannot fake — if you skip it, we simply do not know.
+      options:
+        - "Hacker News"
+        - "Reddit"
+        - "GitHub search or a catalog"
+        - "A colleague sent it"
+        - "Other"
   - type: checkboxes
     id: honesty
     attributes:
