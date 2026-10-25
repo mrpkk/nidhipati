@@ -61,10 +61,11 @@ and a written basis. Estimates and "could be" do not count. The guarantee is abo
 **identified amounts**, not what a provider actually returns; the provider decides recovery.
 The refund is in the same asset and network you paid, minus network fees.
 
-**How to pay:** USDC on Base to the address in the invoice. Card checkout is **not live as
-of 25.10.2026**; ask for a card link by email (wiggle.pkk@gmail.com) or Telegram (@mrpkk)
-and we will say plainly whether one is available. The invoice is a signed JSON document;
-the receipt is verifiable with `nidhipati-proof verify`.
+**How to pay:** request an invoice at wiggle.pkk@gmail.com or Telegram @mrpkk. USDC on Base
+works now; the address comes only from the signed invoice. Bank transfer only if an
+entity/IBAN is available. Card checkout is **not live as of 26.10.2026**; ask for a card
+link and we will say plainly whether one is available. The invoice is a signed JSON
+document; the receipt is verifiable with `nidhipati-proof verify`.
 
 ## Monthly retainer — $1,500/mo
 
