@@ -1,7 +1,9 @@
 # PROGRESS — NIDHIPATI
 
-**Цель:** первые платные сканы/отчёты за 30 дней; $5–10k MRR — горизонт 90 дней.  
-**Правило:** один слайс = боль + тест + коммит + запись + метрика денег.  
+**🎯 ГЛАВНАЯ ЦЕЛЬ (owner 26.10.2026): $1 000 000+ в крипте к 22.11.2026 (27 дней).**
+Nidhipati — pipeline и первые деньги; **enterprise RWA/приватные резервы — единственный путь к $1M** (2–5%).
+**Цель первых 30 дней:** 5 сканов → 1–2 аудита ($1,250–2,500) + enterprise-пилот.
+**Правило:** один слайс = боль + тест + коммит + запись + метрика денег.
 **Бюджет:** 0 до выручки. Домен/реклама/VPS — после первого платежа.
 
 ---
@@ -404,3 +406,11 @@ python3 -m nidhipati_proof.cli verify examples/proof-of-spend.example.json --pub
 - **План $1M:** `docs/PLAN-1M-27D.md` — честно: $1M только один enterprise/раунд (2–5%), параллельно ₽1M/$12.3k аудитами (10–15%).
 - **attest correction:** `docs/PROGRESS.md` — 4 лида/2 отзыва помечены self-tests; не рынок.
 - **Код не сливал**, файлы не удалял; attest live pricing не менял (это отдельный кодовый слайс с тестами).
+
+### G7 — главная цель $1M и enterprise-трек (26.10.2026)
+
+- **Напоминание записано для всех сессий:** `AGENTS.md`, `STATE.md`, `BACKLOG.md`, `decisions.md` — $1M+ крипта к 22.11.2026, 27 дней; честная вероятность enterprise/раунда 2–5%, параллельно ₽1M/$12.3k аудитами 10–15%.
+- **Enterprise RWA one-pager:** `docs/ENTERPRISE-RWA.md` — приватное подтверждение резервов/NAV без раскрытия портфеля; от $50,000; signed JSON + source hashes + offline verification; ZK predicate помечен экспериментальным (one-sided ceremony).
+- **10 публичных целей:** `outreach/RWA-TARGETS.csv` — Ondo, Franklin BENJI, BlackRock BUIDL, Superstate, Maple, Centrifuge, Goldfinch, Paxos Gold, Backed, Hashnote, Mountain, Securitize, Tokeny, DigiFT. Контакты **не проверены**; письма не отправлялись.
+- **Правило:** сначала проверить сайт/роль, потом 10 писем; без owner approval не отправлять.
+- **Следующий шаг:** 2-страничный scope + synthetic sample, затем 10 проверенных адресатов.
