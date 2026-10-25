@@ -416,3 +416,9 @@ python3 -m nidhipati_proof.cli verify examples/proof-of-spend.example.json --pub
 - **Synthetic reserve sample:** `docs/sample-reserve-report.html` — реальный вывод `nidhipati-reserve` (NAV 1,017,900, ratio 1.0179, backed), помечен not a client. Ссылка в sitemap/index/pricing.
 - **Enterprise tiers:** productized report **from $5,000**; issuer/white-label **from $50,000**. Цены сведены в pricing/OFFER/llms/PRICING.
 - **Следующий шаг:** 10 проверенных адресатов RWA + 2-страничный scope; письма не отправлялись.
+### G9 — email intake fixed (26.10.2026)
+
+- **Working:** `maxim.pkk@gmail.com` + `MYACCOUNT_GOOGLE` (IMAP/SMTP). **Not working:** `wiggle.pkk@gmail.com` + `GMAIL_PAS` — `AUTHENTICATIONFAILED`.
+- **End-to-end test:** письмо `Nidhipati intake test 2026-10-26` отправлено на себя, найдено через IMAP. Канал заявок работает.
+- Все публичные ссылки Nidhipati переведены с `wiggle` на `maxim.pkk@gmail.com`; `OFFER`, `pricing`, `free-spend-audit`, `sample-reserve`, `README`.
+- **Аутрич не отправлял:** два публичных репо просканированы (`Franklin`, `Agent402`), но находки не триажены; отправлять «24 high» без проверки — ложь. Следующий шаг — триаж 3 конкретных находок и 3 письма, не 10.

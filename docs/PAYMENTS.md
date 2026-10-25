@@ -48,7 +48,7 @@
 
 ## 3. Вариант A — Stripe Payment Link (если есть non-RF аккаунт)
 
-Плюс: не нужен сервер, статическая страница может вести на готовую ссылку.  
+Плюс: не нужен сервер, статическая страница может вести на готовую ссылку.
 Минус: нужен non-RF аккаунт; РФ-регистрация с выдуманной страной запрещена.
 
 **Шаги владельца:**
@@ -114,3 +114,13 @@ NIDHIPATI_STRIPE_FIRST3_URL=...
 - [ ] Возврат по гарантии описан и проверен.
 
 **До первого пункта карточный путь не считается готовым, и первый платёж от человека невозможен.**
+
+---
+
+## 9. Email intake — fixed 26.10.2026
+
+- **Working:** `maxim.pkk@gmail.com` + `MYACCOUNT_GOOGLE` via IMAP/SMTP.
+- **Not working:** `wiggle.pkk@gmail.com` + `GMAIL_PAS` → `AUTHENTICATIONFAILED`.
+- **Test:** sent `Nidhipati intake test 2026-10-26` to self; IMAP found it.
+- **Public links:** all Nidhipati pages now point to `maxim.pkk@gmail.com`.
+- **Agent command:** `python3 /media/Sruti/iamthat/agents/opencode/tools/mail/mail_fetch.py search 'subject:Nidhipati' -n 10`.

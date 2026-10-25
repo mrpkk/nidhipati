@@ -17,7 +17,7 @@ and JSON within two working days. Records are never posted publicly.
 - **Do it yourself first:** `nidhipati-spend audit your.csv` or the browser tool
   <https://mrpkk.github.io/nidhipati/free-spend-audit.html> — same checks, nothing uploaded,
   no account. If the tool already answers your question, you do not need us.
-- **Ask for the human review:** email <wiggle.pkk@gmail.com> or Telegram <https://t.me/mrpkk>
+- **Ask for the human review:** email <maxim.pkk@gmail.com> or Telegram <https://t.me/mrpkk>
   with the downloaded report (not raw rows). No GitHub account needed. If you prefer GitHub,
   [open a private scan request](https://github.com/mrpkk/nidhipati/issues/new?template=free-spend-audit.yml);
   that issue is public, so ask the question only and never paste records, invoices, keys, or
@@ -62,7 +62,7 @@ and a written basis. Estimates and "could be" do not count. The guarantee is abo
 **identified amounts**, not what a provider actually returns; the provider decides recovery.
 The refund is in the same asset and network you paid, minus network fees.
 
-**How to pay:** request an invoice at wiggle.pkk@gmail.com or Telegram @mrpkk. USDC on Base
+**How to pay:** request an invoice at maxim.pkk@gmail.com or Telegram @mrpkk. USDC on Base
 works now; the address comes only from the signed invoice. Bank transfer only if an
 entity/IBAN is available. Card checkout is **not live as of 26.10.2026**; ask for a card
 link and we will say plainly whether one is available. The invoice is a signed JSON
