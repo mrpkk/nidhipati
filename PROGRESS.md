@@ -354,3 +354,9 @@ python3 -m nidhipati_proof.cli verify examples/proof-of-spend.example.json --pub
 - Третий тёплый ответ: r/AI_Agents, тред «Lessons from trying to buy from ~1,900 x402 APIs» (`1x9xgci`), комментарий `19rmf1w5szf44`: https://www.reddit.com/r/AI_Agents/comments/1x9xgci/comment/19rmf1w5szf44/ — pre-payment проверка не ловит дубль после retry; три post-payment проверки + браузерный аудит. Это самый близкий к покупателю тред из трёх.
 - Glama Analytics за 30 дней (факт): **111 profile views**, **2 search impressions**, **0 clicks**, **0 tool calls**, **0 deployments**. Листинг есть, спроса пока нет — не выдаём это за трафик.
 - PR #17552 на 12:45 всё ещё `open`, `mergeable: true`; не merged.
+
+### S7.10 — честность: «no account» больше не ложь (25.10.2026)
+
+- Было: оффер и pricing обещали «no card, no account», но заявка на человеческий скан идёт через GitHub issue — аккаунт нужен. Это ложное обещание, даже если браузерный аудит действительно без аккаунта.
+- Исправлено в `docs/OFFER.md`, `README.md`, `docs/pricing.html` (включая JSON-LD FAQ), `docs/vs-ai-finops.html`: браузерный аудит — без аккаунта; человеческий разбор — через GitHub, аккаунт нужен; данные в публичный issue не вставлять.
+- Это не маркетинг, а условие доверия: лучше сказать «нужен GitHub», чем потерять человека на первом же шаге.

@@ -9,17 +9,18 @@ by line.
 
 ---
 
-## Free scan (no card, no account)
+## Free scan (no card; browser tool needs no account)
 
 You send records (CSV or JSON, one row per charge), we return the audit report as Markdown
 and JSON within two working days. Records are never posted publicly.
 
 - **Do it yourself first:** `nidhipati-spend audit your.csv` or the browser tool
-  <https://mrpkk.github.io/nidhipati/free-spend-audit.html> — same checks, nothing uploaded.
-  If the tool already answers your question, you do not need us.
+  <https://mrpkk.github.io/nidhipati/free-spend-audit.html> — same checks, nothing uploaded,
+  no account. If the tool already answers your question, you do not need us.
 - **Ask for the human review:** [open a private scan request](https://github.com/mrpkk/nidhipati/issues/new?template=free-spend-audit.yml).
-  The issue is public: ask the question only. Do not paste records, invoices, keys, or
-  customer data. We reply in the issue and arrange a private channel for the file.
+  This uses GitHub, so a GitHub account is required. The issue is public: ask the question
+  only. Do not paste records, invoices, keys, or customer data. We reply in the issue and
+  arrange a private channel for the file.
 - **What you get free:** the findings, the row numbers, the three amounts, and the list of
   what could not be checked from your records.
 
