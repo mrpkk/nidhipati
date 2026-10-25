@@ -342,3 +342,9 @@ python3 -m nidhipati_proof.cli verify examples/proof-of-spend.example.json --pub
 - Статус: `open`, `mergeable: true`, `mergeable_state: clean`, 1 коммит / 1 файл. Заголовок с `🤖🤖🤖` — по правилам репозитория это fast-track для агентских PR.
 - Glama-бейдж проверен: `rated A`, 5 tools, remote-capable, maintenance B; бот подтвердил бейдж.
 - Это бесплатный каталог; платных листингов не покупаем до выручки.
+
+### S7.8 — Glama: re-sync выполнен (25.10.2026)
+
+- Листинг уже был claimed; `/admin/repository` доступен без OAuth. Нажата **Sync Server** (не Boost, не платно).
+- Последняя синхронизация: **12:37**, коммит `0f05ffc`. Публичная страница теперь содержит **v0.6** и **89 tests**, official MCP Registry; старые v0.1/v0.2 остались только в истории версий.
+- Это закрывает пункт «owner must Request a re-sync» из передачи; платных действий нет.
