@@ -86,7 +86,7 @@ Glama listing: <https://glama.ai/mcp/servers/mrpkk/nidhipati>.
 
 Send records of what your agents spent and get the audit back — no card. The browser audit
 needs no account; a human review can go by email or Telegram, no GitHub needed:
-email <wiggle.pkk@gmail.com> or [Telegram](https://t.me/mrpkk) with the downloaded report
+email <maxim.pkk@gmail.com> or [Telegram](https://t.me/mrpkk) with the downloaded report
 (not raw rows). GitHub is optional:
 [open a private scan request](https://github.com/mrpkk/nidhipati/issues/new?template=free-spend-audit.yml);
 the issue is public, so ask the question only and never paste records or keys. Paid: first 3
