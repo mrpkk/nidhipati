@@ -43,7 +43,7 @@
 1. https://dashboard.stripe.com/payment-links
 2. Создать два one-time продукта: $2,500 и $1,250 (первые 3).
 3. Скопировать ссылки.
-4. Положить в `/home/iamthat/.config/nidhipati/env`:
+4. Скопировать шаблон `/home/iamthat/.config/nidhipati/env.example` в `/home/iamthat/.config/nidhipati/env` и заполнить:
 
 ```
 NIDHIPATI_STRIPE_AUDIT_URL=...
@@ -64,7 +64,7 @@ NIDHIPATI_STRIPE_FIRST3_URL=...
 
 1. https://enot.io/ — мерчант-кабинет.
 2. Получить `ENOT_SHOP_ID`, `ENOT_API_KEY`, `ENOT_SECRET`, `ENOT_USDT_TRC20`.
-3. Положить в `/home/iamthat/.config/nidhipati/env` (не в git).
+3. Скопировать шаблон `/home/iamthat/.config/nidhipati/env.example` в `/home/iamthat/.config/nidhipati/env` и заполнить (не в git).
 4. Агент адаптирует код, добавит `/pay` и `/pay/enot/notify`, прогонит тесты.
 
 **Что должен сделать код:**

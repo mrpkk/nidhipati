@@ -13,7 +13,7 @@
    - `Nidhipati spend audit` — **$2,500**
    - `Nidhipati first 3 audits` — **$1,250**
 3. Скопировать две ссылки.
-4. Положить в файл `/home/iamthat/.config/nidhipati/env`:
+4. Скопировать шаблон: `cp /home/iamthat/.config/nidhipati/env.example /home/iamthat/.config/nidhipati/env` и заполнить файл:
 
 ```
 NIDHIPATI_STRIPE_AUDIT_URL=https://buy.stripe.com/...
@@ -32,7 +32,7 @@ NIDHIPATI_STRIPE_FIRST3_URL=https://buy.stripe.com/...
    - `ENOT_API_KEY`
    - `ENOT_SECRET` (подпись уведомлений)
    - `ENOT_USDT_TRC20` (кошелёк для вывода; можно тот же, что у attest)
-3. Положить в `/home/iamthat/.config/nidhipati/env` (не в git):
+3. Скопировать шаблон `/home/iamthat/.config/nidhipati/env.example` в `/home/iamthat/.config/nidhipati/env` и заполнить (не в git):
 
 ```
 ENOT_SHOP_ID=...
