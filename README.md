@@ -88,8 +88,10 @@ Send records of what your agents spent and get the audit back — no card. The b
 needs no account; the human review request uses a GitHub issue, so it needs a GitHub account:
 [open a private scan request](https://github.com/mrpkk/nidhipati/issues/new?template=free-spend-audit.yml).
 The issue is public: ask the question only, never paste records or keys; we arrange a private
-channel for the file. Paid: $2,500 fixed audit, $1,500/mo retainer, or 20% of verified
-savings. Full terms, including what is *not* included: [docs/OFFER.md](docs/OFFER.md).
+channel for the file. Paid: first 3 audits **$1,250**; then $2,500 fixed, $1,500/mo
+retainer, or 20% of verified savings. $5,000 finding guarantee (identified overcharges,
+not recovery). Full terms, including what is *not* included:
+[docs/OFFER.md](docs/OFFER.md).
 
 In CI, on every run:
 

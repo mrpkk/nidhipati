@@ -27,6 +27,14 @@ and JSON within two working days. Records are never posted publicly.
 We publish no client names and no numbers from a free scan without written permission. If a
 scan finds nothing, we say it found nothing.
 
+## First 3 paid audits — $1,250, in exchange for a case
+
+The first three paid audits are **$1,250 instead of $2,500**. In exchange we ask for a
+public case study with anonymized numbers, published only if the audit finds something
+worth publishing. If you do not want the case, the price stays $2,500.
+
+After the first three, the price returns to $2,500.
+
 ## Paid audit — $2,500 (fixed, 10 working days)
 
 For teams that want the answer checked, not just computed:
@@ -42,9 +50,20 @@ For teams that want the answer checked, not just computed:
 **Not included, stated plainly:** no legal advice, no recovery guaranteed, no custody of your
 money, no statutory audit opinion. If a charge turns out to be correct, it stays correct.
 
-**How to pay:** USDC on Base to the address in the invoice, or card through a payment
-provider that accepts non-RF businesses. Invoice is issued as a signed JSON document; the
-receipt is verifiable with `nidhipati-proof verify`.
+### The $5,000 finding guarantee
+
+If the paid audit does **not identify at least $5,000 in documented overcharges or refund
+opportunities** from the records and invoices you provide within 10 working days, we refund
+the audit fee.
+
+**"Documented"** means each amount has a row number, a receipt/invoice or transaction hash,
+and a written basis. Estimates and "could be" do not count. The guarantee is about
+**identified amounts**, not what a provider actually returns; the provider decides recovery.
+The refund is in the same asset and network you paid, minus network fees.
+
+**How to pay:** USDC on Base to the address in the invoice. Card checkout is **not live as
+of 25.10.2026**; ask for a card link and we will say plainly whether one is available. The
+invoice is a signed JSON document; the receipt is verifiable with `nidhipati-proof verify`.
 
 ## Monthly retainer — $1,500/mo
 

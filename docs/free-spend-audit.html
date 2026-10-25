@@ -33,7 +33,7 @@
 <section class="hero"><div class="wrap">
   <span class="kicker"><span class="dot"></span> Draft v0.1 · open spec · no custody</span>
   <h1>Free AI agent spend audit</h1>
-  <div class="lede">Paste a CSV of agent charges and run the same audit rules locally: duplicates, price escalation, failed-but-billed, refunds, runaway loops, model overpay. No upload, no keys.</div>
+  <div class="lede">Paste a CSV of agent charges and run the same audit rules locally: duplicates, price escalation, failed-but-billed, refunds, runaway loops, model overpay. No upload, no keys, no account — the sample runs in under a second in your browser.</div>
   <div class="actions">
     <a class="btn primary" href="https://github.com/mrpkk/nidhipati/issues/new?template=free-spend-audit.yml">Request a private scan</a>
     <a class="btn" href="https://github.com/mrpkk/nidhipati/blob/main/docs/PROOF-OF-SPEND.md">Read the spec</a>
@@ -52,6 +52,9 @@
       <button class="btn primary" id="run" type="button">Run audit</button>
       <button class="btn" id="sample" type="button">Load synthetic sample</button>
       <button class="btn" id="download" type="button">Download report</button>
+      <button class="btn" id="copy" type="button">Copy report</button>
+      <a class="btn" href="mailto:wiggle.pkk@gmail.com?subject=Nidhipati%20spend%20audit">Email us</a>
+      <a class="btn" href="https://t.me/mrpkk" target="_blank" rel="noopener">Telegram</a>
     </div>
     <p class="micro">No keys, no account, no network. If the tool answers your question, you do not need the paid audit.</p>
     <p class="micro">The downloaded report contains row numbers, amounts and tx hashes. Send the report, not raw records; remove anything you do not want to share. Never send keys.</p>
@@ -77,6 +80,7 @@
   <div id="summary" class="sub">No file yet.</div>
   <div style="overflow:auto"><table id="findings"><thead><tr><th>row</th><th>code</th><th>severity</th><th>agent</th><th>$</th><th>detail</th><th>evidence</th></tr></thead><tbody></tbody></table></div>
   <pre id="errors" style="display:none"></pre>
+  <p class="micro" style="margin-top:12px"><b>Next step:</b> copy or download this report and send <b>the report</b>, not raw rows, to <a href="mailto:wiggle.pkk@gmail.com?subject=Nidhipati%20spend%20audit">wiggle.pkk@gmail.com</a> or <a href="https://t.me/mrpkk" target="_blank" rel="noopener">Telegram</a>. Remove anything you do not want to share. Never send keys.</p>
 </div></section>
 
 <section><div class="wrap cta">
@@ -142,6 +146,17 @@
     var a = document.createElement("a");
     a.href = URL.createObjectURL(blob); a.download = "nidhipati-spend-audit.md"; a.click();
     setTimeout(function(){ URL.revokeObjectURL(a.href); }, 1000);
+  });
+  el("copy").addEventListener("click", function(){
+    if (!lastReport) return;
+    var done = function(){ el("copy").textContent = "Copied"; setTimeout(function(){ el("copy").textContent = "Copy report"; }, 1500); };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(lastReport).then(done, done);
+    } else {
+      var ta = document.createElement("textarea"); ta.value = lastReport; document.body.appendChild(ta); ta.select();
+      try { document.execCommand("copy"); } catch (e) {}
+      document.body.removeChild(ta); done();
+    }
   });
 })();
 </script>
