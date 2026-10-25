@@ -1,28 +1,24 @@
-name: Free spend audit
-description: Send records of what your agents spent; get an audit report back.
-title: "[free scan] "
+name: Private scan request
+description: Ask for a free agent-spend audit without posting your records publicly.
+title: "[private scan] "
 labels: ["free-scan"]
 body:
   - type: markdown
     attributes:
       value: |
-        One row per charge. Do not paste secrets, API keys or private keys — we do not need
-        them and will ask you to remove them.
+        **This issue is public. Do not paste spend records, invoices, transaction lists, keys,
+        customer data, or anything you would not publish.**
 
-        You can also run the same checks yourself: `nidhipati-spend audit your.csv`.
+        The free audit itself runs in your browser and nothing is uploaded:
+        https://mrpkk.github.io/nidhipati/free-spend-audit.html
+
+        Open this issue with the question only. We reply here and arrange a private channel
+        for the report or the file. If the browser tool already answers your question, you
+        do not need us.
   - type: textarea
-    id: records
+    id: question
     attributes:
-      label: Records (CSV or JSON)
-      description: |
-        Required columns: ts, agent_id, tool, quote, settled, status.
-        Optional: model, actual, refund, asset, network, tx_hash, payee.
-        Twenty rows are enough for a first look; a full file can be attached after the issue is open.
-      render: csv
-      placeholder: |
-        ts,agent_id,tool,model,quote,settled,actual,refund,asset,network,tx_hash,payee,status
-        2026-10-01T10:00:00Z,writer,llm.complete,gpt-4o-mini,0.02,0.02,0.02,0,USDC,base,0xaaa1,0xpayee,ok
-        2026-10-01T10:05:00Z,writer,llm.complete,gpt-4o-mini,0.02,0.05,0.05,0,USDC,base,0xaaa2,0xpayee,ok
+      label: What do you want answered?
     validations:
       required: true
   - type: input
@@ -35,17 +31,12 @@ body:
     attributes:
       label: Which providers bill you?
       placeholder: "e.g. OpenAI, Anthropic, x402 endpoints, a tool marketplace"
-  - type: textarea
-    id: question
-    attributes:
-      label: What do you want answered?
-      placeholder: "e.g. are we paying twice for retries / did our budget hold / why is the bill 3x the estimate"
   - type: dropdown
     id: access
     attributes:
       label: Can you share provider invoices (not just your own records)?
       options:
-        - "Yes, I can share invoices"
+        - "Yes, I can share invoices privately"
         - "Only my own records for now"
         - "Not sure yet"
   - type: dropdown
@@ -64,7 +55,7 @@ body:
     attributes:
       label: Before you send
       options:
-        - label: I removed keys, tokens and personal data from the records.
+        - label: I did not paste records, keys, or customer data into this public issue.
           required: true
         - label: I understand this is an estimate from my records, not a legal or statutory audit.
           required: true
