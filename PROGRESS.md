@@ -348,3 +348,9 @@ python3 -m nidhipati_proof.cli verify examples/proof-of-spend.example.json --pub
 - Листинг уже был claimed; `/admin/repository` доступен без OAuth. Нажата **Sync Server** (не Boost, не платно).
 - Последняя синхронизация: **12:37**, коммит `0f05ffc`. Публичная страница теперь содержит **v0.6** и **89 tests**, official MCP Registry; старые v0.1/v0.2 остались только в истории версий.
 - Это закрывает пункт «owner must Request a re-sync» из передачи; платных действий нет.
+
+### S7.9 — x402 buyer thread + честные метрики Glama (25.10.2026)
+
+- Третий тёплый ответ: r/AI_Agents, тред «Lessons from trying to buy from ~1,900 x402 APIs» (`1x9xgci`), комментарий `19rmf1w5szf44`: https://www.reddit.com/r/AI_Agents/comments/1x9xgci/comment/19rmf1w5szf44/ — pre-payment проверка не ловит дубль после retry; три post-payment проверки + браузерный аудит. Это самый близкий к покупателю тред из трёх.
+- Glama Analytics за 30 дней (факт): **111 profile views**, **2 search impressions**, **0 clicks**, **0 tool calls**, **0 deployments**. Листинг есть, спроса пока нет — не выдаём это за трафик.
+- PR #17552 на 12:45 всё ещё `open`, `mergeable: true`; не merged.
