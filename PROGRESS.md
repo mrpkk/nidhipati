@@ -394,3 +394,13 @@ python3 -m nidhipati_proof.cli verify examples/proof-of-spend.example.json --pub
 - **Решение:** Nidhipati beachhead, Soma поддержка; пересмотр — если 30 дней без 5 сканов/1 платежа или появится design partner для Mitra Core.
 - **Платёжный путь без карты:** на `/pricing` добавлены **Request a USDC invoice**, **Request a bank invoice**, **Card link**, Telegram. USDC работает сейчас; банк — только при юрлице/IBAN; карта — не live.
 - **Честно:** 20% конверсия — гипотеза; 0 сканов; это не доход.
+
+### G6 — прайс, образец отчёта, план 1M (26.10.2026)
+
+- **Канонический прайс:** `docs/PRICING-2026-10-26.md` — Nidhipati Free / Audit $1,250→$2,500 / Retainer $1,500 / Enterprise from $5,000. attest: Free / Team $99 (цель, не live) / x402 demo / legacy $9 honored. Mitra Core: $49/env legacy, Enterprise custom.
+- **Nidhipati pricing/index упрощены:** 4 строки вместо 8; убраны отдельные RWA/prediction/stablecoin цены — они вошли в Enterprise. «Run free scan» ведёт в браузерный аудит, не в GitHub.
+- **Заявка без GitHub:** email/Telegram добавлены в pricing/OFFER/README; GitHub остался опцией.
+- **Образец отчёта:** `docs/sample-spend-audit.html` — реальный вывод CLI на синтетических 44 строках (4 errors / 7 warnings), помечен «not a client», ссылка в sitemap/llms/index/pricing.
+- **План $1M:** `docs/PLAN-1M-27D.md` — честно: $1M только один enterprise/раунд (2–5%), параллельно ₽1M/$12.3k аудитами (10–15%).
+- **attest correction:** `docs/PROGRESS.md` — 4 лида/2 отзыва помечены self-tests; не рынок.
+- **Код не сливал**, файлы не удалял; attest live pricing не менял (это отдельный кодовый слайс с тестами).

@@ -19,7 +19,7 @@ https://github.com/mrpkk/nidhipati/blob/main/docs/PROOF-OF-SPEND.md
 
 ## Pricing
 
-Free scan. First 3 paid audits $1,250; then $2,500 or 20% of verified savings. $5,000 finding guarantee (identified overcharges, not recovery). Control retainer $1,500/mo. USDC on Base/Solana. No custody.
+Free scan. First 3 paid audits $1,250; then $2,500 or 20% of verified savings. $5,000 finding guarantee (identified overcharges, not recovery). Retainer $1,500/mo. Enterprise from $5,000 (RWA reserve, prediction evidence, reconciliation, white-label). USDC on Base/Solana; card not live. No custody.
 - https://mrpkk.github.io/nidhipati/pricing.html
 - https://mrpkk.github.io/nidhipati/security.html
 - https://mrpkk.github.io/nidhipati/vs-ai-finops.html
@@ -27,3 +27,5 @@ Free scan. First 3 paid audits $1,250; then $2,500 or 20% of verified savings. $
 - https://mrpkk.github.io/nidhipati/free-spend-audit.html
 - https://mrpkk.github.io/nidhipati/mcp.html
 - https://mrpkk.github.io/nidhipati/verify-receipt.html
+
+- https://mrpkk.github.io/nidhipati/sample-spend-audit.html

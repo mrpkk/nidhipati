@@ -85,13 +85,14 @@ Glama listing: <https://glama.ai/mcp/servers/mrpkk/nidhipati>.
 ## Free scan, and what it costs after
 
 Send records of what your agents spent and get the audit back — no card. The browser audit
-needs no account; the human review request uses a GitHub issue, so it needs a GitHub account:
-[open a private scan request](https://github.com/mrpkk/nidhipati/issues/new?template=free-spend-audit.yml).
-The issue is public: ask the question only, never paste records or keys; we arrange a private
-channel for the file. Paid: first 3 audits **$1,250**; then $2,500 fixed, $1,500/mo
-retainer, or 20% of verified savings. $5,000 finding guarantee (identified overcharges,
-not recovery). Full terms, including what is *not* included:
-[docs/OFFER.md](docs/OFFER.md).
+needs no account; a human review can go by email or Telegram, no GitHub needed:
+email <wiggle.pkk@gmail.com> or [Telegram](https://t.me/mrpkk) with the downloaded report
+(not raw rows). GitHub is optional:
+[open a private scan request](https://github.com/mrpkk/nidhipati/issues/new?template=free-spend-audit.yml);
+the issue is public, so ask the question only and never paste records or keys. Paid: first 3
+audits **$1,250**; then $2,500 fixed, $1,500/mo retainer, or 20% of verified savings.
+$5,000 finding guarantee (identified overcharges, not recovery). Full terms, including what
+is *not* included: [docs/OFFER.md](docs/OFFER.md).
 
 In CI, on every run:
 

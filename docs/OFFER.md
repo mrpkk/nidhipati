@@ -17,10 +17,11 @@ and JSON within two working days. Records are never posted publicly.
 - **Do it yourself first:** `nidhipati-spend audit your.csv` or the browser tool
   <https://mrpkk.github.io/nidhipati/free-spend-audit.html> — same checks, nothing uploaded,
   no account. If the tool already answers your question, you do not need us.
-- **Ask for the human review:** [open a private scan request](https://github.com/mrpkk/nidhipati/issues/new?template=free-spend-audit.yml).
-  This uses GitHub, so a GitHub account is required. The issue is public: ask the question
-  only. Do not paste records, invoices, keys, or customer data. We reply in the issue and
-  arrange a private channel for the file.
+- **Ask for the human review:** email <wiggle.pkk@gmail.com> or Telegram <https://t.me/mrpkk>
+  with the downloaded report (not raw rows). No GitHub account needed. If you prefer GitHub,
+  [open a private scan request](https://github.com/mrpkk/nidhipati/issues/new?template=free-spend-audit.yml);
+  that issue is public, so ask the question only and never paste records, invoices, keys, or
+  customer data.
 - **What you get free:** the findings, the row numbers, the three amounts, and the list of
   what could not be checked from your records.
 
