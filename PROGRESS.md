@@ -413,4 +413,6 @@ python3 -m nidhipati_proof.cli verify examples/proof-of-spend.example.json --pub
 - **Enterprise RWA one-pager:** `docs/ENTERPRISE-RWA.md` — приватное подтверждение резервов/NAV без раскрытия портфеля; от $50,000; signed JSON + source hashes + offline verification; ZK predicate помечен экспериментальным (one-sided ceremony).
 - **10 публичных целей:** `outreach/RWA-TARGETS.csv` — Ondo, Franklin BENJI, BlackRock BUIDL, Superstate, Maple, Centrifuge, Goldfinch, Paxos Gold, Backed, Hashnote, Mountain, Securitize, Tokeny, DigiFT. Контакты **не проверены**; письма не отправлялись.
 - **Правило:** сначала проверить сайт/роль, потом 10 писем; без owner approval не отправлять.
-- **Следующий шаг:** 2-страничный scope + synthetic sample, затем 10 проверенных адресатов.
+- **Synthetic reserve sample:** `docs/sample-reserve-report.html` — реальный вывод `nidhipati-reserve` (NAV 1,017,900, ratio 1.0179, backed), помечен not a client. Ссылка в sitemap/index/pricing.
+- **Enterprise tiers:** productized report **from $5,000**; issuer/white-label **from $50,000**. Цены сведены в pricing/OFFER/llms/PRICING.
+- **Следующий шаг:** 10 проверенных адресатов RWA + 2-страничный scope; письма не отправлялись.

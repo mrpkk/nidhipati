@@ -2,7 +2,7 @@
 
 **One line:** prove that reserves back the token without publishing every wallet, every line, or the full NAV inputs.
 
-**Price:** from **$50,000** per engagement. Pilot scope by request.  
+**Price:** productized single-asset report from **$5,000**; custom issuer/white-label engagement from **$50,000**. Pilot scope by request.
 **Buyer:** issuer, fund, treasury, or platform with a tokenized asset and a reserve question it cannot answer with a screenshot.
 
 ---

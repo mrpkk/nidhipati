@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sample reserve attestation — Nidhipati</title>
+<meta name="description" content="A real Nidhipati reserve report on a synthetic RWA example: NAV, backing ratio, source hashes, offline verification. Not a client; not a statutory audit.">
+<link rel="canonical" href="https://mrpkk.github.io/nidhipati/sample-reserve-report.html">
+<meta property="og:title" content="Sample reserve attestation — Nidhipati">
+<meta property="og:description" content="A real Nidhipati reserve report on a synthetic RWA example: NAV, ratio, source hashes, offline verification.">
+<meta property="og:type" content="article">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header><div class="wrap nav">
+  <a class="brand" href="index.html"><span class="mark">N</span> Nidhipati</a>
+  <nav class="navlinks">
+    <a href="agent-spend-audit.html">Spend audit</a><a href="free-spend-audit.html">Free audit</a><a href="mcp.html">MCP</a>
+    <a href="rwa-proof-of-reserve.html">RWA reserve</a>
+    <a href="pricing.html">Pricing</a>
+    <a href="https://github.com/mrpkk/nidhipati">GitHub</a>
+    <a class="btn primary" href="free-spend-audit.html">Run free scan</a>
+  </nav>
+</div></header>
+
+<main>
+<section class="hero"><div class="wrap">
+  <span class="kicker"><span class="dot"></span> Synthetic example · not a client</span>
+  <h1>What a reserve attestation returns</h1>
+  <div class="lede">This is the real output of <code>nidhipati-reserve report examples/reserve.example.json</code> on a synthetic RWA example. Every line has a source and a <code>sha256:</code> evidence hash; the statement hash is checked against the file.</div>
+  <div class="actions">
+    <a class="btn primary" href="mailto:wiggle.pkk@gmail.com?subject=Nidhipati%20RWA%20reserve%20scope">Request a scope</a>
+    <a class="btn" href="pricing.html">Enterprise pricing</a>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <h2>Summary</h2>
+  <table>
+    <tr><th>Field</th><th>Value</th></tr>
+    <tr><td>Issuer</td><td>Example RWA Issuer (synthetic)</td></tr>
+    <tr><td>Token</td><td>EXUSD</td></tr>
+    <tr><td>As of</td><td>2026-10-25</td></tr>
+    <tr><td>Supply</td><td>1,000,000.00</td></tr>
+    <tr><td>NAV</td><td><b>1,017,900.00</b></td></tr>
+    <tr><td>Backing ratio</td><td><b>1.0179</b></td></tr>
+    <tr><td>Verdict</td><td><b>backed</b></td></tr>
+  </table>
+</div></section>
+
+<section><div class="wrap">
+  <h2>Composition</h2>
+  <div style="overflow:auto">
+  <table>
+    <tr><th>Asset</th><th>Kind</th><th>Quantity</th><th>Price</th><th>Haircut</th><th>Value</th><th>Source</th></tr>
+    <tr><td>USDC</td><td>stablecoin</td><td>620,000.00</td><td>1.00</td><td>0</td><td>620,000.00</td><td>custodian statement, line 'USDC balance'</td></tr>
+    <tr><td>T-BILL-3M</td><td>treasury</td><td>400,000.00</td><td>0.9985</td><td>0</td><td>399,400.00</td><td>custodian statement, line 'T-bills 3M'; market mid 24.10.2026</td></tr>
+    <tr><td>accrued management fee</td><td>liability</td><td>1,500.00</td><td>1.00</td><td>0</td><td>1,500.00</td><td>fee schedule, 0.15% annualised, 30 days</td></tr>
+  </table>
+  </div>
+  <p class="micro">Each line carries an evidence hash; the statement hash is checked against the file. If one line has no price, the verdict is <code>incomplete</code> and the ratio is <code>null</code> — not a guess and not a silent exclusion.</p>
+</div></section>
+
+<section><div class="wrap two">
+  <div class="panel"><h3>What it proves</h3><p>The declared statement matches the file; every reserve line has a source and a hash; the NAV formula is explicit; the verdict is signed and verifiable offline.</p></div>
+  <div class="panel"><h3>What it does not prove</h3><p>Not a statutory audit, not legal advice, no custodian confirmation in this synthetic example, no on-chain read in v0.3. The issuer's inputs can be wrong. A buyer must verify the source hashes.</p></div>
+</div></section>
+
+<section><div class="wrap cta">
+  <div><h2 style="margin-bottom:6px">Need a private reserve attestation?</h2><p class="sub" style="margin:0">Productized single-asset report from $5,000; custom issuer/white-label engagement from $50,000. Written scope, no calls required.</p></div>
+  <a class="btn primary" href="mailto:wiggle.pkk@gmail.com?subject=Nidhipati%20RWA%20reserve%20scope">Request a scope</a>
+</div></section>
+</main>
+
+<footer><div class="wrap">
+  <div class="foot">
+    <div>© 2026 Nidhipati · <a href="https://github.com/mrpkk/nidhipati">GitHub</a> · <a href="pricing.html">Pricing</a></div>
+    <div>No custody · no money transmission · no token</div>
+  </div>
+</footer>
+</body>
+</html>

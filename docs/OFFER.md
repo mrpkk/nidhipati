@@ -81,6 +81,14 @@ back, you owe nothing.
 
 **India (PPP):** $1,250 for the audit, $750/mo retainer, same scope.
 
+## Enterprise — from $5,000; issuer/white-label from $50,000
+
+- **Productized** ($5,000+): one RWA asset/date, NAV + source hashes, signed report.
+- **Issuer / white-label** ($50,000+): multi-asset, custom methodology, ZK predicate,
+  white-label, buyer verification pack.
+- Sample: <https://mrpkk.github.io/nidhipati/sample-reserve-report.html> — synthetic,
+  not a client, not a statutory audit.
+
 ---
 
 ## Honest limits of v0.2
