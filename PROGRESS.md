@@ -375,5 +375,6 @@ python3 -m nidhipati_proof.cli verify examples/proof-of-spend.example.json --pub
 
 - **Glama connector уже есть:** `io.github.mrpkk/nidhipati` — 5 tools, Healthy, No Auth, badges 200. Это готовый badge для `awesome-remote-mcp-servers`.
 - Форк синхронизирован с upstream; ветка `add-nidhipati` запушена, 3 строки, вставка перед `NuMetric`. Ветка: `mrpkk/awesome-remote-mcp-servers:add-nidhipati`.
-- **PR не открыт:** браузер 9236 перестал отвечать на CDP, а `GITHUB_TOKEN_OPENCODEDEV`/`GITHUB_TOKEN_OPC` не имеют прав на создание PR в чужом репозитории (403). Владельцу — 30 секунд: звезда + Create pull request по ссылке.
+- **PR открыт:** https://github.com/punkpeye/awesome-remote-mcp-servers/pull/2904 — `open`, `mergeable: true`, `mergeable_state: clean`, labels `endpoint-ok`, `has-connector`. Браузер 9236 завис; PR создан из копии профиля на скрытом 9237 (xvfb), не на экране владельца.
+- **Осталось владельцу:** поставить звезду репозиторию — по правилам каталога без неё PR не мержат.
 - **Ответ SashSail** в x402-треде: черновик готов (`docs/REDDIT-REPLIES.md`), публикует владелец. Не спорим, уточняем: один платёж или два после double-402.

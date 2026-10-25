@@ -99,16 +99,13 @@ ENOT_USDT_TRC20=...
 
 ---
 
-## 6. awesome-remote-mcp-servers — 30 секунд
+## 6. awesome-remote-mcp-servers — 15 секунд
 
-Ветка уже запушена: `mrpkk/awesome-remote-mcp-servers:add-nidhipati`.
+PR уже открыт:  
+https://github.com/punkpeye/awesome-remote-mcp-servers/pull/2904
 
-1. Поставить звезду репозиторию (без неё PR не мержат):  
-   https://github.com/punkpeye/awesome-remote-mcp-servers
-2. Открыть сравнение и нажать **Create pull request**:  
-   https://github.com/punkpeye/awesome-remote-mcp-servers/compare/main...mrpkk:add-nidhipati?expand=1
-
-Заголовок: `Add Nidhipati — proof-of-spend MCP connector 🤖🤖🤖`
+**Осталось только поставить звезду репозиторию** (без неё PR не мержат):  
+https://github.com/punkpeye/awesome-remote-mcp-servers
 
 Это второй бесплатный каталог; Nidhipati уже есть как Glama connector `io.github.mrpkk/nidhipati` (5 tools, Healthy).
 
