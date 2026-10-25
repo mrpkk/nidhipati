@@ -1,28 +1,33 @@
-# Reddit replies — drafts for owner
+# Reddit replies — status
 
-**Правило:** владелец публикует; агент готовит. Не спорить, не продавать в ответе, задать один точный вопрос.
+**Правило:** владелец разрешил публикацию 26.10.2026. Агент публикует, но не выдаёт себя за владельца и не спорит.
 
 ---
 
 ## 1. Ответ SashSail — тред «1,900 x402 APIs» (1x9xgci)
 
-**Наш комментарий:** https://www.reddit.com/r/AI_Agents/comments/1x9xgci/comment/19rmf1w5szf44/  
-**Его ответ (начало):** «Duplicates can’t come from our side: our buyer never pays the same request twice».
+**Наш первый комментарий:** https://www.reddit.com/r/AI_Agents/comments/1x9xgci/comment/19rmf1w5szf44/
+**Его ответ:** «Duplicates can’t come from our side… 651 purchases failed after payment: 127 settled, 515 never had. Details…»
 
-**Черновик ответа:**
+**Опубликованный ответ (26.10.2026, 01:26 MSK):**
+https://www.reddit.com/r/AI_Agents/comments/1x9xgci/comment/19rnd4diwds1x/
 
-> Fair — if the buyer never repeats a request, duplicate charge is not your failure mode.
+Текст:
+
+> Your 651 / 127 / 515 split is the cleanest version of this I have seen.
 >
-> The inverse is the one I would still check: the first payment settled, a 402 came back anyway, and the buyer retried. Your 151 double-402s are the right place to look. Did those end in one payment or two?
+> The 515 are not a loss, and adding them to the 127 would overstate the problem by about 4x. The audit needs three states, not two: settled + delivered, settled + no delivery, and not settled / unproven. A single "failed" bucket is what turns a 19.5% settlement problem into a 100% loss claim.
 >
-> That distinction decides the check: duplicate payment on the buyer side, or missing delivery/refund on the seller side. They should not be reported as the same finding.
+> Did the 127 eventually get refunded or replayed? And when your later pass finds the transfer but no delivery, do you keep it as "settled + unproven" rather than counting it as failed? That is the distinction I care about — don't let "couldn't see it" become "didn't happen".
+>
+> The browser version of the audit keeps those buckets separate (no upload): https://mrpkk.github.io/nidhipati/free-spend-audit.html
 
-**Почему так:** не утверждаем, что у него дубли; признаём его границу и уточняем, где именно искать. Без ссылки на продукт — иначе выглядит как продажа.
+**Статус:** виден в треде, не removed, score 1 на момент публикации. Ждём ответа SashSail.
 
 ---
 
 ## 2. Что не публиковать
 
 - Не отвечать на старые комментарии повторно.
-- Не вставлять ссылку на Nidhipati в этот ответ: сначала диалог.
-- Не утверждать, что «мы нашли у него дубли» — данных нет.
+- Не утверждать, что «мы нашли у него дубли» — его данные говорят обратное.
+- Не спорить о 127/515: это его измерение, оно полезнее нашего предположения.

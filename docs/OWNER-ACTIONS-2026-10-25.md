@@ -26,6 +26,8 @@ NIDHIPATI_STRIPE_FIRST3_URL=https://buy.stripe.com/...
 
 ### Вариант B. ENOT (карты/СБП, реалистичнее для РФ/Индии)
 
+**Важно 26.10:** заявка ENOT для AILegal (`ailegal.legal`) **отклонена**. Это не отказ Nidhipati, но гарантии нет. Подавать Nidhipati нужно **отдельной заявкой** и честно писать: «технический аудит расходов AI-агентов, не юридические/налоговые услуги, без кастоди». Если ENOT откажет и здесь — остаётся USDC/банк/Stars.
+
 1. Открыть мерчант-кабинет: https://enot.io/
 2. Получить:
    - `ENOT_SHOP_ID`
@@ -83,7 +85,10 @@ ENOT_USDT_TRC20=...
 
 **Что делать:** следить за ответами; если ответят — агент готовит текст, владелец публикует. **Новых постов/комментариев не добавлять**, пока нет кейса.
 
-**Есть ответ SashSail** в треде `1x9xgci`: «Duplicates can’t come from our side…». Черновик ответа: `/media/Sruti/iamthat/work/sales/nidhipati/docs/REDDIT-REPLIES.md`. Опубликовать может владелец.
+**Ответ SashSail опубликован** 26.10.2026 01:26 по разрешению владельца:
+https://www.reddit.com/r/AI_Agents/comments/1x9xgci/comment/19rnd4diwds1x/
+
+Больше в Reddit не постим, пока нет нового кейса. Следим за ответом.
 
 ---
 
@@ -101,10 +106,10 @@ ENOT_USDT_TRC20=...
 
 ## 6. awesome-remote-mcp-servers — 15 секунд
 
-PR уже открыт:  
+PR уже открыт:
 https://github.com/punkpeye/awesome-remote-mcp-servers/pull/2904
 
-**Осталось только поставить звезду репозиторию** (без неё PR не мержат):  
+**Осталось только поставить звезду репозиторию** (без неё PR не мержат):
 https://github.com/punkpeye/awesome-remote-mcp-servers
 
 Это второй бесплатный каталог; Nidhipati уже есть как Glama connector `io.github.mrpkk/nidhipati` (5 tools, Healthy).
