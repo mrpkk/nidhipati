@@ -334,3 +334,11 @@ python3 -m nidhipati_proof.cli verify examples/proof-of-spend.example.json --pub
 - `docs/OFFER.md` и `README.md` приведены к тому же правилу: публично — только вопрос, файл — по приватному каналу.
 - Проверено: YAML валиден (нет поля `records`), 89 Python + 9 Node + 9 proof тестов, Pages 200, raw template 200, IndexNow 200 (13 URL). Коммит `c44fc69`.
 - **Метрика:** 0 сканов до правки; следующий замер — после тёплого Reddit-канала и этой формы.
+
+### S7.7 — awesome-mcp-servers: заявка в каталог (25.10.2026)
+
+- `punkpeye/awesome-mcp-servers` (≈96k звёзд) — тот самый каталог, который дал attest измеренный трафик.
+- Ветка `add-nidhipati` в форке, одна строка в **Finance & Fintech**; PR **#17552**: https://github.com/punkpeye/awesome-mcp-servers/pull/17552
+- Статус: `open`, `mergeable: true`, `mergeable_state: clean`, 1 коммит / 1 файл. Заголовок с `🤖🤖🤖` — по правилам репозитория это fast-track для агентских PR.
+- Glama-бейдж проверен: `rated A`, 5 tools, remote-capable, maintenance B; бот подтвердил бейдж.
+- Это бесплатный каталог; платных листингов не покупаем до выручки.
