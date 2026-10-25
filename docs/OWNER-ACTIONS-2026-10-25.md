@@ -83,6 +83,8 @@ ENOT_USDT_TRC20=...
 
 **Что делать:** следить за ответами; если ответят — агент готовит текст, владелец публикует. **Новых постов/комментариев не добавлять**, пока нет кейса.
 
+**Есть ответ SashSail** в треде `1x9xgci`: «Duplicates can’t come from our side…». Черновик ответа: `/media/Sruti/iamthat/work/sales/nidhipati/docs/REDDIT-REPLIES.md`. Опубликовать может владелец.
+
 ---
 
 ## 5. Первые 3 клиента — оффер уже на сайте
@@ -97,7 +99,20 @@ ENOT_USDT_TRC20=...
 
 ---
 
-## 6. Что агент делает сам, без тебя
+## 6. awesome-remote-mcp-servers — 30 секунд
+
+Ветка уже запушена: `mrpkk/awesome-remote-mcp-servers:add-nidhipati`.
+
+1. Поставить звезду репозиторию (без неё PR не мержат):  
+   https://github.com/punkpeye/awesome-remote-mcp-servers
+2. Открыть сравнение и нажать **Create pull request**:  
+   https://github.com/punkpeye/awesome-remote-mcp-servers/compare/main...mrpkk:add-nidhipati?expand=1
+
+Заголовок: `Add Nidhipati — proof-of-spend MCP connector 🤖🤖🤖`
+
+Это второй бесплатный каталог; Nidhipati уже есть как Glama connector `io.github.mrpkk/nidhipati` (5 tools, Healthy).
+
+## 7. Что агент делает сам, без тебя
 
 - Держит сайт, тесты, каталоги, PR.
 - Готовит тексты для LinkedIn/HN/Reddit.
@@ -107,7 +122,7 @@ ENOT_USDT_TRC20=...
 
 ---
 
-## 7. Порядок действий (5 минут)
+## 8. Порядок действий (5 минут)
 
 1. Выбери: **Stripe** или **ENOT**.
 2. Дай ссылки/ключи в файл выше.

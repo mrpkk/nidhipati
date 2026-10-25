@@ -370,3 +370,10 @@ python3 -m nidhipati_proof.cli verify examples/proof-of-spend.example.json --pub
 - **Документы:** `docs/GROWTH-2026-10-25.md`, `docs/OWNER-ACTIONS-2026-10-25.md`, `docs/LINKEDIN-KIT.md`, `docs/PAYMENTS.md`.
 - **Карточный путь:** Stripe/ENOT **не настроены**; без ключей/мерчанта человек заплатить не может. Это блокер владельца, не агента. USDC-инвойс работает.
 - **Гейт недели 1:** не пройден; причина — карточный платёж не live, 0 заявок. Следующий шаг — владелец выбирает Stripe или ENOT и даёт ссылку/ключи.
+
+### G2 — второй remote-каталог (25.10.2026)
+
+- **Glama connector уже есть:** `io.github.mrpkk/nidhipati` — 5 tools, Healthy, No Auth, badges 200. Это готовый badge для `awesome-remote-mcp-servers`.
+- Форк синхронизирован с upstream; ветка `add-nidhipati` запушена, 3 строки, вставка перед `NuMetric`. Ветка: `mrpkk/awesome-remote-mcp-servers:add-nidhipati`.
+- **PR не открыт:** браузер 9236 перестал отвечать на CDP, а `GITHUB_TOKEN_OPENCODEDEV`/`GITHUB_TOKEN_OPC` не имеют прав на создание PR в чужом репозитории (403). Владельцу — 30 секунд: звезда + Create pull request по ссылке.
+- **Ответ SashSail** в x402-треде: черновик готов (`docs/REDDIT-REPLIES.md`), публикует владелец. Не спорим, уточняем: один платёж или два после double-402.
