@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sample spend audit — Nidhipati</title>
+<meta name="description" content="A real Nidhipati spend audit output on a synthetic 44-row export. Not a client; every number is reproducible with the open CLI.">
+<link rel="canonical" href="https://mrpkk.github.io/nidhipati/sample-spend-audit.html">
+<meta property="og:title" content="Sample spend audit — Nidhipati">
+<meta property="og:description" content="A real Nidhipati spend audit output on a synthetic 44-row export. Not a client; every number is reproducible.">
+<meta property="og:type" content="article">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header><div class="wrap nav">
+  <a class="brand" href="index.html"><span class="mark">N</span> Nidhipati</a>
+  <nav class="navlinks">
+    <a href="agent-spend-audit.html">Spend audit</a><a href="free-spend-audit.html">Free audit</a><a href="mcp.html">MCP</a>
+    <a href="x402-receipt.html">x402 receipt</a>
+    <a href="pricing.html">Pricing</a>
+    <a href="https://github.com/mrpkk/nidhipati">GitHub</a>
+    <a class="btn primary" href="free-spend-audit.html">Run free scan</a>
+  </nav>
+</div></header>
+
+<main>
+<section class="hero"><div class="wrap">
+  <span class="kicker"><span class="dot"></span> Synthetic sample · not a client</span>
+  <h1>What a spend audit actually returns</h1>
+  <div class="lede">This is the real output of <code>nidhipati-spend audit examples/spend-sample.csv</code> on a synthetic 44-row export. Every finding has a row number and evidence; every number can be reproduced with the open CLI. It is not a client result.</div>
+  <div class="actions">
+    <a class="btn primary" href="free-spend-audit.html">Run your own scan</a>
+    <a class="btn" href="pricing.html">Audit pricing</a>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <h2>Summary</h2>
+  <table>
+    <tr><th>Metric</th><th>Value</th></tr>
+    <tr><td>Rows read</td><td>44</td></tr>
+    <tr><td>Settled</td><td>$0.661</td></tr>
+    <tr><td>Spent without a reason</td><td>$0.14</td></tr>
+    <tr><td>Above the usual price</td><td>$0.36</td></tr>
+    <tr><td>Over the limit</td><td>$0</td></tr>
+    <tr><td>Errors / warnings</td><td>4 / 7</td></tr>
+  </table>
+  <p class="micro">The three amounts are kept separate on purpose. Adding them into one "saved" number would double-count overlapping findings and make the report unusable for finance.</p>
+</div></section>
+
+<section><div class="wrap">
+  <h2>Findings</h2>
+  <div style="overflow:auto">
+  <table>
+    <tr><th>row</th><th>code</th><th>severity</th><th>agent</th><th>$</th><th>detail</th><th>evidence</th></tr>
+    <tr><td>5</td><td><code>duplicate_charge</code></td><td>error</td><td>agent-writer</td><td>0.02</td><td>same tx_hash as row 2</td><td>0xaaa1</td></tr>
+    <tr><td>7</td><td><code>price_escalation</code></td><td>error</td><td>agent-writer</td><td>0.03</td><td>settled 0.05 above quote 0.02</td><td>0xaaa5</td></tr>
+    <tr><td>8</td><td><code>failed_but_billed</code></td><td>error</td><td>agent-writer</td><td>0.03</td><td>status 'failed' with 0.03 charged</td><td>0xaaa6</td></tr>
+    <tr><td>9</td><td><code>missing_refund</code></td><td>error</td><td>agent-writer</td><td>0.06</td><td>charged 0.10 for actual 0.04, refund not recorded</td><td>0xaaa7</td></tr>
+    <tr><td>0</td><td><code>budget_bypass</code></td><td>warning</td><td>—</td><td>0</td><td>no policy file: any budget lives in a prompt, which the agent can argue with</td><td>—</td></tr>
+    <tr><td>9</td><td><code>model_overpay</code></td><td>warning</td><td>agent-writer</td><td>0.08</td><td>paid 0.10 against a median 0.02 for this tool and model</td><td>0xaaa7</td></tr>
+    <tr><td>10</td><td><code>unknown_asset</code></td><td>warning</td><td>agent-writer</td><td>0.02</td><td>asset 'MOON' is not recognised</td><td>0xaaa8</td></tr>
+    <tr><td>10</td><td><code>unknown_network</code></td><td>warning</td><td>agent-writer</td><td>0.02</td><td>network 'moonnet' is not recognised</td><td>0xaaa8</td></tr>
+    <tr><td>10</td><td><code>missing_payee</code></td><td>warning</td><td>agent-writer</td><td>0.02</td><td>no payee recorded</td><td>0xaaa8</td></tr>
+    <tr><td>14</td><td><code>model_overpay</code></td><td>warning</td><td>agent-writer</td><td>0.28</td><td>paid 0.30 against a median 0.02 for this tool and model</td><td>0xbbb3</td></tr>
+    <tr><td>45</td><td><code>runaway_loop</code></td><td>warning</td><td>agent-loop</td><td>0</td><td>31 calls in 60s for agent-loop (threshold 30)</td><td>0xccc30</td></tr>
+  </table>
+  </div>
+</div></section>
+
+<section><div class="wrap two">
+  <div class="panel"><h3>What it proves</h3><p>Each finding is tied to a row and a rule; the same input produces the same output; the three amounts are separated; a missing price or unknown asset is reported rather than guessed.</p></div>
+  <div class="panel"><h3>What it does not prove</h3><p>It is not a statutory audit, not a legal claim, and not a recovery. It does not verify the chain in v0.2. Missing rows cannot be found. Confirm each finding against the provider invoice before acting.</p></div>
+</div></section>
+
+<section><div class="wrap cta">
+  <div><h2 style="margin-bottom:6px">Want this on your own export?</h2><p class="sub" style="margin:0">Run the browser scan locally, or request a human review by email/Telegram. First 3 paid audits are $1,250; then $2,500.</p></div>
+  <a class="btn primary" href="free-spend-audit.html">Run free scan</a>
+</div></section>
+</main>
+
+<footer><div class="wrap">
+  <div class="foot">
+    <div>© 2026 Nidhipati · <a href="https://github.com/mrpkk/nidhipati">GitHub</a> · <a href="pricing.html">Pricing</a></div>
+    <div>No custody · no money transmission · no token</div>
+  </div>
+</footer>
+</body>
+</html>

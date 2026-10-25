@@ -12,7 +12,7 @@
 <meta property="og:type" content="website">
 <link rel="stylesheet" href="styles.css">
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Nidhipati", "applicationCategory": "BusinessApplication", "operatingSystem": "Web, CLI", "description": "Proof of Spend and spend audit for AI agents. Verify mandate, amount, asset, network, payee and refund in a signed receipt.", "url": "https://mrpkk.github.io/nidhipati/pricing.html", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD", "description": "Free scan"}}</script>
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Do I need to pay for the first scan?", "acceptedAnswer": {"@type": "Answer", "text": "No. The browser audit is free and needs no account. The human review request uses a GitHub issue, so a GitHub account is required. If the free report answers your question, you do not need the paid audit."}}, {"@type": "Question", "name": "What if you find nothing?", "acceptedAnswer": {"@type": "Answer", "text": "The report says so. There is no success fee without a verified finding."}}, {"@type": "Question", "name": "Do you take custody?", "acceptedAnswer": {"@type": "Answer", "text": "No. We never hold funds or keys and do not move money."}}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Do I need to pay for the first scan?", "acceptedAnswer": {"@type": "Answer", "text": "No. The browser audit is free and needs no account. The human review can go by email or Telegram; GitHub is optional. If the free report answers your question, you do not need the paid audit."}}, {"@type": "Question", "name": "What if you find nothing?", "acceptedAnswer": {"@type": "Answer", "text": "The report says so. There is no success fee without a verified finding."}}, {"@type": "Question", "name": "Do you take custody?", "acceptedAnswer": {"@type": "Answer", "text": "No. We never hold funds or keys and do not move money."}}]}</script>
 </head>
 <body>
 
@@ -25,7 +25,7 @@
     <a href="prediction-resolution.html">Prediction</a>
     <a href="stablecoin-reconciliation.html">Stablecoin</a>
     <a href="https://github.com/mrpkk/nidhipati">GitHub</a>
-    <a class="btn primary" href="https://github.com/mrpkk/nidhipati/issues/new?template=free-spend-audit.yml">Request a private scan</a>
+    <a class="btn primary" href="free-spend-audit.html">Run free scan</a>
   </nav>
 </div></header>
 
@@ -35,7 +35,7 @@
   <h1>Pricing</h1>
   <div class="lede">Free scan first. First 3 paid audits $1,250; then $2,500 or 20% of verified savings; $1,500/mo retainer. $5,000 finding guarantee. No custody.</div>
   <div class="actions">
-    <a class="btn primary" href="https://github.com/mrpkk/nidhipati/issues/new?template=free-spend-audit.yml">Request a private scan</a>
+    <a class="btn primary" href="free-spend-audit.html">Run free scan</a>
     <a class="btn" href="https://github.com/mrpkk/nidhipati/blob/main/docs/PROOF-OF-SPEND.md">Read the spec</a>
   </div>
   <div class="micro">Written scope and written report — no calls. No wallet access for the first scan.</div>
@@ -43,19 +43,16 @@
 
 <section><div class="wrap">
   <h2>Free scan first. Pay only for the audit.</h2>
-  <p class="sub">No card for the first scan. The browser audit needs no account; the human review request uses GitHub. If the free report answers your question, you do not need the paid audit.</p>
+  <p class="sub">No card for the first scan. The browser audit needs no account; the human review request can go by email/Telegram or GitHub. If the free report answers your question, you do not need the paid audit.</p>
   <table>
     <tr><th>Offer</th><th>Price</th><th>What you get</th></tr>
-    <tr><td>Free scan</td><td>0</td><td>One flow / one week, 48h written report, findings with row numbers</td></tr>
-    <tr><td>First 3 paid audits</td><td><b>$1,250</b></td><td>Same scope; public case study with anonymized numbers (only if the audit finds something worth publishing)</td></tr>
-    <tr><td>Spend audit</td><td>$2,500 fixed</td><td>Up to 12 months of records, provider reconciliation, evidence file, recovery pack, written Q&A</td></tr>
-    <tr><td>Share of verified savings</td><td>20%</td><td>Only what is actually returned by providers; requires fixed audit or free scan as evidence</td></tr>
-    <tr><td>Control retainer</td><td>$1,500/mo</td><td>Monthly audit, alerts, receipt checks, 30 days notice</td></tr>
-    <tr><td>RWA reserve report</td><td>$2,500–5,000</td><td>Reserve composition, NAV inputs, source hashes, signed report</td></tr>
-    <tr><td>Prediction evidence</td><td>$500–2,000</td><td>Sources, timestamps, conflicts, signed report</td></tr>
-    <tr><td>Stablecoin reconciliation</td><td>$1,500/mo</td><td>Invoice ↔ tx matching, duplicates, refunds, CSV export</td></tr>
+    <tr><td>Free scan</td><td>0</td><td>Browser audit in under a minute, no account; human review by email/Telegram</td></tr>
+    <tr><td>Audit</td><td><b>$1,250</b> first 3, then <b>$2,500</b><br><span class="micro">or 20% of verified savings</span></td><td>Up to 12 months of records, provider reconciliation, evidence file, recovery pack, written Q&amp;A, $5,000 finding guarantee</td></tr>
+    <tr><td>Retainer</td><td><b>$1,500/mo</b></td><td>Monthly audit, alerts, receipt checks, 30 days notice</td></tr>
+    <tr><td>Enterprise</td><td><b>from $5,000</b></td><td>RWA reserve, prediction evidence, stablecoin reconciliation, white-label, one engine for 5 checks</td></tr>
   </table>
   <p class="sub">India (PPP): audit $1,250, retainer $750/mo, same scope.</p>
+  <p class="sub" style="margin-top:14px"><a href="sample-spend-audit.html">See a real sample report</a> — synthetic 44-row export, every finding reproducible.</p>
   <div class="panel" style="margin-top:18px"><h3>The $5,000 finding guarantee</h3><p>If the paid audit does not identify at least <b>$5,000</b> in documented overcharges or refund opportunities from the records and invoices you provide within 10 working days, we refund the audit fee.</p><p class="micro">"Documented" means a row number, a receipt/invoice or transaction hash, and a written basis. Estimates do not count. This is about identified amounts, not what a provider actually returns.</p></div>
 </div></section>
 
@@ -65,8 +62,8 @@
 </div></section>
 
 <section><div class="wrap two">
-  <div><h2>Payment</h2><p class="sub">USDC on Base or Solana; 50% upfront for new clients. Invoice is a signed JSON document, verified with <code>nidhipati-proof verify</code>. Address only from the invoice, never from chat. Card checkout is not live as of 25.10.2026: ask for a card link and we will say plainly whether one is available. No custody.</p><p><a href="mailto:wiggle.pkk@gmail.com?subject=Nidhipati%20USDC%20invoice">Request a USDC invoice</a> · <a href="mailto:wiggle.pkk@gmail.com?subject=Nidhipati%20bank%20invoice">Request a bank invoice</a> · <a href="mailto:wiggle.pkk@gmail.com?subject=Nidhipati%20card%20link">Card link</a> · <a href="https://t.me/mrpkk">Telegram</a></p></div>
-  <div class="panel"><h3>Start</h3><p>Open a free scan with a CSV/JSON of charges. No keys, no customer data.</p><div style="height:12px"></div><a class="btn primary" href="https://github.com/mrpkk/nidhipati/issues/new?template=free-spend-audit.yml">Request a private scan</a></div>
+  <div><h2>Payment</h2><p class="sub">USDC on Base or Solana; 50% upfront for new clients. Invoice is a signed JSON document, verified with <code>nidhipati-proof verify</code>. Address only from the invoice, never from chat. Card checkout is not live as of 26.10.2026: ask for a card link and we will say plainly whether one is available. No custody.</p><p><a href="mailto:wiggle.pkk@gmail.com?subject=Nidhipati%20USDC%20invoice">Request a USDC invoice</a> · <a href="mailto:wiggle.pkk@gmail.com?subject=Nidhipati%20bank%20invoice">Request a bank invoice</a> · <a href="mailto:wiggle.pkk@gmail.com?subject=Nidhipati%20card%20link">Card link</a> · <a href="https://t.me/mrpkk">Telegram</a></p></div>
+  <div class="panel"><h3>Start</h3><p>Run the browser scan, then send the report (not raw rows) by email or Telegram. No keys, no customer data.</p><div style="height:12px"></div><a class="btn primary" href="mailto:wiggle.pkk@gmail.com?subject=Nidhipati%20human%20review">Email a human review</a> <a class="btn" href="https://t.me/mrpkk">Telegram</a> <a class="btn" href="https://github.com/mrpkk/nidhipati/issues/new?template=free-spend-audit.yml">GitHub</a></div>
 </div></section>
 
 </main>
