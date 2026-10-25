@@ -322,6 +322,7 @@ python3 -m nidhipati_proof.cli verify examples/proof-of-spend.example.json --pub
 - Ссылка: https://www.reddit.com/r/AI_Agents/comments/1x9gssy/comment/19rmb8puol9r7/
 - Текст: три проверки (дубли, quote vs settled, failed-but-billed) + бесплатный браузерный аудит; честно указано «я построил»; без обещаний экономии.
 - Это первый тёплый канал после 0/76 холодных. Следить за ответами; не дублировать.
+- Второй тёплый ответ: r/AI_Agents, тред «Where agent spend actually leaks» (`1xe124q`), комментарий `19rmejgllrzvm`: https://www.reddit.com/r/AI_Agents/comments/1xe124q/comment/19rmejgllrzvm/ — три проверки «после счёта» (failed-but-billed, дубль после retry, quote vs settled) + бесплатный локальный аудит; без обещаний экономии.
 - Дополнительно: AILegal sitemap (66 URL) отправлен в IndexNow — бесплатный SEO-шаг для соседнего продукта.
 
 ### S7.6 — приватный вход вместо публикации расходов (25.10.2026)
