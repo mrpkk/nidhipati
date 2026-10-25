@@ -421,7 +421,9 @@ python3 -m nidhipati_proof.cli verify examples/proof-of-spend.example.json --pub
 - **Working:** `maxim.pkk@gmail.com` + `MYACCOUNT_GOOGLE` (IMAP/SMTP). **Not working:** `wiggle.pkk@gmail.com` + `GMAIL_PAS` — `AUTHENTICATIONFAILED`.
 - **End-to-end test:** письмо `Nidhipati intake test 2026-10-26` отправлено на себя, найдено через IMAP. Канал заявок работает.
 - Все публичные ссылки Nidhipati переведены с `wiggle` на `maxim.pkk@gmail.com`; `OFFER`, `pricing`, `free-spend-audit`, `sample-reserve`, `README`.
-- **Аутрич не отправлял:** два публичных репо просканированы (`Franklin`, `Agent402`), но находки не триажены; отправлять «24 high» без проверки — ложь. Следующий шаг — триаж 3 конкретных находок и 3 письма, не 10.
+- **Аутрич:** одно письмо отправлено после триажа, не 10. Цель — `hello@blockrun.ai` (Franklin), тема «$0.001 x402 calls vs ~$0.00146 Base gas». Находка: `src/tools/modal.ts`, цены EXEC/STATUS/TERMINATE $0.001; это вопрос, не обвинение. Трекер: `outreach/SENT.csv`.
+- **Не отправлял** «24 high» из сканера: `maxUint256` в Franklin — Permit2 one-time approval; `MAX_UINT256` в Agent402 — nonceKey sentinel; `.env.example` private key — placeholder. Это ложные срабатывания; рассылать их нельзя.
+- **Следующий шаг:** проверить bounce/ответ Franklin; если чисто, ещё 2 письма по триаженным находкам, затем 10/день.
 
 ### G8 — проверка адресатов RWA: формы вместо email (26.10.2026)
 

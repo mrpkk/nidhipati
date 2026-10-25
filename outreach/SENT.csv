@@ -1,0 +1,2 @@
+date,target,product,finding,status
+2026-10-26,hello@blockrun.ai,Franklin,"src/tools/modal.ts: $0.001 per call vs ~$0.00146 Base gas; intentional or placeholder?",sent
