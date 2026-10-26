@@ -21,3 +21,7 @@ https://github.com/mrpkk/nidhipati/blob/main/docs/PROOF-OF-SPEND.md
 ## Pricing
 
 Free scan, no account needed (email, no GitHub). Audit $1,250 for the first three, then $2,500. Control retainer $1,500/mo. USDC on Base/Solana. No custody.
+
+## BusinessMCP directory
+
+https://businessmcp.com/mcp-servers/nidhipati
