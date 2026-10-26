@@ -86,7 +86,8 @@ back, you owe nothing.
 - **Reserve disclosure review — $250** (credited toward a full report): a 2-page
   review of your public reserve or NAV page against the 12-question checklist.
   Public data only; no private files; 3 working days. If you proceed to a full
-  single-asset report, the $250 is credited.
+  single-asset report, the $250 is credited. Sample:
+  <https://mrpkk.github.io/nidhipati/sample-reserve-review.html>.
 - **First 3 single-asset reports: $1,250** (instead of $5,000), in exchange for a public
   case study with anonymized numbers. The case is published only if the report verifies
   and you approve the wording. After the first 3, the price returns to $5,000.
