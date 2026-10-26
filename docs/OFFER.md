@@ -81,11 +81,17 @@ back, you owe nothing.
 
 **India (PPP):** $1,250 for the audit, $750/mo retainer, same scope.
 
-## Enterprise — from $5,000; issuer/white-label from $50,000
+## Enterprise — first 3 at $1,250, then from $5,000; white-label from $50,000
 
+- **First 3 single-asset reports: $1,250** (instead of $5,000), in exchange for a public
+  case study with anonymized numbers. The case is published only if the report verifies
+  and you approve the wording. After the first 3, the price returns to $5,000.
 - **Productized** ($5,000+): one RWA asset/date, NAV + source hashes, signed report.
 - **Issuer / white-label** ($50,000+): multi-asset, custom methodology, ZK predicate,
   white-label, buyer verification pack.
+- **Verification guarantee:** if the signed report does not verify offline with the
+  published key, the fee is refunded. That is a statement about the file, not about the
+  issuer's solvency or the accuracy of its source data.
 - Sample: <https://mrpkk.github.io/nidhipati/sample-reserve-report.html> — synthetic,
   not a client, not a statutory audit.
 
