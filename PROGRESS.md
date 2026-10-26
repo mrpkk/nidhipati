@@ -547,3 +547,11 @@ python3 -m nidhipati_proof.cli verify examples/proof-of-spend.example.json --pub
 - **Исправлено:** `free-spend-audit.html` и `verify-receipt.html` — $1,250 первые 3,
   затем $2,500. Цена на всех страницах одна.
 - **Не трогал:** `security.html` — это отдельный security review за $2,500, не spend audit.
+
+### G20 — follow-up 28.10 подготовлен, не отправлен (26.10.2026)
+
+- `outreach/FOLLOWUP-2026-10-28.md`: 8 RWA + 4 spend/FinOps адреса, два шаблона,
+  правило «одно письмо, потом закрыть».
+- Ничего не отправлено раньше срока: 48 часов ещё не прошло. Это подготовка,
+  чтобы 28.10 не писать заново.
+- Bounce: `enterprise@helicone.ai` не существует; используем `help@helicone.ai`.
