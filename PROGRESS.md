@@ -781,3 +781,13 @@ python3 -m nidhipati_proof.cli verify examples/proof-of-spend.example.json --pub
   кнопки «Free reserve check», «Request a reserve check», «Request a $250 review»;
   рядом — ссылка на sample review.
 - Проверено на живой странице: 3 reserve-темы, 1 sample link, 1 $250 CTA.
+
+### G35 — Индия: Zoniqx (27.10.2026)
+
+- **Кому:** `marketing@zoniqx.com` — публичный адрес из официальной статьи Zoniqx;
+  платформа токенизации RWA с офисом в Хайдарабаде (Индия).
+- **Оффер:** white-label signed reserve/NAV attestation для эмитентов Zoniqx;
+  $250 public-disclosure review (зачитывается), полный отчёт от $1,250.
+- **Вопрос:** кто у Zoniqx отвечает за proof of reserve — платформа или аудитор эмитента.
+- Это обязательное направление Индия: не «потом», а отдельный контакт.
+- **Ответа нет.** Трекер: `OUTREACH-LEDGER.csv`.
