@@ -2,7 +2,8 @@
 
 **One line:** prove that reserves back the token without publishing every wallet, every line, or the full NAV inputs.
 
-**Price:** first 3 single-asset reports **$1,250** (instead of $5,000) in exchange for an
+**Price:** a **$250 reserve disclosure review** of your public page (credited toward a
+full report); first 3 single-asset reports **$1,250** (instead of $5,000) in exchange for an
 anonymized public case study; then productized reports from **$5,000**; custom
 issuer/white-label engagement from **$50,000**. If the signed report does not verify
 offline with the published key, the fee is refunded.

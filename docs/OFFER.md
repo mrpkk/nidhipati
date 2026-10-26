@@ -81,8 +81,12 @@ back, you owe nothing.
 
 **India (PPP):** $1,250 for the audit, $750/mo retainer, same scope.
 
-## Enterprise — first 3 at $1,250, then from $5,000; white-label from $50,000
+## Enterprise — first step $250, then first 3 at $1,250; white-label from $50,000
 
+- **Reserve disclosure review — $250** (credited toward a full report): a 2-page
+  review of your public reserve or NAV page against the 12-question checklist.
+  Public data only; no private files; 3 working days. If you proceed to a full
+  single-asset report, the $250 is credited.
 - **First 3 single-asset reports: $1,250** (instead of $5,000), in exchange for a public
   case study with anonymized numbers. The case is published only if the report verifies
   and you approve the wording. After the first 3, the price returns to $5,000.
