@@ -563,3 +563,16 @@ python3 -m nidhipati_proof.cli verify examples/proof-of-spend.example.json --pub
   проверяем mandate/cap/failed-but-billed, не строим дашборд.
 - **Вопрос:** просят ли покупатели receipt/reconciliation, или per-call цены достаточно.
 - **Ответа нет.** Трекер: `OUTREACH-LEDGER.csv`.
+
+### G22 — Ondo: конкретное наблюдение вместо общего питча (26.10.2026)
+
+- **Источник:** публичная страница OUSG Trust & Transparency. Цитата: отчёты
+  «may lag up to three days behind the price update onchain».
+- **Письмо:** `support@ondo.finance`, тема «OUSG NAV as of the block, not three days later».
+  Не обвинение, а вопрос: мешает ли этот лаг институциональным покупателям, или
+  дневного NAV достаточно.
+- **Оффер:** signed reserve attestation с as-of timestamp, source hash на строку,
+  offline verification; первые 3 отчёта $1,250.
+- **Почему это сильнее формы:** форма Ondo ушла с коротким текстом без ссылки;
+  здесь — факт из их документации и один точный вопрос.
+- **Ответа нет.** Трекер: `OUTREACH-LEDGER.csv`.
