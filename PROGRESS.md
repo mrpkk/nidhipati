@@ -771,3 +771,13 @@ python3 -m nidhipati_proof.cli verify examples/proof-of-spend.example.json --pub
 - Зачем: $250-оффер должен быть осязаемым; письмо с ценой без примера —
   абстракция. Теперь можно отправить одну ссылку.
 - **0 клиентов**, страница не выдаёт себя за отзыв.
+
+### G34 — RWA-страница: CTA вёл на spend scan (27.10.2026)
+
+- На `rwa-proof-of-reserve.html` три кнопки «reserve review» открывали письмо с
+  **spend-scan** темой и полями (CSV, tx hashes, monthly spend). RWA-покупатель
+  попадал в чужой процесс.
+- Исправлено: `subject=Nidhipati reserve review`, поля Issuer/Asset/Public page;
+  кнопки «Free reserve check», «Request a reserve check», «Request a $250 review»;
+  рядом — ссылка на sample review.
+- Проверено на живой странице: 3 reserve-темы, 1 sample link, 1 $250 CTA.
