@@ -1,15 +1,16 @@
 name,segment,website,contact,status,notes
-Ondo Finance,tokenized treasuries,https://ondo.finance/,,unverified,public example; find reserve/NAV owner
+Ondo Finance,tokenized treasuries,https://ondo.finance/,ondo.finance/contact form,sent,2026-10-26 partnership form; confirmation received; asked reserve owner
 Franklin BENJI,tokenized treasuries,https://www.franklintempleton.com/,,unverified,public example; large incumbent
 BlackRock BUIDL,tokenized treasuries,https://www.blackrock.com/,,unverified,public example; not a near-term SMB lead
-Superstate,tokenized treasuries,https://superstate.com/,,unverified,public example
-Maple Finance,private credit,https://maple.finance/,,blocked,maple.finance/contact: 403 для нашего IP
-Centrifuge,private credit,https://centrifuge.io/,,email-obfuscated,"centrifuge.io/contact: press/partnerships зашифрованы Cloudflare, форма для инвесторов"
+Superstate,tokenized treasuries,https://superstate.com/,clients@superstate.co,sent,2026-10-26 signed reserve proof for tokenized treasuries
+Maple Finance,private credit,https://maple.finance/,maple.finance/contact,blocked,2026-10-26 Cloudflare 403
+Centrifuge,private credit,https://centrifuge.io/,connect@centrifuge.io,sent,2026-10-26 offline-verifiable NAV for pools
 Goldfinch,private credit,https://goldfinch.finance/,,unverified,public example
-Paxos Gold,tokenized gold,https://paxos.com/,,unverified,public example
-Backed Finance,tokenized equities,https://backed.fi/,,unverified,public example
-Hashnote,tokenized treasury,https://hashnote.com/,,unverified,public example
-Mountain Protocol,stablecoin,https://mountainprotocol.com/,,unverified,public example
-Securitize,RWA platform,https://securitize.io/,,form,securitize.io/contact отдаёт только заголовок: контакт через форму
-Tokeny,RWA platform,https://tokeny.com/,,form,"tokeny.com/contact: форма + адрес в Люксембурге, открытого email нет"
-DigiFT,RWA platform,https://digift.io/,,unverified,public example
+Paxos Gold,tokenized gold,https://paxos.com/,paxos.com/contact,form-not-loaded,2026-10-26 contact page form did not load; no public sales email
+Backed Finance,tokenized equities,https://backed.fi/,contact@backed.fi,sent,2026-10-26 private reserve attestation; $5k/$50k
+Hashnote,tokenized treasury,https://hashnote.com/,hashnote.com/contact,blocked,2026-10-26 lockout page
+Mountain Protocol,stablecoin,https://mountainprotocol.com/,sales@mountainprotocol.com,sent,2026-10-26 signed reserve proof for USDM
+Securitize,RWA platform,https://securitize.io/,info@securitize.io,sent,2026-10-26 white-label reserve attestation
+Tokeny,RWA platform,https://tokeny.com/,contact@tokeny.com,sent,2026-10-26 white-label for Tokeny issuers
+DigiFT,RWA platform,https://digift.io/,digift.io/contact,tls-error,2026-10-26 certificate common-name mismatch
+Bitbond,RWA platform,https://bitbond.com/,service@bitbond.com,sent,2026-10-26 white-label reserve attestation
