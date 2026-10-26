@@ -724,3 +724,10 @@ python3 -m nidhipati_proof.cli verify examples/proof-of-spend.example.json --pub
   на `https://mrpkk.github.io/nidhipati/mcp.html`, в описании указано «Five read-only
   MCP tools in the BusinessMCP Hub, $0.01 per call». MCP server URL остаётся GitHub —
   это и есть причина «Connect it free» без tools. Ждём поддержку.
+
+### G29 — CI: docs-only pushes не тратят Actions minutes (27.10.2026)
+
+- GitHub: использовано **90% из 2 000 минут**, сброс 01.11. Причина — каждый
+  docs-commit запускал matrix 3.10/3.12.
+- В `test.yml` добавлен `paths-ignore: docs/**, **/*.md` для push/PR; код
+  по-прежнему проверяется.
