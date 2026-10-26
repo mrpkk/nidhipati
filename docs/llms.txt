@@ -25,3 +25,5 @@ Free scan, no account needed (email, no GitHub). Audit $1,250 for the first thre
 ## BusinessMCP directory
 
 https://businessmcp.com/mcp-servers/nidhipati
+
+- https://mrpkk.github.io/nidhipati/sample-reserve-review.html
