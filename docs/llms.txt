@@ -19,7 +19,7 @@ https://github.com/mrpkk/nidhipati/blob/main/docs/PROOF-OF-SPEND.md
 
 ## Pricing
 
-Free scan. First 3 paid audits $1,250; then $2,500 or 20% of verified savings. $5,000 finding guarantee (identified overcharges, not recovery). Retainer $1,500/mo. Enterprise from $5,000 (productized report); issuer/white-label from $50,000 (RWA reserve, prediction evidence, reconciliation). USDC on Base/Solana; card not live. No custody.
+Free scan. First 3 paid audits $1,250; then $2,500 or 20% of verified savings. $5,000 finding guarantee (identified overcharges, not recovery). Retainer $1,500/mo. Enterprise: first 3 single-asset reports $1,250, then from $5,000; issuer/white-label from $50,000 (RWA reserve, prediction evidence, reconciliation). USDC on Base/Solana; card not live. No custody.
 - https://mrpkk.github.io/nidhipati/pricing.html
 - https://mrpkk.github.io/nidhipati/security.html
 - https://mrpkk.github.io/nidhipati/vs-ai-finops.html
@@ -29,3 +29,6 @@ Free scan. First 3 paid audits $1,250; then $2,500 or 20% of verified savings. $
 - https://mrpkk.github.io/nidhipati/verify-receipt.html
 
 - https://mrpkk.github.io/nidhipati/sample-spend-audit.html
+- https://mrpkk.github.io/nidhipati/sample-reserve-report.html
+- https://mrpkk.github.io/nidhipati/rwa-scope.html
+- https://mrpkk.github.io/nidhipati/rwa-scope.pdf
