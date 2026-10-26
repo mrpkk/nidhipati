@@ -531,7 +531,7 @@ python3 -m nidhipati_proof.cli verify examples/proof-of-spend.example.json --pub
   вопрос — просят ли enterprise-клиенты reconciliation/recovery, или дашборда хватает.
 - **LiteLLM (BerriAI)** `ishaan@berri.ai`: аудит после прокси; вопрос — нужна ли
   интеграция spend-audit пользователям LiteLLM, или budget enforcement достаточен.
-- **Langfuse:** публичного email в README нет; в контактную форму/догадки не пошёл.
+- **Langfuse** `contact@langfuse.com` (официальный imprint): аудит рядом с трейсами.
 - Это ровно следующий шаг из `agent-trust/PROGRESS` P6: 3 FinOps-цели, а не 10.
-  Отправлено 2 из 3; третья — только с проверенным адресом.
+  Отправлено 3 из 3, только по проверенным адресам.
 - **Ответов: 0.** Трекер: `OUTREACH-LEDGER.csv`.
