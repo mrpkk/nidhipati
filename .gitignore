@@ -6,3 +6,7 @@ __pycache__/
 venv/
 keys/
 *.pem
+
+# Контакты и результаты обхода — локально, не в git
+outreach/targets_agent.csv
+outreach/probe*.csv
