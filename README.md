@@ -7,6 +7,7 @@
 [![tests](https://github.com/mrpkk/nidhipati/actions/workflows/test.yml/badge.svg)](https://github.com/mrpkk/nidhipati/actions/workflows/test.yml)
 [![MCP Registry](https://img.shields.io/badge/MCP%20Registry-io.github.mrpkk%2Fnidhipati-7ee2b8)](https://registry.modelcontextprotocol.io/v0/servers?search=nidhipati)
 [![Glama](https://img.shields.io/badge/Glama-listed-f2c46d)](https://glama.ai/mcp/servers/mrpkk/nidhipati)
+[![BusinessMCP](https://img.shields.io/badge/BusinessMCP-live-7ee2b8)](https://businessmcp.com/mcp-servers/nidhipati)
 [![license](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](LICENSE)
 
 **Status:** v0.6 — five CLIs, an MCP server, 91 tests, official MCP Registry and Glama listing.
