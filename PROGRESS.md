@@ -743,3 +743,11 @@ python3 -m nidhipati_proof.cli verify examples/proof-of-spend.example.json --pub
   если достаточно — закрываю тред.
 - Это второй, **конкретный** контакт после общего письма 26.10; не серия пингов.
 - **Ответа нет.** Трекер: `OUTREACH-LEDGER.csv`.
+
+### G31 — follow-up 28.10: персональные крючки (27.10.2026)
+
+- В `outreach/FOLLOWUP-2026-10-28.md` добавлена таблица «один крючок на адрес»:
+  Backed, Tokeny, Securitize, Centrifuge, Superstate, Mountain, Bitbond, PayAI,
+  Helicone, LiteLLM, Langfuse, Agent402.
+- Правило: один крючок на письмо; если не подходит — адрес закрывается, а не
+  получает generic-пинг. Отправка — **28.10**, не раньше.
