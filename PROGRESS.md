@@ -439,3 +439,12 @@ python3 -m nidhipati_proof.cli verify examples/proof-of-spend.example.json --pub
 - **Reddit:** ответы в r/mcp (`1xel1la`) отправлены для attest; новых ответов по Nidhipati нет.
 - **Сканы:** 0; платных: 0; выручка: $0.
 - **Решение:** новых писем не рассылать; ждать ответы/сканы. Следующий шаг — только при ответе или новом тёплом контакте.
+
+### G11 — RWA outreach: Backed (26.10.2026)
+
+- **Отправлено:** `contact@backed.fi`, тема `Nidhipati: private reserve attestation for tokenized assets`.
+- **Оффер:** productized single-asset report from $5,000; issuer/white-label from $50,000.
+- **Один вопрос:** кто подписывает reserve methodology — issuer, custodian или внешний аудитор.
+- Без вложений; ссылка на synthetic sample в подписи. Трекер: `OUTREACH-LEDGER.csv`.
+- **Честно:** это первый RWA-контакт после 14 непроверенных целей; ответа пока нет.
+- **Следующий шаг:** проверить bounce/ответ через 24 ч; при ответе — 2-страничный scope.
