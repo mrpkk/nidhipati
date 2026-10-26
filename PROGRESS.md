@@ -527,11 +527,12 @@ python3 -m nidhipati_proof.cli verify examples/proof-of-spend.example.json --pub
 
 ### G18 — FinOps/observability partners (26.10.2026)
 
-- **Helicone** `enterprise@helicone.ai`: аудит расходов рядом с observability;
-  вопрос — просят ли enterprise-клиенты reconciliation/recovery, или дашборда хватает.
+- **Helicone** `enterprise@helicone.ai` — **bounce**: Google Group не существует.
+  Переотправлено на `help@helicone.ai`; вопрос тот же — нужен ли reconciliation/recovery.
 - **LiteLLM (BerriAI)** `ishaan@berri.ai`: аудит после прокси; вопрос — нужна ли
   интеграция spend-audit пользователям LiteLLM, или budget enforcement достаточен.
 - **Langfuse** `contact@langfuse.com` (официальный imprint): аудит рядом с трейсами.
 - Это ровно следующий шаг из `agent-trust/PROGRESS` P6: 3 FinOps-цели, а не 10.
   Отправлено 3 из 3, только по проверенным адресам.
-- **Ответов: 0.** Трекер: `OUTREACH-LEDGER.csv`.
+- **Ответов: 0.** Bounce только по `enterprise@`; LiteLLM и Langfuse без bounce.
+  Трекер: `OUTREACH-LEDGER.csv`.
