@@ -19,13 +19,13 @@
 <header><div class="wrap nav">
   <a class="brand" href="index.html"><span class="mark">N</span> Nidhipati</a>
   <nav class="navlinks">
-    <a href="agent-spend-audit.html">Spend audit</a><a href="free-spend-audit.html">Free audit</a><a href="mcp.html">MCP</a>
+    <a href="agent-spend-audit.html">Spend audit</a>
     <a href="x402-receipt.html">x402 receipt</a>
     <a href="rwa-proof-of-reserve.html">RWA reserve</a>
     <a href="prediction-resolution.html">Prediction</a>
-    <a href="stablecoin-reconciliation.html">Stablecoin</a><a href="pricing.html">Pricing</a><a href="security.html">Security</a>
+    <a href="stablecoin-reconciliation.html">Stablecoin</a>
     <a href="https://github.com/mrpkk/nidhipati">GitHub</a>
-    <a class="btn primary" href="https://github.com/mrpkk/nidhipati/issues/new?template=free-spend-audit.yml">Request a private scan</a>
+    <a class="btn primary" href="mailto:maxim.pkk@gmail.com?subject=Nidhipati%20free%20scan&body=1)%20What%20the%20agent%20pays%20for%3A%0A2)%20CSV%20or%20JSON%20export%20attached%3A%20yes%2Fno%0A3)%20Public%20tx%20hashes%20(optional)%3A%0A4)%20Monthly%20spend%20range%3A%0A%0ANo%20keys%2C%20no%20customer%20data%20needed.">Free scan</a>
   </nav>
 </div></header>
 
@@ -35,7 +35,7 @@
   <h1>x402 receipt verification</h1>
   <div class="lede">Verify an x402 payment receipt: amount, asset, network, payee, tx hash, mandate, usage and refund. Proof of Spend v0.1 spec and validator.</div>
   <div class="actions">
-    <a class="btn primary" href="https://github.com/mrpkk/nidhipati/issues/new?template=free-spend-audit.yml">Request a private scan</a>
+    <a class="btn primary" href="mailto:maxim.pkk@gmail.com?subject=Nidhipati%20free%20scan&body=1)%20What%20the%20agent%20pays%20for%3A%0A2)%20CSV%20or%20JSON%20export%20attached%3A%20yes%2Fno%0A3)%20Public%20tx%20hashes%20(optional)%3A%0A4)%20Monthly%20spend%20range%3A%0A%0ANo%20keys%2C%20no%20customer%20data%20needed.">Request a free scan</a>
     <a class="btn" href="https://github.com/mrpkk/nidhipati/blob/main/docs/PROOF-OF-SPEND.md">Read the spec</a>
   </div>
   <div class="micro">Written scope and written report — no calls. No wallet access for the first scan.</div>
@@ -73,26 +73,6 @@
   <p class="micro">v0.1 does not query the chain; it says <code>onchain_verified=false</code> explicitly. That is the honest boundary.</p>
 </div></section>
 
-<section><div class="wrap">
-<h2>Run it yourself</h2>
-  <p>No account and no key of ours: generate a keypair, sign the example receipt, verify it.
-  Then move the amount by one cent and watch the signature break.</p>
-  <pre><code>python3 -m nidhipati_proof keygen --out-dir keys
-python3 -m nidhipati_proof sign examples/proof-of-spend.example.json --key keys/private.pem
-nidhipati-proof verify examples/proof-of-spend.example.json.signed.json --pubkey &lt;b64 from keygen&gt;
-
-# OK
-#   ✓ schema   ✓ signature_alg: Ed25519   ✓ signature: Ed25519
-#   ✓ mandate_expiry: settled &lt;= expires  ✓ usage_amount: quantity * unit_price == amount
-#   ✓ refund: 0 &lt;= refund &lt;= amount
-
-# after changing the amount by one cent:
-# error: signature: invalid
-# error: usage: quantity * unit_price does not match payment amount
-# exit code 1</code></pre>
-  <p class="micro">Synthetic example; the verification is real, local, and needs no service of ours.</p>
-</div></section>
-<section><div class="wrap"><p class="micro"><a href="verify-receipt.html">Verify a Proof of Spend receipt in your browser</a> — Ed25519, no upload.</p></div></section>
 </main>
 
 <footer><div class="wrap">

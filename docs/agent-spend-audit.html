@@ -12,20 +12,20 @@
 <meta property="og:type" content="website">
 <link rel="stylesheet" href="styles.css">
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Nidhipati", "applicationCategory": "BusinessApplication", "operatingSystem": "Web, CLI", "description": "Proof of Spend and spend audit for AI agents. Verify mandate, amount, asset, network, payee and refund in a signed receipt.", "url": "https://mrpkk.github.io/nidhipati/agent-spend-audit.html", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD", "description": "Free scan"}}</script>
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "What data do you need?", "acceptedAnswer": {"@type": "Answer", "text": "A CSV/JSON usage export, invoice lines, or public transaction hashes. No keys or customer data."}}, {"@type": "Question", "name": "How do you prove savings?", "acceptedAnswer": {"@type": "Answer", "text": "Before/after measurement and provider invoice/transaction verification. Estimates are labelled; recovered means verified."}}, {"@type": "Question", "name": "What if you find nothing?", "acceptedAnswer": {"@type": "Answer", "text": "The report says so. There is no success fee without a verified finding."}}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "What data do you need?", "acceptedAnswer": {"@type": "Answer", "text": "A CSV/JSON usage export, invoice lines, or public transaction hashes. No keys or customer data."}}, {"@type": "Question", "name": "How do you prove savings?", "acceptedAnswer": {"@type": "Answer", "text": "Before/after measurement and provider invoice/transaction verification. Estimates are labelled; recovered means verified."}}, {"@type": "Question", "name": "What if you find nothing?", "acceptedAnswer": {"@type": "Answer", "text": "The report says so. There is no success fee without a verified finding."}}, {"@type": "Question", "name": "Can I see the deliverable first?", "acceptedAnswer": {"@type": "Answer", "text": "Yes — a sample audit on 44 rows is public: https://mrpkk.github.io/nidhipati/audit-sample.html"}}]}</script>
 </head>
 <body>
 
 <header><div class="wrap nav">
   <a class="brand" href="index.html"><span class="mark">N</span> Nidhipati</a>
   <nav class="navlinks">
-    <a href="agent-spend-audit.html">Spend audit</a><a href="free-spend-audit.html">Free audit</a><a href="mcp.html">MCP</a>
+    <a href="agent-spend-audit.html">Spend audit</a>
     <a href="x402-receipt.html">x402 receipt</a>
     <a href="rwa-proof-of-reserve.html">RWA reserve</a>
     <a href="prediction-resolution.html">Prediction</a>
-    <a href="stablecoin-reconciliation.html">Stablecoin</a><a href="pricing.html">Pricing</a><a href="security.html">Security</a>
+    <a href="stablecoin-reconciliation.html">Stablecoin</a>
     <a href="https://github.com/mrpkk/nidhipati">GitHub</a>
-    <a class="btn primary" href="free-spend-audit.html">Run free scan</a>
+    <a class="btn primary" href="mailto:maxim.pkk@gmail.com?subject=Nidhipati%20free%20scan&body=1)%20What%20the%20agent%20pays%20for%3A%0A2)%20CSV%20or%20JSON%20export%20attached%3A%20yes%2Fno%0A3)%20Public%20tx%20hashes%20(optional)%3A%0A4)%20Monthly%20spend%20range%3A%0A%0ANo%20keys%2C%20no%20customer%20data%20needed.">Free scan</a>
   </nav>
 </div></header>
 
@@ -35,7 +35,7 @@
   <h1>AI agent spend audit</h1>
   <div class="lede">Audit AI-agent, API and x402 spend: duplicates, price escalation, failed-but-but-billed calls, runaway loops and missing refunds. Free scan, written report.</div>
   <div class="actions">
-    <a class="btn primary" href="free-spend-audit.html">Run free scan</a>
+    <a class="btn primary" href="mailto:maxim.pkk@gmail.com?subject=Nidhipati%20free%20scan&body=1)%20What%20the%20agent%20pays%20for%3A%0A2)%20CSV%20or%20JSON%20export%20attached%3A%20yes%2Fno%0A3)%20Public%20tx%20hashes%20(optional)%3A%0A4)%20Monthly%20spend%20range%3A%0A%0ANo%20keys%2C%20no%20customer%20data%20needed.">Request a free scan</a>
     <a class="btn" href="https://github.com/mrpkk/nidhipati/blob/main/docs/PROOF-OF-SPEND.md">Read the spec</a>
   </div>
   <div class="micro">Written scope and written report — no calls. No wallet access for the first scan.</div>
@@ -59,35 +59,23 @@
     <h3>What you get</h3>
     <p>A written report: finding, evidence, estimated overpay, fix. We mark estimates as estimates; “recovered” means verified against the provider invoice or transaction.</p>
     <div style="height:14px"></div>
-    <a class="btn primary" href="free-spend-audit.html">Run free scan</a>
+    <a class="btn primary" href="mailto:maxim.pkk@gmail.com?subject=Nidhipati%20free%20scan&body=1)%20What%20the%20agent%20pays%20for%3A%0A2)%20CSV%20or%20JSON%20export%20attached%3A%20yes%2Fno%0A3)%20Public%20tx%20hashes%20(optional)%3A%0A4)%20Monthly%20spend%20range%3A%0A%0ANo%20keys%2C%20no%20customer%20data%20needed.">Request a free scan</a>
   </div>
 </div></section>
 
 <section><div class="wrap">
-  <h2>Run it yourself, on the sample</h2>
-  <p>No form, no account: the same checks run on your machine, and the sample contains every
-  finding exactly once so you can see the shape of a report before trusting it with real invoices.</p>
-  <pre><code>python3 -m pip install -e .
-nidhipati-spend audit examples/spend-sample.csv --policy examples/spend-policy.example.json</code></pre>
-  <p>Real output on the synthetic sample (44 rows):</p>
-  <pre><code>Rows read: 44 · settled $0.661 · spent without a reason $0.14 ·
-above the usual price $0.36 · over the limit $0.430 · errors 5, warnings 6
-
-| row | code             | severity | agent        | $     | detail                                                   |
-|-----|------------------|----------|--------------|-------|----------------------------------------------------------|
-| 0   | budget_exceeded  | error    | agent-writer | 0.430 | spent 0.630 against a limit of 0.20                      |
-| 5   | duplicate_charge | error    | agent-writer | 0.02  | same tx_hash as row 2                                    |
-| 7   | price_escalation | error    | agent-writer | 0.03  | settled 0.05 above quote 0.02                            |
-| 8   | failed_but_billed| error    | agent-writer | 0.03  | status 'failed' with 0.03 charged                        |
-| 9   | missing_refund   | error    | agent-writer | 0.06  | charged 0.10 for actual 0.04, refund not recorded        |</code></pre>
-  <p class="micro">Synthetic sample, labelled as such in the repository; no client numbers appear anywhere on this site.
-  The full rule set is public: <a href="https://github.com/mrpkk/nidhipati/blob/main/docs/AGENT-SPEND-AUDIT.md">AGENT-SPEND-AUDIT.md</a> ·
-  <a href="https://github.com/mrpkk/nidhipati/blob/main/examples/spend-sample.csv">sample.csv</a></p>
-</section>
-
-<section><div class="wrap"><h2>Resources</h2>
-<p><a href="agent-spend-audit-checklist.html">10-check agent spend checklist</a> · <a href="vs-ai-finops.html">Nidhipati vs AI FinOps dashboards</a> · <a href="pricing.html">Pricing</a> · <a href="security.html">Agent wallet security</a></p>
+  <h2>Illustrative report (synthetic, not a client)</h2>
+  <table>
+    <tr><th>Finding</th><th>Calls</th><th>Overpay</th></tr>
+    <tr><td>Duplicate retries</td><td>4.2%</td><td>$1,260</td></tr>
+    <tr><td>Price escalation</td><td>1.8%</td><td>$840</td></tr>
+    <tr><td>Failed-but-billed</td><td>0.9%</td><td>$310</td></tr>
+    <tr><td>Frontier model on simple tasks</td><td>11%</td><td>$2,100</td></tr>
+    <tr><td><b>Total</b></td><td></td><td><b>$4,510</b></td></tr>
+  </table>
+  <p class="micro">Example format only. No real client numbers are shown.</p>
 </div></section>
+
 </main>
 
 <footer><div class="wrap">

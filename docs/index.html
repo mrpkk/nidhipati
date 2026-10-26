@@ -12,20 +12,20 @@
 <meta property="og:type" content="website">
 <link rel="stylesheet" href="styles.css">
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Nidhipati", "applicationCategory": "BusinessApplication", "operatingSystem": "Web, CLI", "description": "Proof of Spend and spend audit for AI agents. Verify mandate, amount, asset, network, payee and refund in a signed receipt.", "url": "https://mrpkk.github.io/nidhipati/", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD", "description": "Free scan"}}</script>
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Do you need my private keys?", "acceptedAnswer": {"@type": "Answer", "text": "No. The first scan needs public transaction hashes, a CSV/invoice export, or a description. We never ask for keys or seed phrases."}}, {"@type": "Question", "name": "Is this a statutory audit?", "acceptedAnswer": {"@type": "Answer", "text": "No. It is technical evidence and a signed receipt. RWA/NAV work is a supporting report; a licensed auditor or lawyer gives the regulated opinion."}}, {"@type": "Question", "name": "How much does it cost?", "acceptedAnswer": {"@type": "Answer", "text": "Free scan for one flow. First 3 paid audits: $1,250; after that $2,500 or 20% of verified savings. $5,000 finding guarantee. Control retainer: $1,500/mo. No custody."}}, {"@type": "Question", "name": "Are you certified?", "acceptedAnswer": {"@type": "Answer", "text": "No certifications are claimed. We are a new practice with an open-source validator and a written report."}}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Do you need my private keys?", "acceptedAnswer": {"@type": "Answer", "text": "No. The first scan needs public transaction hashes, a CSV/invoice export, or a description. We never ask for keys or seed phrases."}}, {"@type": "Question", "name": "Is this a statutory audit?", "acceptedAnswer": {"@type": "Answer", "text": "No. It is technical evidence and a signed receipt. RWA/NAV work is a supporting report; a licensed auditor or lawyer gives the regulated opinion."}}, {"@type": "Question", "name": "How much does it cost?", "acceptedAnswer": {"@type": "Answer", "text": "Free scan for one flow. Paid audit: $2,500 or 20% of verified savings. Control retainer: $1,500/mo. No custody."}}, {"@type": "Question", "name": "Are you certified?", "acceptedAnswer": {"@type": "Answer", "text": "No certifications are claimed. We are a new practice with an open-source validator and a written report."}}]}</script>
 </head>
 <body>
 
 <header><div class="wrap nav">
   <a class="brand" href="index.html"><span class="mark">N</span> Nidhipati</a>
   <nav class="navlinks">
-    <a href="agent-spend-audit.html">Spend audit</a><a href="free-spend-audit.html">Free audit</a><a href="mcp.html">MCP</a>
+    <a href="agent-spend-audit.html">Spend audit</a>
     <a href="x402-receipt.html">x402 receipt</a>
     <a href="rwa-proof-of-reserve.html">RWA reserve</a>
     <a href="prediction-resolution.html">Prediction</a>
-    <a href="stablecoin-reconciliation.html">Stablecoin</a><a href="pricing.html">Pricing</a><a href="security.html">Security</a>
+    <a href="stablecoin-reconciliation.html">Stablecoin</a>
     <a href="https://github.com/mrpkk/nidhipati">GitHub</a>
-    <a class="btn primary" href="free-spend-audit.html">Run free scan</a>
+    <a class="btn primary" href="mailto:maxim.pkk@gmail.com?subject=Nidhipati%20free%20scan&body=1)%20What%20the%20agent%20pays%20for%3A%0A2)%20CSV%20or%20JSON%20export%20attached%3A%20yes%2Fno%0A3)%20Public%20tx%20hashes%20(optional)%3A%0A4)%20Monthly%20spend%20range%3A%0A%0ANo%20keys%2C%20no%20customer%20data%20needed.">Free scan</a>
   </nav>
 </div></header>
 
@@ -33,9 +33,9 @@
 <section class="hero"><div class="wrap">
   <span class="kicker"><span class="dot"></span> Draft v0.1 · open spec · no custody</span>
   <h1>Proof of Spend for AI agents</h1>
-  <div class="lede">Nidhipati verifies the payment path for AI agents: mandate, amount, asset, network, payee, usage, refund and verdict in a signed receipt. Free browser scan in under a minute, no account.</div>
+  <div class="lede">Nidhipati verifies the payment path for AI agents: mandate, amount, asset, network, payee, usage, refund and verdict in a signed receipt. Free scan.</div>
   <div class="actions">
-    <a class="btn primary" href="free-spend-audit.html">Run free scan</a>
+    <a class="btn primary" href="mailto:maxim.pkk@gmail.com?subject=Nidhipati%20free%20scan&body=1)%20What%20the%20agent%20pays%20for%3A%0A2)%20CSV%20or%20JSON%20export%20attached%3A%20yes%2Fno%0A3)%20Public%20tx%20hashes%20(optional)%3A%0A4)%20Monthly%20spend%20range%3A%0A%0ANo%20keys%2C%20no%20customer%20data%20needed.">Request a free scan</a>
     <a class="btn" href="https://github.com/mrpkk/nidhipati/blob/main/docs/PROOF-OF-SPEND.md">Read the spec</a>
   </div>
   <div class="micro">Written scope and written report — no calls. No wallet access for the first scan.</div>
@@ -73,13 +73,11 @@
 </div></section>
 
 <section><div class="wrap">
-  <h2>Five modules, one money layer</h2>
+  <h2>Three modules, one money layer</h2>
   <div class="grid cards">
     <div class="card"><span class="tag">Proof</span><b>Proof of Spend</b><p>Signed JSON receipt. Verify mandate, amount, asset, network, payee, usage and refund offline.</p><a class="btn" href="x402-receipt.html">x402 receipt</a></div>
     <div class="card"><span class="tag">Spend</span><b>Agent Spend Audit</b><p>Duplicates, price escalation, failed-but-billed, runaway loops, missing refunds, model overpay.</p><a class="btn" href="agent-spend-audit.html">Spend audit</a></div>
-    <div class="card"><span class="tag">Reserve</span><b>RWA proof of reserve</b><p>Reserve composition, NAV inputs, source hashes, signed report — for small issuers and funds.</p><a class="btn" href="rwa-proof-of-reserve.html">RWA reserve</a>
-    <div class="card"><span class="tag">Resolve</span><b>Resolution evidence</b><p>Did the sources the resolver read actually agree? Verdicts: supported, disputed, single_source, insufficient.</p><a class="btn" href="prediction-resolution.html">How it works</a></div>
-    <div class="card"><span class="tag">Reconcile</span><b>Stablecoin reconciliation</b><p>Invoices against transfers: what is closed, what nobody paid, what arrived without an invoice. A duplicate is counted once.</p><a class="btn" href="stablecoin-reconciliation.html">How it works</a></div></div>
+    <div class="card"><span class="tag">Reserve</span><b>RWA proof of reserve</b><p>Reserve composition, NAV inputs, source hashes, signed report — for small issuers and funds.</p><a class="btn" href="rwa-proof-of-reserve.html">RWA reserve</a></div>
   </div>
 </div></section>
 
@@ -96,18 +94,15 @@
   <h2>Pricing</h2>
   <table>
     <tr><th>Offer</th><th>Price</th><th>What</th></tr>
-    <tr><td>Free scan</td><td>0</td><td>Browser audit in under a minute, no account; human review by email/Telegram</td></tr>
-    <tr><td>Audit</td><td><b>$1,250</b> first 3, then <b>$2,500</b><br><span class="micro">or 20% of verified savings</span></td><td>Duplicates, escalation, failed-but-billed, refunds, routing, $5,000 finding guarantee</td></tr>
-    <tr><td>Retainer</td><td><b>$1,500/mo</b></td><td>Monthly audit, alerts, receipt checks, monthly report</td></tr>
-    <tr><td>Enterprise</td><td><b>from $5,000</b><br><span class="micro">issuer/white-label from $50,000</span></td><td>RWA reserve, prediction evidence, stablecoin reconciliation, white-label</td></tr>
+    <tr><td>Free scan</td><td>0</td><td>One flow / one week, 48h report</td></tr>
+    <tr><td>Spend audit</td><td>$2,500 or 20% of verified savings</td><td>Duplicates, escalation, failed-but-billed, refunds, routing</td></tr>
+    <tr><td>Control retainer</td><td>$1,500/mo</td><td>Budgets, alerts, receipt checks, monthly report</td></tr>
+    <tr><td>RWA reserve report</td><td>$2,500–5,000</td><td>Proof of reserve / NAV, signed, sourced</td></tr>
+    <tr><td>Prediction resolution</td><td>$500–2,000</td><td>Evidence, sources, conflicts, signed report</td></tr>
   </table>
-  <p class="micro">USDC on Base/Solana; 50% upfront. Card checkout is not live yet; ask for a link. No custody.</p>
+  <p class="micro">USDC on Base/Solana; 50% upfront. Card on-ramp by request; no custody.</p>
 </div></section>
 
-<section><div class="wrap"><h2>Resources</h2>
-<p><a href="sample-spend-audit.html">Sample audit report</a> · <a href="sample-reserve-report.html">Sample reserve report</a> · <a href="agent-spend-audit-checklist.html">10-check agent spend checklist</a> · <a href="vs-ai-finops.html">Nidhipati vs AI FinOps dashboards</a> · <a href="pricing.html">Pricing</a> · <a href="security.html">Agent wallet security</a></p>
-</div></section>
-<section><div class="wrap"><p class="micro"><a href="verify-receipt.html">Verify a Proof of Spend receipt in your browser</a> — Ed25519, no upload.</p></div></section>
 </main>
 
 <footer><div class="wrap">

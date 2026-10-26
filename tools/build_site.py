@@ -10,7 +10,18 @@ from pathlib import Path
 BASE = "https://mrpkk.github.io/nidhipati"
 ROOT = Path(__file__).resolve().parents[1]
 DOCS = ROOT / "docs"
-FORM = "https://github.com/mrpkk/nidhipati/issues/new?template=scan-request.yml"
+# Барьер: половина команд агентов не имеет GitHub-аккаунта на человека,
+# а форма на issue-шаблоне требовала именно его. Почта есть у всех.
+# 26.10.2026: заявка уходит письмом, без аккаунта и без бэкенда.
+FORM = (
+    "mailto:maxim.pkk@gmail.com"
+    "?subject=Nidhipati%20free%20scan"
+    "&body=1)%20What%20the%20agent%20pays%20for%3A%0A"
+    "2)%20CSV%20or%20JSON%20export%20attached%3A%20yes%2Fno%0A"
+    "3)%20Public%20tx%20hashes%20(optional)%3A%0A"
+    "4)%20Monthly%20spend%20range%3A%0A"
+    "%0ANo%20keys%2C%20no%20customer%20data%20needed."
+)
 
 NAV = """
 <header><div class="wrap nav">
@@ -327,9 +338,119 @@ def stable_body() -> str:
 """.replace("__FORM__", FORM)
 
 
+def audit_sample_body() -> str:
+    return """
+<section><div class="wrap">
+  <p class="sub">A worked example, not a client engagement. The data is our own 44-row
+  fixture (`examples/spend-sample.csv`); the output is the real CLI, unedited. We publish it
+  so a buyer can see the shape of the deliverable before paying for one.</p>
+</div></section>
+
+<section><div class="wrap">
+  <h2>1. What was checked</h2>
+  <p class="sub">Ten checks, each answering one question. A check that finds nothing says so.</p>
+  <ul class="checks">
+    <li>Duplicate charge — same tx_hash paid twice</li>
+    <li>Price escalation — settled above quote</li>
+    <li>Failed but billed — error status, money taken</li>
+    <li>Missing refund — charged above actual, no refund line</li>
+    <li>Model overpay — paid above the median for the same tool and model</li>
+    <li>Budget exceeded — spend above the agent's limit</li>
+    <li>Runaway loop — calls per minute above threshold</li>
+    <li>Unknown asset / network — money moved outside the expected rails</li>
+    <li>Missing payee — no counterparty recorded</li>
+    <li>Unpriced call — spend with no reason attached</li>
+  </ul>
+</div></section>
+
+<section><div class="wrap">
+  <h2>2. The data</h2>
+  <table>
+    <tr><th>Field</th><th>Value</th></tr>
+    <tr><td>Rows read</td><td>44</td></tr>
+    <tr><td>Settled</td><td>$0.661</td></tr>
+    <tr><td>Agents</td><td>2</td></tr>
+    <tr><td>Asset / network</td><td>USDC on Base</td></tr>
+    <tr><td>Period</td><td>One month</td></tr>
+    <tr><td>Input format</td><td>CSV: ts, agent, tool, model, quote, settled, actual, refund, asset, network, tx_hash, payee, status</td></tr>
+  </table>
+  <p class="sub">No keys, no prompts, no customer data. Amounts, ids and payees only.</p>
+</div></section>
+
+<section><div class="wrap">
+  <h2>3. Findings</h2>
+  <table>
+    <tr><th>Row</th><th>Code</th><th>Severity</th><th>$</th><th>Evidence</th></tr>
+    <tr><td>0</td><td>budget_exceeded</td><td>error</td><td>0.430</td><td>spent 0.630 against a limit of 0.20</td></tr>
+    <tr><td>5</td><td>duplicate_charge</td><td>error</td><td>0.02</td><td>same tx_hash as row 2 — 0xaaa1</td></tr>
+    <tr><td>7</td><td>price_escalation</td><td>error</td><td>0.03</td><td>settled 0.05 above quote 0.02 — 0xaaa5</td></tr>
+    <tr><td>8</td><td>failed_but_billed</td><td>error</td><td>0.03</td><td>status failed with 0.03 charged — 0xaaa6</td></tr>
+    <tr><td>9</td><td>missing_refund</td><td>error</td><td>0.06</td><td>charged 0.10 for actual 0.04 — 0xaaa7</td></tr>
+    <tr><td>9</td><td>model_overpay</td><td>warning</td><td>0.08</td><td>paid 0.10 against a median 0.02</td></tr>
+    <tr><td>10</td><td>unknown_asset</td><td>warning</td><td>0.02</td><td>asset MOON is not recognised</td></tr>
+    <tr><td>10</td><td>unknown_network</td><td>warning</td><td>0.02</td><td>network moonnet is not recognised</td></tr>
+    <tr><td>10</td><td>missing_payee</td><td>warning</td><td>0.02</td><td>no payee recorded</td></tr>
+    <tr><td>14</td><td>model_overpay</td><td>warning</td><td>0.28</td><td>paid 0.30 against a median 0.02</td></tr>
+    <tr><td>45</td><td>runaway_loop</td><td>warning</td><td>0</td><td>31 calls in 60s, threshold 30</td></tr>
+  </table>
+  <p class="sub">5 errors, 6 warnings. Every row carries a tx hash or a row number, so a
+  reader can open the ledger and disagree with us.</p>
+</div></section>
+
+<section><div class="wrap">
+  <h2>4. What it costs</h2>
+  <table>
+    <tr><th>Measure</th><th>Amount</th><th>What it means</th></tr>
+    <tr><td>Settled in the period</td><td>$0.661</td><td>the whole spend under audit</td></tr>
+    <tr><td>Spent with no reason attached</td><td>$0.14</td><td>money left the account, no recorded purpose</td></tr>
+    <tr><td>Above the usual price</td><td>$0.36</td><td>paid more than the median for the same call</td></tr>
+    <tr><td>Over the agent's limit</td><td>$0.43</td><td>budget breached before anyone noticed</td></tr>
+  </table>
+  <p class="sub">On a fixture this small the absolute numbers are not the point. The point is
+  the ratio: four error classes fired on 44 rows. On a real month the same four checks decide
+  whether an agent is a product or a leak.</p>
+</div></section>
+
+<section><div class="wrap">
+  <h2>5. What this report does not say</h2>
+  <ul>
+    <li>It does not verify the chain. v0.2 records <code>onchain_verified=false</code>; the
+    rows are checked against the records you provide.</li>
+    <li>It does not claim the agent was wrong or unsafe. It records what was spent.</li>
+    <li>It does not say money was recovered. Nothing was recovered here.</li>
+    <li>It does not replace a provider invoice. Estimates are labelled; confirmed means
+    matched against the counterparty.</li>
+    <li>If a check found nothing, the report says nothing was found for it — a missing
+    finding is not a clean bill of health.</li>
+  </ul>
+</div></section>
+
+<section><div class="wrap two">
+  <div>
+    <h2>6. What to do next</h2>
+    <ul class="checks">
+      <li>Fix the duplicate first: it is a bug, not a price</li>
+      <li>Put a hard limit per agent, not per company</li>
+      <li>Record a reason for every call, or do not pay it</li>
+      <li>Alert on failed-but-billed: that is money for nothing</li>
+      <li>Re-run the audit in 30 days with the same columns</li>
+    </ul>
+  </div>
+  <div class="panel">
+    <h3>Free scan</h3>
+    <p>One flow, no account, no GitHub. Send the export; the report comes back in writing.
+    First three audits: $1,250. Then $2,500.</p>
+    <div style="height:14px"></div>
+    <a class="btn primary" href="__FORM__">Request a free scan</a>
+  </div>
+</div></section>
+""".replace("__FORM__", FORM)
+
+
 PAGES = [
     ("", "Proof of Spend for AI agents — verify what the agent paid", "Nidhipati verifies the payment path for AI agents: mandate, amount, asset, network, payee, usage, refund and verdict in a signed receipt. Free scan.", "Proof of Spend for AI agents", index_body()),
     ("agent-spend-audit", "AI agent spend audit — find duplicate calls and refunds", "Audit AI-agent, API and x402 spend: duplicates, price escalation, failed-but-but-billed calls, runaway loops and missing refunds. Free scan, written report.", "AI agent spend audit", audit_body()),
+    ("audit-sample", "Sample agent spend audit — the real report on 44 rows", "A worked example of the agent spend audit: 44 rows, 11 findings, 5 errors, every row with evidence. The real CLI output, unedited. See the deliverable before paying.", "Sample agent spend audit", audit_sample_body()),
     ("x402-receipt", "x402 receipt verification — why 200 OK is not a payment", "Verify an x402 payment receipt: amount, asset, network, payee, tx hash, mandate, usage and refund. Proof of Spend v0.1 spec and validator.", "x402 receipt verification", x402_body()),
     ("rwa-proof-of-reserve", "RWA proof of reserve and NAV reporting", "Independent proof-of-reserve and NAV evidence for small RWA issuers and funds: reserve composition, source hashes, signed report. Not a statutory audit.", "RWA proof of reserve and NAV reporting", rwa_body()),
     ("prediction-resolution", "Prediction market resolution evidence and signed report", "A verifiable evidence trail for prediction market resolution: rules, sources, timestamps, hashes, conflicts and a signed report. Not gambling or market operation.", "Prediction market resolution evidence", prediction_body()),
@@ -347,6 +468,12 @@ FAQS = {
         ("What data do you need?", "A CSV/JSON usage export, invoice lines, or public transaction hashes. No keys or customer data."),
         ("How do you prove savings?", "Before/after measurement and provider invoice/transaction verification. Estimates are labelled; recovered means verified."),
         ("What if you find nothing?", "The report says so. There is no success fee without a verified finding."),
+        ("Can I see the deliverable first?", "Yes — a sample audit on 44 rows is public: https://mrpkk.github.io/nidhipati/audit-sample.html"),
+    ],
+    "audit-sample": [
+        ("Is this a real client?", "No. It is our own 44-row fixture, run through the real CLI, output unedited. We publish it so you can see the shape before paying."),
+        ("Why are the amounts so small?", "The fixture is small on purpose: four error classes fired on 44 rows. On a real month the same checks decide whether an agent is a product or a leak."),
+        ("How much is an audit?", "First three audits $1,250 each, then $2,500. Retainer $1,500/mo afterwards. USDC on Base."),
     ],
     "x402-receipt": [
         ("Does v0.1 verify the chain?", "No. It checks schema, signature, mandate, amount, usage, refund and verdict. On-chain verification is v0.2 and the result says onchain_verified=false."),
@@ -395,6 +522,7 @@ Nidhipati is a draft product with an open spec and a reference validator. It is 
 
 - https://mrpkk.github.io/nidhipati/
 - https://mrpkk.github.io/nidhipati/agent-spend-audit.html
+- https://mrpkk.github.io/nidhipati/audit-sample.html
 - https://mrpkk.github.io/nidhipati/x402-receipt.html
 - https://mrpkk.github.io/nidhipati/rwa-proof-of-reserve.html
 - https://mrpkk.github.io/nidhipati/prediction-resolution.html
@@ -406,7 +534,7 @@ https://github.com/mrpkk/nidhipati/blob/main/docs/PROOF-OF-SPEND.md
 
 ## Pricing
 
-Free scan. Audit $2,500 or 20% of verified savings. Control retainer $1,500/mo. USDC on Base/Solana. No custody.
+Free scan, no account needed (email, no GitHub). Audit $1,250 for the first three, then $2,500. Control retainer $1,500/mo. USDC on Base/Solana. No custody.
 """,
         encoding="utf-8",
     )

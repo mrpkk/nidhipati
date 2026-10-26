@@ -19,13 +19,13 @@
 <header><div class="wrap nav">
   <a class="brand" href="index.html"><span class="mark">N</span> Nidhipati</a>
   <nav class="navlinks">
-    <a href="agent-spend-audit.html">Spend audit</a><a href="free-spend-audit.html">Free audit</a><a href="mcp.html">MCP</a>
+    <a href="agent-spend-audit.html">Spend audit</a>
     <a href="x402-receipt.html">x402 receipt</a>
     <a href="rwa-proof-of-reserve.html">RWA reserve</a>
     <a href="prediction-resolution.html">Prediction</a>
-    <a href="stablecoin-reconciliation.html">Stablecoin</a><a href="pricing.html">Pricing</a><a href="security.html">Security</a>
+    <a href="stablecoin-reconciliation.html">Stablecoin</a>
     <a href="https://github.com/mrpkk/nidhipati">GitHub</a>
-    <a class="btn primary" href="https://github.com/mrpkk/nidhipati/issues/new?template=free-spend-audit.yml">Request a private scan</a>
+    <a class="btn primary" href="mailto:maxim.pkk@gmail.com?subject=Nidhipati%20free%20scan&body=1)%20What%20the%20agent%20pays%20for%3A%0A2)%20CSV%20or%20JSON%20export%20attached%3A%20yes%2Fno%0A3)%20Public%20tx%20hashes%20(optional)%3A%0A4)%20Monthly%20spend%20range%3A%0A%0ANo%20keys%2C%20no%20customer%20data%20needed.">Free scan</a>
   </nav>
 </div></header>
 
@@ -35,7 +35,7 @@
   <h1>Stablecoin reconciliation</h1>
   <div class="lede">Match USDC invoices to on-chain transactions, find duplicates, unmatched payments and missing refunds. Read-only, no custody.</div>
   <div class="actions">
-    <a class="btn primary" href="https://github.com/mrpkk/nidhipati/issues/new?template=free-spend-audit.yml">Request a private scan</a>
+    <a class="btn primary" href="mailto:maxim.pkk@gmail.com?subject=Nidhipati%20free%20scan&body=1)%20What%20the%20agent%20pays%20for%3A%0A2)%20CSV%20or%20JSON%20export%20attached%3A%20yes%2Fno%0A3)%20Public%20tx%20hashes%20(optional)%3A%0A4)%20Monthly%20spend%20range%3A%0A%0ANo%20keys%2C%20no%20customer%20data%20needed.">Request a free scan</a>
     <a class="btn" href="https://github.com/mrpkk/nidhipati/blob/main/docs/PROOF-OF-SPEND.md">Read the spec</a>
   </div>
   <div class="micro">Written scope and written report — no calls. No wallet access for the first scan.</div>
@@ -56,21 +56,12 @@
   </div>
   <div class="panel">
     <h3>Retainer</h3>
-    <p>$1,500/mo, month to month, 30 days notice — no minimum term. CSV/on-chain tx input. No keys, no custody, no money transmission.</p>
+    <p>$1,500/mo, 3 months minimum. CSV/on-chain tx input. No keys, no custody, no money transmission.</p>
     <div style="height:14px"></div>
-    <a class="btn primary" href="https://github.com/mrpkk/nidhipati/issues/new?template=free-spend-audit.yml">Request a free reconciliation sample</a>
+    <a class="btn primary" href="mailto:maxim.pkk@gmail.com?subject=Nidhipati%20free%20scan&body=1)%20What%20the%20agent%20pays%20for%3A%0A2)%20CSV%20or%20JSON%20export%20attached%3A%20yes%2Fno%0A3)%20Public%20tx%20hashes%20(optional)%3A%0A4)%20Monthly%20spend%20range%3A%0A%0ANo%20keys%2C%20no%20customer%20data%20needed.">Request a free reconciliation sample</a>
   </div>
 </div></section>
 
-<section><div class="wrap">
-<h2>Run it yourself</h2>
-  <pre><code>nidhipati-reconcile run examples/invoices.example.csv examples/transactions.example.csv --csv matches.csv
-
-Invoices 4 · matched 3 (4400.00) · unpaid 1 (900.00) · receipts without an invoice 1
-Duplicate payment: invoice INV-002 matched by more than one transfer</code></pre>
-  <p class="micro">The duplicate transfer is counted once, as a duplicate — never again as money
-  without an invoice. CSV export for the accountant; no keys, no custody, no chain read.</p>
-</div></section>
 </main>
 
 <footer><div class="wrap">
