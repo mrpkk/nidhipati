@@ -84,3 +84,12 @@ def test_body_above_the_limit_is_refused(base_url):
 def test_unknown_path_is_404(base_url):
     code, _ = post(f"{base_url}/nope", {"jsonrpc": "2.0", "id": 1, "method": "tools/list"})
     assert code == 404
+
+
+def test_get_mcp_is_a_health_probe(base_url):
+    """Catalogs probe GET /mcp; 405 reads as unreachable. Real MCP is POST."""
+    with urllib.request.urlopen(f"{base_url}/mcp", timeout=10) as resp:
+        assert resp.status == 200
+        data = json.load(resp)
+    assert data["status"] == "ok"
+    assert data["method"] == "POST"

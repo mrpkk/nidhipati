@@ -606,3 +606,16 @@ python3 -m nidhipati_proof.cli verify examples/proof-of-spend.example.json --pub
 - [ ] Первые 15 писем — после списка целей, по находкам скана.
 
 **Коммит:** `04dbfa8` · сайт собран, 7 страниц, sitemap и llms.txt обновлены.
+
+### G24 — Nidhipati live на BusinessMCP Marketplace (26.10.2026)
+
+- **Найдено:** `nidhipati-mcp-http` уже работает на `https://rta.lat/nidhipati/mcp`,
+  но `GET /mcp` отдавал 405 — каталог прочитал бы это как «недоступен».
+- **Исправлено:** GET `/mcp` → 200 health-probe; POST — JSON-RPC как раньше.
+  Новый тест; полный прогон **91 passed**.
+- **Листинг:** Nidhipati добавлен в BusinessMCP, 5 инструментов, **Live**:
+  <https://businessmcp.com/developers/servers/954bb778-9d76-436a-838f-d8052febae52>
+  Цена $0.01/вызов, 80% нам, 20% BusinessMCP. Это канал, не выручка: покупателей
+  пока 0.
+- **Проверено:** GET `/mcp` 200, POST `initialize` 200, `/health` 200; сервис
+  `nidhipati-mcp.service` active.
