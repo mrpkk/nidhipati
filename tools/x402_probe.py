@@ -40,6 +40,19 @@ def load(pages: int) -> list[dict]:
     return out
 
 
+GEO_MARKERS = ("sanction", "region-not-supported", "not-supported", "blocked", "geo", "restricted", "forbidden")
+
+
+def is_geo_redirect(headers: dict[str, str]) -> bool:
+    """Редирект «ваш регион не обслуживается» — это отказ нам, а не поломка сервиса.
+
+    Проверка идёт с санкционной сети, и 302/451 здесь означает «вас не пустили»,
+    а не «у вас сломан платёж». Считать это дефектом — обвинять невиновного.
+    """
+    loc = (headers.get("location") or "").lower()
+    return bool(loc) and any(m in loc for m in GEO_MARKERS)
+
+
 def verdict(status: int, body: str, headers: dict[str, str] | None = None) -> tuple[str, str]:
     """Что именно сломалось — словами, которые можно повторить в письме.
 
@@ -69,6 +82,8 @@ def verdict(status: int, body: str, headers: dict[str, str] | None = None) -> tu
     if status == 200:
         return "broken", "200 without payment: the paywall did not fire"
     if status in (301, 302, 303, 307, 308):
+        if is_geo_redirect(h):
+            return "geo", f"{status} to {h.get('location','')[:60]}: the service refuses this region"
         return "broken", f"{status} redirect instead of a payment challenge"
     if status == 410:
         return "broken", "410 Gone: the listed resource no longer exists"
@@ -82,6 +97,11 @@ def verdict(status: int, body: str, headers: dict[str, str] | None = None) -> tu
 
 
 async def probe(client: httpx.AsyncClient, url: str, method: str, payload: dict | None, sem: asyncio.Semaphore) -> dict:
+    # Шаблон пути (`:address`, `{chainId}`) нельзя проверить без реального значения:
+    # ответ 404/410 на заглушку — это свойство заглушки, а не дефект сервиса.
+    if ":" in url.split("//", 1)[-1].split("/", 1)[-1] or "{" in url:
+        return {"url": url, "method": method, "status": 0, "ctype": "",
+                "verdict": "template", "why": "path template: needs a real value to test"}
     async with sem:
         try:
             r = await client.request(method, url, json=payload)
