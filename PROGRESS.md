@@ -448,3 +448,18 @@ python3 -m nidhipati_proof.cli verify examples/proof-of-spend.example.json --pub
 - Без вложений; ссылка на synthetic sample в подписи. Трекер: `OUTREACH-LEDGER.csv`.
 - **Честно:** это первый RWA-контакт после 14 непроверенных целей; ответа пока нет.
 - **Следующий шаг:** проверить bounce/ответ через 24 ч; при ответе — 2-страничный scope.
+
+### G12 — RWA outreach batch 1 (26.10.2026)
+
+- **Письма (6):** Backed `contact@backed.fi`, Tokeny `contact@tokeny.com`,
+  Securitize `info@securitize.io`, Centrifuge `connect@centrifuge.io`,
+  Superstate `clients@superstate.co`, Mountain Protocol `sales@mountainprotocol.com`,
+  Bitbond `service@bitbond.com`. Тема с префиксом `Nidhipati:`; без вложений.
+- **Форма (1):** Ondo `ondo.finance/contact` — partnership, отправлено, подтверждение
+  «Thank you for reaching out»; текст короткий, потому что форма отклонила символы
+  `$`, `/`, переводы строк. Полный scope отправим только по ответу.
+- **Оффер:** single-asset report from $5,000; issuer/white-label from $50,000.
+  В каждом письме один вопрос: кто подписывает reserve/NAV methodology сегодня.
+- **Трекер:** `OUTREACH-LEDGER.csv`. **Ответов: 0.** Bounce проверяется в течение 2 ч.
+- **Честно:** 8 контактов — это ещё не воронка; следующий шаг только после ответа
+  или bounce. Повторное письмо — не раньше 48 ч и только если есть новый факт.
