@@ -719,3 +719,8 @@ python3 -m nidhipati_proof.cli verify examples/proof-of-spend.example.json --pub
 - **Сделано:** письмо BusinessMCP с просьбой связать листинг с seller-сервером,
   чтобы появились tools/цены, или подсказать точный шаг. Второй листинг не создаю.
 - **Честно:** публичная discoverability есть, платных вызовов из каталога пока нет.
+
+- **Уточнение:** публичная страница уже отдаёт 200 и description; Website переключён
+  на `https://mrpkk.github.io/nidhipati/mcp.html`, в описании указано «Five read-only
+  MCP tools in the BusinessMCP Hub, $0.01 per call». MCP server URL остаётся GitHub —
+  это и есть причина «Connect it free» без tools. Ждём поддержку.
