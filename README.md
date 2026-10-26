@@ -13,6 +13,7 @@
 
 **Site:** https://mrpkk.github.io/nidhipati/  
 **Free browser audit (no signup):** https://mrpkk.github.io/nidhipati/free-spend-audit.html  
+**BusinessMCP directory:** https://businessmcp.com/mcp-servers/nidhipati  
 **Private scan request:** https://github.com/mrpkk/nidhipati/issues/new?template=free-spend-audit.yml
 
 ![Free browser audit](docs/screenshot-free-audit.png)
