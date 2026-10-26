@@ -475,3 +475,15 @@ python3 -m nidhipati_proof.cli verify examples/proof-of-spend.example.json --pub
 - Ссылка на бесплатный сканер, без «купи». Комментарий:
   `https://www.reddit.com/r/x402/comments/1xf4i0k/comment/19ro309th0o02/`
 - **Ответа пока нет.** Если согласится — это кейс и дистрибуция, а не просто скан.
+
+### G14 — `nidhipati-reserve verify` + 2-страничный scope (26.10.2026)
+
+- **Найден разрыв:** scope обещал офлайн-проверку `nidhipati-reserve verify`, а у CLI
+  был только `report`. Это была бы ложь в документе для покупателя.
+- **Сделано:** подкоманда `verify` — PEM/base64url/hex ключ, проверка Ed25519,
+  печать `signature` и `verdict`, код возврата 1 на подделке. 1 новый тест;
+  полный прогон **90 passed**.
+- **Scope:** `docs/rwa-scope.html` + `docs/rwa-scope.pdf` — ровно 2 страницы A4,
+  что получит покупатель, что нужно от него, 10 рабочих дней, цена, гарантия,
+  чего не делаем.
+- Публично: <https://mrpkk.github.io/nidhipati/rwa-scope.pdf>

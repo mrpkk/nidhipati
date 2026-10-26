@@ -9,7 +9,8 @@ import pytest
 
 from nidhipati_proof.reserve import build_report
 from nidhipati_proof.reserve_cli import main as reserve_main
-from nidhipati_proof.sign import generate_keypair, sign_document, verify_signature
+from nidhipati_proof.sign import (b64url_encode, generate_keypair, sign_document,
+                                 verify_signature)
 
 
 def base(**over) -> dict:
@@ -157,3 +158,21 @@ def test_cli_writes_markdown(tmp_path):
     md = tmp_path / "report.md"
     assert reserve_main(["report", str(good), "--markdown", str(md)]) == 0
     assert "Reserve and NAV report" in md.read_text(encoding="utf-8")
+
+
+def test_verify_cli_rejects_a_tampered_report(tmp_path, capsys):
+    private_key, public_key = generate_keypair()
+    document = sign_document(build_report(base()).as_dict(), private_key)
+    path = tmp_path / "signed.json"
+    path.write_text(json.dumps(document), encoding="utf-8")
+    key = b64url_encode(public_key)
+
+    assert reserve_main(["verify", str(path), "--pubkey", key]) == 0
+    out = capsys.readouterr().out
+    assert "signature: valid" in out
+    assert "verdict: backed" in out
+
+    document["nav"] = "999999"
+    path.write_text(json.dumps(document), encoding="utf-8")
+    assert reserve_main(["verify", str(path), "--pubkey", key]) == 1
+    assert "signature: invalid" in capsys.readouterr().out
