@@ -500,3 +500,15 @@ python3 -m nidhipati_proof.cli verify examples/proof-of-spend.example.json --pub
 - **Вопрос:** просят ли мерчанты receipt/reconciliation, или on-chain перевода достаточно.
 - **Зачем:** один фасилитатор даёт доступ к многим мерчантам; это канал, а не один лид.
 - Трекер: `OUTREACH-LEDGER.csv`. **Ответа пока нет.**
+
+### G16 — Show HN + RWA checklist (26.10.2026)
+
+- **Show HN:** «Free, local audit of what your AI agents actually spent» —
+  <https://news.ycombinator.com/item?id=50239963>. 1 point, 0 comments на момент
+  публикации. Форма комментария у аккаунта `vnutrivas` не появилась (HN не дал
+  ответить), поэтому текст с 10 правилами не добавлен. Это ограничение канала,
+  а не «нет интереса».
+- **Checklist:** `docs/reserve-disclosure-checklist.html` — 12 вопросов, которые
+  покупатель задаст до того, как поверит reserve/NAV. Ссылка с RWA-страницы,
+  sitemap, llms.txt. Это материал для follow-up 28.10, а не новый продукт.
+- **Проверено:** checklist — 200; ссылка с `rwa-proof-of-reserve.html` видна.
