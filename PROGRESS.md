@@ -524,3 +524,14 @@ python3 -m nidhipati_proof.cli verify examples/proof-of-spend.example.json --pub
 - **Ask:** один реальный месяц x402/model/tool charges; опубликовать метод и
   результат вместе, цифры только с разрешения.
 - **На момент записи:** 1 point, 0 comments. Это не «лид», а размещение.
+
+### G18 — FinOps/observability partners (26.10.2026)
+
+- **Helicone** `enterprise@helicone.ai`: аудит расходов рядом с observability;
+  вопрос — просят ли enterprise-клиенты reconciliation/recovery, или дашборда хватает.
+- **LiteLLM (BerriAI)** `ishaan@berri.ai`: аудит после прокси; вопрос — нужна ли
+  интеграция spend-audit пользователям LiteLLM, или budget enforcement достаточен.
+- **Langfuse:** публичного email в README нет; в контактную форму/догадки не пошёл.
+- Это ровно следующий шаг из `agent-trust/PROGRESS` P6: 3 FinOps-цели, а не 10.
+  Отправлено 2 из 3; третья — только с проверенным адресом.
+- **Ответов: 0.** Трекер: `OUTREACH-LEDGER.csv`.
