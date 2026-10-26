@@ -536,3 +536,14 @@ python3 -m nidhipati_proof.cli verify examples/proof-of-spend.example.json --pub
   Отправлено 3 из 3, только по проверенным адресам.
 - **Ответов: 0.** Bounce только по `enterprise@`; LiteLLM и Langfuse без bounce.
   Трекер: `OUTREACH-LEDGER.csv`.
+
+### G19 — проверка free tool и цена (26.10.2026)
+
+- **Проверил вживую:** `free-spend-audit.html` — «Load synthetic sample» → «Run audit»
+  выдаёт findings (missing refund, failed-but-billed, model overpay, unknown asset/network).
+  Инструмент работает, не только существует.
+- **Нашёл расхождение:** после отчёта страница говорила «Paid audit: $2,500», хотя
+  оффер — $1,250 первые 3. Покупатель видел другую цену, чем в письме.
+- **Исправлено:** `free-spend-audit.html` и `verify-receipt.html` — $1,250 первые 3,
+  затем $2,500. Цена на всех страницах одна.
+- **Не трогал:** `security.html` — это отдельный security review за $2,500, не spend audit.
