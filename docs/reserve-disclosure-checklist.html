@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reserve disclosure checklist for tokenized assets</title>
+<meta name="description" content="12 questions a buyer should ask before trusting a tokenized asset's reserve or NAV claim. A practical checklist for RWA issuers, funds and buyers.">
+<link rel="canonical" href="https://mrpkk.github.io/nidhipati/reserve-disclosure-checklist.html">
+<meta property="og:title" content="Reserve disclosure checklist for tokenized assets">
+<meta property="og:description" content="12 questions a buyer should ask before trusting a tokenized asset's reserve or NAV claim.">
+<meta property="og:url" content="https://mrpkk.github.io/nidhipati/reserve-disclosure-checklist.html">
+<meta property="og:type" content="article">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header><div class="wrap nav">
+  <a class="brand" href="index.html"><span class="mark">N</span> Nidhipati</a>
+  <nav class="navlinks">
+    <a href="agent-spend-audit.html">Spend audit</a><a href="free-spend-audit.html">Free audit</a><a href="mcp.html">MCP</a>
+    <a href="rwa-proof-of-reserve.html">RWA reserve</a>
+    <a href="pricing.html">Pricing</a><a href="security.html">Security</a>
+    <a href="https://github.com/mrpkk/nidhipati">GitHub</a>
+    <a class="btn primary" href="mailto:maxim.pkk@gmail.com?subject=Nidhipati%20RWA%20scope">Request a scope</a>
+  </nav>
+</div></header>
+
+<main>
+<section class="hero"><div class="wrap">
+  <span class="kicker"><span class="dot"></span> Checklist · not a statutory audit</span>
+  <h1>12 questions before you trust a reserve claim</h1>
+  <div class="lede">A dashboard or a PDF answers “what are the holdings”. A buyer needs to answer a harder question: “can I verify this without trusting the page?” These are the questions that separate a screenshot from evidence.</div>
+  <div class="actions">
+    <a class="btn primary" href="rwa-scope.pdf">2-page scope (PDF)</a>
+    <a class="btn" href="sample-reserve-report.html">Synthetic sample</a>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <h2>The checklist</h2>
+  <ol class="checks">
+    <li><b>As-of time per line.</b> Is every reserve line dated, or only the total? A single date on the cover hides stale prices inside.</li>
+    <li><b>Source per line.</b> Does each line name the statement, file, or API it came from — not just “custodian”?</li>
+    <li><b>Haircut per asset.</b> Is a Treasury bill valued at face, at market, or at a haircut? Is the haircut stated per line?</li>
+    <li><b>Missing price behaviour.</b> If one line has no price, does the report fail closed, or does it quietly treat the line as zero?</li>
+    <li><b>Liabilities on the same date.</b> Is token supply or fund liabilities measured at the same timestamp as the assets?</li>
+    <li><b>Named owner of the data.</b> Is there one person or role who signed off on the inputs, or is it “the team”?</li>
+    <li><b>Recompute without the issuer.</b> Can a buyer recompute NAV from the file alone, without your server or dashboard?</li>
+    <li><b>Signature and key.</b> Is the report signed? Which key? Can the buyer verify it offline with a published public key?</li>
+    <li><b>What is deliberately hidden.</b> Does the report say what was left out — wallets, counterparties, strategy — and why?</li>
+    <li><b>Change since last report.</b> Is there a version, a diff, or at least a date and a reason for every material change?</li>
+    <li><b>Failure path.</b> What happens when a source is late, a price is stale, or a custodian statement does not reconcile?</li>
+    <li><b>What it is not.</b> Does the report say plainly that it is not a statutory audit, not legal advice, and not a solvency guarantee?</li>
+  </ol>
+</div></section>
+
+<section><div class="wrap two">
+  <div>
+    <h2>What good looks like</h2>
+    <p class="sub">A signed JSON file with one row per reserve line, a source hash, a timestamp, a haircut, and a verdict. The buyer runs one command, sees <code>signature: valid</code> and <code>verdict: backed</code> (or <code>underbacked</code> / <code>incomplete</code>), and can recompute NAV without asking the issuer for a spreadsheet.</p>
+    <p class="sub">If a line is missing a price, the verdict is <code>incomplete</code> and the ratio is null. That is the point: the report refuses to invent a number.</p>
+  </div>
+  <div class="panel">
+    <h3>Where most disclosures stop</h3>
+    <ul class="checks">
+      <li>A PDF with a total and a logo</li>
+      <li>A dashboard that only the issuer can query</li>
+      <li>A monthly attestation with no line-level source</li>
+      <li>A “backed 1:1” claim with no liabilities on the same date</li>
+    </ul>
+    <p class="micro">A dashboard is not evidence. A signature over a file the buyer can keep is.</p>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <h2>Use it on your own disclosure</h2>
+  <p>If you are an issuer, run these 12 questions against your current reserve page. If three or more have no answer, a buyer will ask them for you — usually at the worst moment.</p>
+  <div class="actions">
+    <a class="btn primary" href="mailto:maxim.pkk@gmail.com?subject=Nidhipati%20RWA%20scope">Request a 2-page scope</a>
+    <a class="btn" href="rwa-scope.pdf">Read the scope (PDF)</a>
+  </div>
+  <p class="micro">First 3 single-asset reports: $1,250, then from $5,000. Signed report must verify offline with the published key, or the fee is refunded. Not a statutory audit, not legal advice, no custody.</p>
+</div></section>
+</main>
+
+<footer><div class="wrap">
+  <div>© 2026 Nidhipati · written only · <a href="mailto:maxim.pkk@gmail.com">maxim.pkk@gmail.com</a></div>
+  <div><a href="pricing.html">Pricing</a> · <a href="sample-reserve-report.html">Sample</a> · <a href="https://github.com/mrpkk/nidhipati">GitHub</a></div>
+</div></footer>
+
+</body>
+</html>
