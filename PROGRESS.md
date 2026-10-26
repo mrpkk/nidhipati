@@ -580,3 +580,14 @@ python3 -m nidhipati_proof.cli verify examples/proof-of-spend.example.json --pub
 **Статус 26.10:** Ondo Support создал тикеты #149570957 и #149570976, автоответ
 «We'll pick up your ticket soon». Это **не человеческий ответ** и не лид; ждём
 разбора. Повторно не писать, пока тикет открыт. Scope уже в письме ссылкой.
+
+### G23 — ветки проверены, ответы отправлены (26.10.2026)
+
+- **r/mcp Showcase:** `New_Cockroach_6797` спросил/отметил тайминг — ответил:
+  цена звонка — половина вопроса, вторая половина — mandate и refund path.
+- **r/x402:** `IllWar5047` поправил «real demand»: 7 899 USDC — это «everything else»,
+  distinct wallet ≠ distinct customer. Признал, формулировку исправил; предложил
+  минимальный join (transfer rows + buyer export по tx hash), без давления.
+- **Урок:** поправку не защищать, а принять. Это дешевле, чем потерять тёплый контакт.
+- **Учёт всех веток:** `/media/Sruti/iamthat/work/sales/PROGRESS/THREADS-LEDGER.md` —
+  Reddit, HN, почта, статус, следующий шаг. Проверять каждую сессию.
