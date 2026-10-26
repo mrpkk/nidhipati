@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Nidhipati — reserve attestation scope</title>
+<link rel="canonical" href="https://mrpkk.github.io/nidhipati/rwa-scope.html">
+<style>
+  @page { size: A4; margin: 17mm 18mm 16mm; }
+  * { box-sizing: border-box; }
+  body { margin: 0; color: #17202b; background: #fff;
+         font: 10.4pt/1.45 "DejaVu Sans", system-ui, sans-serif; }
+  h1 { font-size: 24pt; line-height: 1.1; margin: 0 0 4mm; letter-spacing: -0.02em; }
+  h2 { font-size: 12.5pt; margin: 7mm 0 2.2mm; padding-bottom: 1.2mm;
+       border-bottom: 1px solid #d8dee7; }
+  h3 { font-size: 10.8pt; margin: 4mm 0 1.2mm; }
+  p { margin: 0 0 2.4mm; }
+  ul, ol { margin: 0 0 2.4mm 5mm; padding: 0; }
+  li { margin: 0 0 1.4mm; }
+  .top { display: flex; justify-content: space-between; align-items: flex-start;
+         border-bottom: 2.5px solid #1c6b58; padding-bottom: 4mm; margin-bottom: 5mm; }
+  .brand { font-weight: 700; letter-spacing: .14em; font-size: 9pt; color: #1c6b58; }
+  .meta { text-align: right; font-size: 8.6pt; color: #5d6876; line-height: 1.5; }
+  .lede { font-size: 11.2pt; color: #2b3644; margin: 0 0 4mm; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5mm; }
+  .box { background: #f4f7f5; border: 1px solid #d9e3dd; border-radius: 3mm;
+         padding: 4mm 4.5mm; }
+  .box h2 { border: 0; margin: 0 0 2mm; padding: 0; font-size: 11pt; }
+  .price { font-size: 19pt; font-weight: 700; color: #145445; margin: 1mm 0 1mm; }
+  .muted { color: #5d6876; font-size: 9.2pt; }
+  .small { font-size: 8.8pt; color: #5d6876; }
+  code, pre { font-family: "DejaVu Sans Mono", ui-monospace, monospace; }
+  pre { background: #101820; color: #e6f2ec; padding: 3.2mm 4mm; border-radius: 2.5mm;
+        font-size: 8.4pt; line-height: 1.45; overflow-wrap: anywhere; white-space: pre-wrap; }
+  .warn { border-left: 3px solid #b46a1e; background: #fdf7ef; padding: 3.2mm 4mm;
+          border-radius: 0 2mm 2mm 0; }
+  .footer { margin-top: 6mm; padding-top: 2.5mm; border-top: 1px solid #d8dee7;
+            display: flex; justify-content: space-between; font-size: 8.6pt; color: #5d6876; }
+  .keep { break-inside: avoid; }
+  a { color: #145445; text-decoration: none; }
+</style>
+</head>
+<body>
+
+<div class="top">
+  <div>
+    <div class="brand">NIDHIPATI</div>
+    <h1>Private reserve attestation</h1>
+    <p class="lede">Scope for one tokenized asset and one as-of date. A signed report a buyer can verify offline — without publishing the full portfolio.</p>
+  </div>
+  <div class="meta">
+    Written scope · no calls required<br>
+    10 working days from complete data<br>
+    Version 1.0 · 26 Oct 2026
+  </div>
+</div>
+
+<h2>What you get</h2>
+<ul>
+  <li><b>Signed JSON attestation</b> — reserve lines, liabilities/supply, NAV, verdict, source hashes, and the public key. The buyer verifies it without trusting our server.</li>
+  <li><b>Human-readable report</b> — the same numbers with the arithmetic shown: what backs the token, which lines carry a haircut, and what could not be priced.</li>
+  <li><b>Fail-closed behaviour</b> — if one reserve line has no price, the report says <code>incomplete</code> and does not print a backing ratio. It does not guess.</li>
+  <li><b>Privacy by construction</b> — the report carries the minimum needed to recompute NAV. Full wallets, counterparties, and strategy stay out unless you choose to include them.</li>
+  <li><b>Offline verification pack</b> — the public key, a one-command check, and a short note your buyer or auditor can keep.</li>
+</ul>
+
+<h2>What we need from you</h2>
+<div class="grid">
+  <div class="box keep">
+    <h2>Data</h2>
+    <ul>
+      <li>Reserve lines: asset, quantity, price source, haircut, as-of date.</li>
+      <li>Liabilities or token supply for the same date.</li>
+      <li>Custodian or issuer sign-off on the source data — one named owner.</li>
+      <li>NDA if the data is private. We work from a read-only export; no private keys, no custody, no wallet access.</li>
+    </ul>
+  </div>
+  <div class="box keep">
+    <h2>Decisions</h2>
+    <ul>
+      <li>Which asset and date are in scope.</li>
+      <li>Whether the report is public or buyer-only.</li>
+      <li>Whether your name and the numbers may appear in an anonymized case study. If not, the standard price applies and nothing is published.</li>
+      <li>One written contact for questions. No calls required.</li>
+    </ul>
+  </div>
+</div>
+
+<h2>How it runs</h2>
+<ol>
+  <li><b>Scope (same day).</b> You confirm the asset, date, and whether the data is private. We confirm price and the one named data owner in writing.</li>
+  <li><b>Intake (1–2 days).</b> You send the reserve and liability export. We check that every row has a source and a price. Missing rows are named, not filled.</li>
+  <li><b>Build (3–5 days).</b> We compute NAV and the backing ratio, sign the report, and write the human-readable version. You see a draft before it is final.</li>
+  <li><b>Verification (1–2 days).</b> We verify the signed file with the published key on a clean machine and send you the exact command.</li>
+  <li><b>Delivery (10 working days).</b> Final JSON, report, public key, and verification note. One retest of agreed corrections is included.</li>
+</ol>
+
+<h2>Price and payment</h2>
+<div class="grid">
+  <div class="box keep">
+    <h2>First three single-asset reports</h2>
+    <div class="price">$1,250</div>
+    <p class="muted">Instead of $5,000. In exchange for an anonymized public case study, published only if the report verifies and you approve the wording.</p>
+    <p class="small">After the first three: $5,000 per asset/date. Issuer or white-label engagements from $50,000.</p>
+  </div>
+  <div class="box keep">
+    <h2>Payment</h2>
+    <ul>
+      <li>50% on written scope, 50% on delivery.</li>
+      <li>USDC on Base or Solana. The address comes only from a signed invoice, never from chat.</li>
+      <li>Invoice is a signed JSON document; the receipt verifies with <code>nidhipati-proof verify</code>.</li>
+      <li>India (PPP): $625 per report, same scope.</li>
+    </ul>
+  </div>
+</div>
+
+<h2>Verification guarantee</h2>
+<p>If the signed report does not verify offline with the published key, the fee is refunded. This is a statement about the file and the signature — not about the issuer’s solvency, the accuracy of its source data, or the value of the asset.</p>
+
+<h2>What this is not</h2>
+<div class="warn">
+  <p><b>Not a statutory audit, legal opinion, or investment advice.</b> We do not custody funds, issue a token, or guarantee repayment. The issuer remains responsible for the truth of the source data. The report says what was checked, what was not, and which line failed — it does not say “100% safe”.</p>
+</div>
+
+<h2>Verify it yourself</h2>
+<pre>nidhipati-reserve verify report.json --pubkey nidhipati-proof.pub
+# verdict: backed | underbacked | incomplete
+# exit code follows the verdict; a missing price is never treated as zero</pre>
+
+<p class="small">Synthetic sample: <a href="https://mrpkk.github.io/nidhipati/sample-reserve-report.html">mrpkk.github.io/nidhipati/sample-reserve-report.html</a> — not a client, not a statutory audit. The sample uses invented numbers and is marked as such.</p>
+
+<div class="footer">
+  <div>Nidhipati · written only · <a href="mailto:maxim.pkk@gmail.com?subject=Nidhipati%20RWA%20scope">maxim.pkk@gmail.com</a></div>
+  <div>Scope v1.0 · 26 Oct 2026 · 2 pages</div>
+</div>
+
+</body>
+</html>
