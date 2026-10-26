@@ -761,3 +761,13 @@ python3 -m nidhipati_proof.cli verify examples/proof-of-spend.example.json --pub
   проверить, как мы работаем. Полный отчёт и white-label не подешевели.
 - Обновлены `OFFER.md`, `ENTERPRISE-RWA.md`, `pricing.html`, checklist CTA,
   `llms.txt` и шаблон follow-up 28.10.
+
+### G33 — sample $250 review (27.10.2026)
+
+- `docs/sample-reserve-review.html`: синтетический пример на 12 вопросов —
+  что публичная страница резервов доказывает, а что нет; verdict и fix list.
+- Ссылки: pricing, checklist, llms, sitemap. Не кейс клиента: явно помечено
+  «synthetic, not a client».
+- Зачем: $250-оффер должен быть осязаемым; письмо с ценой без примера —
+  абстракция. Теперь можно отправить одну ссылку.
+- **0 клиентов**, страница не выдаёт себя за отзыв.
