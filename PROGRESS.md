@@ -512,3 +512,15 @@ python3 -m nidhipati_proof.cli verify examples/proof-of-spend.example.json --pub
   покупатель задаст до того, как поверит reserve/NAV. Ссылка с RWA-страницы,
   sitemap, llms.txt. Это материал для follow-up 28.10, а не новый продукт.
 - **Проверено:** checklist — 200; ссылка с `rwa-proof-of-reserve.html` видна.
+
+### G17 — r/mcp Showcase (26.10.2026)
+
+- **Пост:** «Free, local audit for agent spend — looking for one real month of
+  x402 records». Flair **showcase** выставлен (правило сабреддита: self-promotion
+  разрешён с раскрытием авторства).
+- **Ссылка:** <https://old.reddit.com/r/mcp/comments/1xfpkhi/free_local_audit_for_agent_spend_looking_for_one/>
+- **Раскрытие:** «I built Nidhipati, so this is my product. Free, no signup» —
+  без маскировки под независимого пользователя.
+- **Ask:** один реальный месяц x402/model/tool charges; опубликовать метод и
+  результат вместе, цифры только с разрешения.
+- **На момент записи:** 1 point, 0 comments. Это не «лид», а размещение.
