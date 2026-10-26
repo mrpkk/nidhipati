@@ -619,3 +619,14 @@ python3 -m nidhipati_proof.cli verify examples/proof-of-spend.example.json --pub
   пока 0.
 - **Проверено:** GET `/mcp` 200, POST `initialize` 200, `/health` 200; сервис
   `nidhipati-mcp.service` active.
+
+### G25 — BusinessMCP: сервер live, directory listing — запрос (26.10.2026)
+
+- **Сервер live:** `https://businessmcp.com/developers/servers/954bb778-9d76-436a-838f-d8052febae52`
+  5 инструментов, $0.01/вызов, 80% нам. Письмо BusinessMCP 17:20 подтвердило live.
+- **Публичный directory:** `businessmcp.com/mcp-servers/nidhipati` пока отдаёт общую
+  страницу каталога, а не листинг. Форма `/mcp-servers/submit` держит Submit
+  disabled: Turnstile-токен пустой, iframe не загружается.
+- **Сделано:** письмо в BusinessMCP с просьбой добавить листинг / подсказать flow;
+  Repo и описание приложены. Это не блокер сервера — он уже live.
+- **Проверено:** `GET /mcp` 200, `POST initialize` 200, 91 passed.
