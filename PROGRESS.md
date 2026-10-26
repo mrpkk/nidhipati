@@ -731,3 +731,15 @@ python3 -m nidhipati_proof.cli verify examples/proof-of-spend.example.json --pub
   docs-commit запускал matrix 3.10/3.12.
 - В `test.yml` добавлен `paths-ignore: docs/**, **/*.md` для push/PR; код
   по-прежнему проверяется.
+
+### G30 — Superstate: конкретное наблюдение по NAV (27.10.2026)
+
+- Прочитал публичную документацию Superstate: NAV/S публикуется on-chain через
+  oracle и Chainlink-совместимые фиды. Интегратор читает **цену**, но не видит
+  строки резервов, источник цены каждой строки и что делать с пропуском.
+- Письмо `clients@superstate.co`: signed attestation с source hash на строку,
+  as-of timestamp, offline verification; первые 3 — $1,250. Вопрос: нужны ли
+  институциональным покупателям underlying holdings, или on-chain NAV/S достаточно;
+  если достаточно — закрываю тред.
+- Это второй, **конкретный** контакт после общего письма 26.10; не серия пингов.
+- **Ответа нет.** Трекер: `OUTREACH-LEDGER.csv`.
