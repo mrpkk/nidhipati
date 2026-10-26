@@ -555,3 +555,11 @@ python3 -m nidhipati_proof.cli verify examples/proof-of-spend.example.json --pub
 - Ничего не отправлено раньше срока: 48 часов ещё не прошло. Это подготовка,
   чтобы 28.10 не писать заново.
 - Bounce: `enterprise@helicone.ai` не существует; используем `help@helicone.ai`.
+
+### G21 — Agent402: аудит для покупателей маркетплейса (26.10.2026)
+
+- **Кому:** `mike@agent402.tools` — Agent402, 500+ pay-per-call tools.
+- **Оффер:** free scan + paid $1,250 (первые 3), $5,000 finding guarantee;
+  проверяем mandate/cap/failed-but-billed, не строим дашборд.
+- **Вопрос:** просят ли покупатели receipt/reconciliation, или per-call цены достаточно.
+- **Ответа нет.** Трекер: `OUTREACH-LEDGER.csv`.
