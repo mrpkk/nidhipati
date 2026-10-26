@@ -22,6 +22,8 @@ https://github.com/mrpkk/nidhipati/blob/main/docs/PROOF-OF-SPEND.md
 
 Free scan, no account needed (email, no GitHub). Audit $1,250 for the first three, then $2,500. Control retainer $1,500/mo. USDC on Base/Solana. No custody.
 
+Reserve: $250 public-disclosure review (credited toward a full report); full single-asset report $1,250 for the first three, then $5,000; issuer/white-label from $50,000. https://mrpkk.github.io/nidhipati/sample-reserve-review.html
+
 ## BusinessMCP directory
 
 https://businessmcp.com/mcp-servers/nidhipati
