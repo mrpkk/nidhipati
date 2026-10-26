@@ -706,3 +706,16 @@ python3 -m nidhipati_proof.cli verify examples/proof-of-spend.example.json --pub
 Что это значит для плана: покупателя надо искать не по поломке, а по расхождению «что агент потратил / что получил». Источник таких данных — не каталог, а сама команда; значит первый шаг — образец отчёта (он опубликован) плюс предложение бесплатного скана, а не обвинение.
 
 **Инструмент дополнен:** `verdict` теперь различает `ok / broken / legal / geo / template / error`, и «не дефект» отделён от «не смог проверить».
+
+### G28 — Nidhipati в публичном каталоге: live, но не связан с seller-сервером (26.10.2026)
+
+- **Публичная страница появилась:** https://businessmcp.com/mcp-servers/nidhipati
+  Заголовок «Nidhipati MCP Server — BusinessMCP», категория Payments, описание наше.
+- **Но:** она отправлена с GitHub-URL, поэтому кнопка «Connect it free» и **нет
+  списка tools/цен**. Live seller-сервер с 5 tools и $0.01 — отдельно:
+  https://businessmcp.com/developers/servers/954bb778-9d76-436a-838f-d8052febae52
+- **Почему:** в edit modal сказано «To change the server URL, submit it again from
+  the directory»; форма `/mcp-servers/submit` у меня блокируется Turnstile.
+- **Сделано:** письмо BusinessMCP с просьбой связать листинг с seller-сервером,
+  чтобы появились tools/цены, или подсказать точный шаг. Второй листинг не создаю.
+- **Честно:** публичная discoverability есть, платных вызовов из каталога пока нет.
