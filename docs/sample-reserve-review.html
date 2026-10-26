@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reserve disclosure review — sample</title>
+<meta name="description" content="A synthetic sample of the $250 reserve disclosure review: 12 questions, what a buyer can verify, what is missing, and the fix list.">
+<link rel="canonical" href="https://mrpkk.github.io/nidhipati/sample-reserve-review.html">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header><div class="wrap nav">
+  <a class="brand" href="index.html"><span class="mark">N</span> Nidhipati</a>
+  <nav class="navlinks">
+    <a href="rwa-proof-of-reserve.html">RWA reserve</a>
+    <a href="reserve-disclosure-checklist.html">Checklist</a>
+    <a href="pricing.html">Pricing</a>
+    <a href="https://github.com/mrpkk/nidhipati">GitHub</a>
+    <a class="btn primary" href="mailto:maxim.pkk@gmail.com?subject=Nidhipati%20reserve%20review">Request a $250 review</a>
+  </nav>
+</div></header>
+
+<main>
+<section class="hero"><div class="wrap">
+  <span class="kicker"><span class="dot"></span> Synthetic sample · not a client</span>
+  <h1>Reserve disclosure review</h1>
+  <div class="lede">A 2-page review of what an RWA issuer’s <b>public</b> reserve or NAV page lets a buyer verify — and what it does not. No private data, no wallet access, 3 working days.</div>
+  <div class="actions">
+    <a class="btn primary" href="mailto:maxim.pkk@gmail.com?subject=Nidhipati%20reserve%20review">Request a review — $250</a>
+    <a class="btn" href="reserve-disclosure-checklist.html">12-question checklist</a>
+  </div>
+  <div class="micro">The $250 is credited toward a full single-asset report ($1,250 for the first three).</div>
+</div></section>
+
+<section><div class="wrap">
+  <h2>Sample: “Example RWA Issuer” (synthetic)</h2>
+  <p class="sub">The issuer’s public page says: “Each EXUSD token is backed 1:1 by US Treasury bills and cash, attested monthly by an independent auditor.” It publishes a PDF with a total reserve and a link to the auditor’s letter. This is what the review returns.</p>
+
+  <table>
+    <tr><th>Question</th><th>Public page</th><th>What it means</th></tr>
+    <tr><td>As-of time per line</td><td><b>No</b></td><td>Only the cover date. A line inside can be older.</td></tr>
+    <tr><td>Source per line</td><td><b>No</b></td><td>“Custodian” is named, not the statement line or file.</td></tr>
+    <tr><td>Haircut per asset</td><td><b>No</b></td><td>T-bills are shown at face; no haircut or market value.</td></tr>
+    <tr><td>Missing price behaviour</td><td><b>Unclear</b></td><td>The PDF has a total; it does not say what happens if a price is missing.</td></tr>
+    <tr><td>Liabilities on the same date</td><td><b>Partial</b></td><td>Token supply is on a dashboard, not in the same dated file.</td></tr>
+    <tr><td>Named data owner</td><td><b>No</b></td><td>“The team” and the auditor; no one person or role signs the inputs.</td></tr>
+    <tr><td>Recompute without the issuer</td><td><b>No</b></td><td>The buyer can read the total, not recompute it line by line.</td></tr>
+    <tr><td>Signature and key</td><td><b>No</b></td><td>The PDF is not signed; there is no public key to verify offline.</td></tr>
+    <tr><td>What is deliberately hidden</td><td><b>No</b></td><td>The page does not say what was left out or why.</td></tr>
+    <tr><td>Change since last report</td><td><b>No</b></td><td>No version or diff; only a monthly date.</td></tr>
+    <tr><td>Failure path</td><td><b>No</b></td><td>No rule for a late statement, stale price, or unreconciled line.</td></tr>
+    <tr><td>What it is not</td><td><b>Partial</b></td><td>“Attested” is not defined; it is not a statutory audit, but the page does not say so plainly.</td></tr>
+  </table>
+</div></section>
+
+<section><div class="wrap two">
+  <div class="panel">
+    <h3>Verdict</h3>
+    <p><b>A buyer can verify the total, not the backing.</b> The page answers “how much” and leaves “what exactly, from where, as of when, and can I check it” unanswered.</p>
+    <p class="micro">This is not a claim that the reserves are wrong. It is a statement about what the public page proves.</p>
+  </div>
+  <div class="panel">
+    <h3>Fix list (3 steps)</h3>
+    <ol>
+      <li>Publish one dated JSON with one row per reserve line: asset, quantity, price source, haircut, as-of.</li>
+      <li>Add token supply or liabilities at the same timestamp, and a named data owner.</li>
+      <li>Sign the file and publish the public key; a buyer runs one command and sees <code>backed</code>, <code>underbacked</code>, or <code>incomplete</code>.</li>
+    </ol>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <h2>What you receive</h2>
+  <ul class="checks">
+    <li>2 pages: the 12-question table, verdict, and the fix list.</li>
+    <li>A short “what a buyer will ask next” section for your team.</li>
+    <li>No private data, no wallet access, no custody. Public page only.</li>
+    <li>3 working days. $250, credited toward a full report.</li>
+  </ul>
+  <div class="actions">
+    <a class="btn primary" href="mailto:maxim.pkk@gmail.com?subject=Nidhipati%20reserve%20review">Request a review — $250</a>
+    <a class="btn" href="rwa-scope.pdf">Full report scope (PDF)</a>
+  </div>
+  <p class="micro">Synthetic example, not a client, not a statutory audit. A full report adds line-level evidence, NAV calculation, a signed JSON file and offline verification.</p>
+</div></section>
+</main>
+
+<footer><div class="wrap">
+  <div>© 2026 Nidhipati · written only · <a href="mailto:maxim.pkk@gmail.com">maxim.pkk@gmail.com</a></div>
+  <div><a href="pricing.html">Pricing</a> · <a href="reserve-disclosure-checklist.html">Checklist</a> · <a href="https://github.com/mrpkk/nidhipati">GitHub</a></div>
+</div></footer>
+
+</body>
+</html>
