@@ -838,3 +838,17 @@ python3 -m nidhipati_proof.cli verify examples/proof-of-spend.example.json --pub
 - **Ответ support 27.10:** non-Stripe payout path отсутствует; только Stripe Connect.
   Россия, скорее всего, не поддерживается. Варианты: юрлицо/банк в поддерживаемой
   стране или BusinessMCP как discovery без paid tools. Earnings не теряются.
+
+### G39 — смена подхода к продвижению (27.10.2026)
+
+- **Честно:** 10k визитов в goal_status — AILegal, не Nidhipati; у Nidhipati 0 сканов.
+- **Карта каналов:** `/media/Sruti/iamthat/work/sales/PROGRESS/PROMOTION-MAP-2026-10-27.md`
+  — сегменты (agent builders, operators/finance, RWA issuers, платформы, агенты),
+  где внимание, что уже сделано, очередь 10 каналов, правила.
+- **Новые каналы сегодня:**
+  - r/RWA: «12 questions before you trust a tokenized asset’s reserve page» —
+    https://old.reddit.com/r/RWA/comments/1xh12d4/...
+  - r/AI_Agents Weekly Project Display: Nidhipati + free scan + MCP —
+    https://old.reddit.com/r/AI_Agents/comments/1xbr4a7/weekly_thread_project_display/
+- Оба поста с disclosure, без «купи»; ссылки в comments/weekly thread по правилам.
+- Следующие: r/LLMDevs, Brickken/Hedera, dev.to (блок), Smithery/MCP.so (аккаунты).
