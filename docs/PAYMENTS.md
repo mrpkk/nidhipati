@@ -124,3 +124,14 @@ NIDHIPATI_STRIPE_FIRST3_URL=...
 - **Test:** sent `Nidhipati intake test 2026-10-26` to self; IMAP found it.
 - **Public links:** all Nidhipati pages now point to `maxim.pkk@gmail.com`.
 - **Agent command:** `python3 /media/Sruti/iamthat/agents/opencode/tools/mail/mail_fetch.py search 'subject:Nidhipati' -n 10`.
+
+## BusinessMCP payouts — blocked (27.10.2026)
+
+- attest и Nidhipati **live** в BusinessMCP; покупки возможны.
+- **Payout account: Not set up.** «Set up payouts» → «Something went wrong».
+  Условия BusinessMCP: Stripe, личность, банк; выплаты 15-го, от $25, hold 14 дней.
+- Мы в РФ; Stripe может быть недоступен. Написал в `hello@businessmcp.com`:
+  есть ли USDC/альтернатива или нужно юрлицо/банк в поддерживаемой стране.
+- **Пока payout не подключён, BusinessMCP — discovery, не касса.**
+  Прямой USDC-инвойс Nidhipati и attest `/pay` остаются основным путём.
+- Не пытаться обойти Stripe verification; ждать ответа support.
