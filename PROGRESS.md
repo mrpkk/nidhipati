@@ -852,3 +852,11 @@ python3 -m nidhipati_proof.cli verify examples/proof-of-spend.example.json --pub
     https://old.reddit.com/r/AI_Agents/comments/1xbr4a7/weekly_thread_project_display/
 - Оба поста с disclosure, без «купи»; ссылки в comments/weekly thread по правилам.
 - Следующие: r/LLMDevs, Brickken/Hedera, dev.to (блок), Smithery/MCP.so (аккаунты).
+
+### G40 — PayAI: человеческий отказ (26.10, прочитан 28.10)
+
+- `info@payai.network` ответил: «We're going to pass, but appreciate you thinking
+  of PayAI.» Это **первый человеческий ответ** по Nidhipati, отрицательный.
+- PayAI убран из follow-up 28.10; повторно не писать.
+- Урок: платёжный фасилитатор не видит в аудите расхода свою боль; следующий
+  похожий канал — только с конкретным запросом от их мерчанта.
