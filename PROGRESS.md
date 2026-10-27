@@ -834,3 +834,7 @@ python3 -m nidhipati_proof.cli verify examples/proof-of-spend.example.json --pub
 - 2 новых теста; полный прогон **94 passed**.
 - Зачем: пока BusinessMCP payouts заблокированы, прямой USDC-инвойс — основной
   путь; он должен проверяться, а не быть обещанием в документе.
+
+- **Ответ support 27.10:** non-Stripe payout path отсутствует; только Stripe Connect.
+  Россия, скорее всего, не поддерживается. Варианты: юрлицо/банк в поддерживаемой
+  стране или BusinessMCP как discovery без paid tools. Earnings не теряются.

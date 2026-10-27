@@ -132,6 +132,9 @@ NIDHIPATI_STRIPE_FIRST3_URL=...
   Условия BusinessMCP: Stripe, личность, банк; выплаты 15-го, от $25, hold 14 дней.
 - Мы в РФ; Stripe может быть недоступен. Написал в `hello@businessmcp.com`:
   есть ли USDC/альтернатива или нужно юрлицо/банк в поддерживаемой стране.
-- **Пока payout не подключён, BusinessMCP — discovery, не касса.**
-  Прямой USDC-инвойс Nidhipati и attest `/pay` остаются основным путём.
-- Не пытаться обойти Stripe verification; ждать ответа support.
+- **Ответ BusinessMCP 27.10:** не-Stripe payout path **нет**. Только Stripe Connect;
+  ни USDC, ни bank transfer, ни другой валюты. Stripe сам решает region eligibility.
+  Варианты: юрлицо/банк в поддерживаемой стране **или** не продавать paid tools.
+  Earnings не теряются, если payout не настроен; баланс остаётся на странице.
+- **Вывод:** BusinessMCP — **discovery**, не касса. Прямой USDC-инвойс Nidhipati
+  и attest `/pay` — основной путь. Не пытаться обойти Stripe verification.
