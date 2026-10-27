@@ -813,3 +813,14 @@ python3 -m nidhipati_proof.cli verify examples/proof-of-spend.example.json --pub
   200 JSON, SSE-клиент не откатывался на POST.
 - Теперь: SSE Accept → 405; обычный GET → 200 health-probe. POST initialize 200.
 - Полный прогон **92 passed**; seller-сервер Nidhipati остаётся Live.
+
+### G37 — BusinessMCP payouts не настроены (27.10.2026)
+
+- В Earnings: **Payout account — Not set up**; кнопка «Set up payouts» отдаёт
+  «Something went wrong. Try again». Условия: Stripe проверяет личность и держит
+  банковские данные; выплаты 15-го, от $25, hold 14 дней.
+- Мы в РФ; Stripe может быть недоступен. Написал в `hello@businessmcp.com`:
+  есть ли USDC/другой путь или нужно юрлицо/банк в поддерживаемой стране.
+- **Честно:** пока payout не подключён, live-листинги — это discovery, не касса.
+  Прямые продажи идут через USDC-инвойс Nidhipati/attest, минуя BusinessMCP.
+- Не пытаюсь обойти verification; ждём ответ support.
