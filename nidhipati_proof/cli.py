@@ -9,7 +9,7 @@ from pathlib import Path
 
 from . import __version__
 from .sign import load_private_key, load_public_key, sign_document, write_keypair
-from .verify import verify_document
+from .verify import verify_document, verify_invoice
 
 
 def _read_json(path: str) -> dict:
@@ -93,7 +93,7 @@ def main(argv: list[str] | None = None) -> int:
                 return 2
         else:
             public_key = pub
-        result = verify_document(document, public_key)
+        result = verify_invoice(document, public_key) if "invoice" in document else verify_document(document, public_key)
         if args.json:
             print(json.dumps(result.as_dict(), indent=2, ensure_ascii=False))
         else:

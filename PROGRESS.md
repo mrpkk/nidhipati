@@ -824,3 +824,13 @@ python3 -m nidhipati_proof.cli verify examples/proof-of-spend.example.json --pub
 - **Честно:** пока payout не подключён, live-листинги — это discovery, не касса.
   Прямые продажи идут через USDC-инвойс Nidhipati/attest, минуя BusinessMCP.
 - Не пытаюсь обойти verification; ждём ответ support.
+
+### G38 — invoice verification: обещание в docs теперь правда (27.10.2026)
+
+- `INVOICE-USDC.md` обещал `nidhipati-proof verify invoice.json` (подпись, сумма,
+  pay_to), но CLI проверял только Proof of Spend schema — invoice падал бы на схеме.
+- Добавлен `verify_invoice`: invoice object, Ed25519, положительная сумма, 0x pay_to,
+  id/service/buyer; CLI сам выбирает invoice или receipt по ключу `invoice`.
+- 2 новых теста; полный прогон **94 passed**.
+- Зачем: пока BusinessMCP payouts заблокированы, прямой USDC-инвойс — основной
+  путь; он должен проверяться, а не быть обещанием в документе.

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import re
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from decimal import Decimal, InvalidOperation
@@ -150,3 +151,50 @@ def verify_document(
     result.warnings.append("onchain_verified=false: v0.1 does not query the chain")
     result.ok = not result.errors
     return result
+
+def verify_invoice(document: dict[str, Any], public_key: bytes | str) -> ProofResult:
+    """Verify a signed USDC invoice: signature, amount, pay-to address.
+
+    The invoice schema is intentionally small: id, service, amount, pay_to.
+    It is not a Proof of Spend receipt; a dashboard payment instruction is not
+    an invoice until this check passes.
+    """
+    invoice = document.get("invoice")
+    result = ProofResult(ok=False, receipt_id=str((invoice or {}).get("id", "")))
+    result.checks["invoice"] = Check("invoice", isinstance(invoice, dict))
+    if not isinstance(invoice, dict):
+        result.errors.append("invoice: missing 'invoice' object")
+        return result
+    try:
+        key = _public_key_bytes(public_key)
+    except Exception as exc:  # noqa: BLE001
+        result.checks["signature"] = Check("signature", False, f"bad public key: {exc}")
+        result.errors.append("signature: bad public key")
+        return result
+    sig = document.get("signature") or {}
+    alg_ok = sig.get("alg") == "Ed25519"
+    result.checks["signature_alg"] = Check("signature_alg", alg_ok, str(sig.get("alg")))
+    if not alg_ok:
+        result.errors.append("signature_alg: expected Ed25519")
+    sig_ok = verify_signature(document, key)
+    result.checks["signature"] = Check("signature", sig_ok, "Ed25519" if sig_ok else "invalid")
+    if not sig_ok:
+        result.errors.append("signature: invalid")
+    amount = _decimal((invoice.get("amount") or {}).get("value"))
+    amount_ok = amount is not None and amount > 0
+    result.checks["amount_positive"] = Check("amount_positive", amount_ok, str(amount))
+    if not amount_ok:
+        result.errors.append("amount: must be positive")
+    pay_to = str(invoice.get("pay_to") or "")
+    pay_ok = bool(re.fullmatch(r"0x[a-fA-F0-9]{40}", pay_to))
+    result.checks["pay_to"] = Check("pay_to", pay_ok, "0x address" if pay_ok else "invalid")
+    if not pay_ok:
+        result.errors.append("pay_to: must be a 0x address")
+    for field in ("id", "service", "buyer"):
+        ok = bool(str(invoice.get(field) or "").strip())
+        result.checks[field] = Check(field, ok, "present" if ok else "missing")
+        if not ok:
+            result.errors.append(f"invoice.{field}: missing")
+    result.ok = all(c.ok for c in result.checks.values())
+    return result
+
