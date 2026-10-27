@@ -9,7 +9,7 @@
 [![Glama](https://img.shields.io/badge/Glama-listed-f2c46d)](https://glama.ai/mcp/servers/mrpkk/nidhipati)
 [![license](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](LICENSE)
 
-**Status:** v0.6 — five CLIs, an MCP server, 91 tests, official MCP Registry and Glama listing.
+**Status:** v0.6 — five CLIs, an MCP server, 92 tests, official MCP Registry and Glama listing.
 
 **Site:** https://mrpkk.github.io/nidhipati/  
 **Free browser audit (no signup):** https://mrpkk.github.io/nidhipati/free-spend-audit.html  

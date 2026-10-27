@@ -44,12 +44,15 @@ class Handler(BaseHTTPRequestHandler):
                              "transport": "streamable-http"})
             return
         if self.path.rstrip("/").endswith(("/mcp", "mcp")):
-            # Catalog health checks probe GET /mcp; a 405 reads as unreachable.
-            # Real MCP traffic is still JSON-RPC over POST.
-            # shortcut: GET /mcp is a health probe, not SSE; upgrade if needed.
-            self._send(200, {"status": "ok", "service": SERVER_NAME, "version": __version__,
-                             "transport": "streamable-http", "method": "POST",
-                             "note": "JSON-RPC over POST; GET is a health probe."})
+            # Plain GET: catalog health probe. SSE Accept: tell the client to
+            # fall back to POST; our real transport is JSON-RPC over POST.
+            accept = self.headers.get("Accept") or ""
+            if "text/event-stream" in accept:
+                self._send(405, {"error": "SSE is not supported; use POST /mcp"})
+            else:
+                self._send(200, {"status": "ok", "service": SERVER_NAME, "version": __version__,
+                                 "transport": "streamable-http", "method": "POST",
+                                 "note": "JSON-RPC over POST; GET is a health probe."})
             return
         self._send(405, {"error": "use POST /mcp"})
 

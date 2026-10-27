@@ -806,3 +806,10 @@ python3 -m nidhipati_proof.cli verify examples/proof-of-spend.example.json --pub
 
 **Честно про канал:** 10 холодных писем по x402 дали 0 ответов. Три письма по RWA — первая попытка
 на другом языке: не «у вас поломка», а «вашу цифру нельзя проверить, не поверив вам».
+
+### G36 — SSE-клиенты получают 405, health — 200 (27.10.2026)
+
+- Та же причина, что у attest: `GET /mcp` с `Accept: text/event-stream` получал
+  200 JSON, SSE-клиент не откатывался на POST.
+- Теперь: SSE Accept → 405; обычный GET → 200 health-probe. POST initialize 200.
+- Полный прогон **92 passed**; seller-сервер Nidhipati остаётся Live.

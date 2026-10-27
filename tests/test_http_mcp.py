@@ -93,3 +93,14 @@ def test_get_mcp_is_a_health_probe(base_url):
         data = json.load(resp)
     assert data["status"] == "ok"
     assert data["method"] == "POST"
+
+
+def test_get_mcp_with_sse_accept_is_405(base_url):
+    """An SSE client must be told to fall back to POST, not handed JSON."""
+    req = urllib.request.Request(f"{base_url}/mcp", headers={"Accept": "text/event-stream"})
+    try:
+        with urllib.request.urlopen(req, timeout=10) as resp:
+            code = resp.status
+    except urllib.error.HTTPError as exc:
+        code = exc.code
+    assert code == 405
