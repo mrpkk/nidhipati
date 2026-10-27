@@ -860,3 +860,13 @@ python3 -m nidhipati_proof.cli verify examples/proof-of-spend.example.json --pub
 - PayAI убран из follow-up 28.10; повторно не писать.
 - Урок: платёжный фасилитатор не видит в аудите расхода свою боль; следующий
   похожий канал — только с конкретным запросом от их мерчанта.
+
+### G41 — follow-up 28.10 отправлен (11 писем)
+
+- **RWA (7):** Backed, Tokeny, Securitize, Centrifuge, Superstate, Mountain, Bitbond —
+  один персональный крючок + $250 sample + scope.
+- **FinOps (4):** Helicone `help@`, LiteLLM, Langfuse, Agent402 — free scan + paid audit.
+- **Не отправлял:** PayAI (человеческий «pass»), Ondo (3 открытых тикета — не спамим),
+  Zoniqx (29.10), Franklin (нет нового факта).
+- Трекер: `OUTREACH-LEDGER.csv`, статус `follow-up-1`. Ответов пока 0.
+- Это единственный follow-up; 31.10 — второй и последний, потом закрытие.
