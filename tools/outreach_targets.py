@@ -33,6 +33,9 @@ UA = "attest-audit/1.0 (+https://attest.rta.lat)"
 EMAIL_RE = re.compile(r"[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}")
 MAILTO_RE = re.compile(r"mailto:([^\"'?>\s]+)")
 SKIP_EMAIL = re.compile(r"(sentry|wixpress|example\.|@sentry|\.png|\.jpg|\.gif|\.svg)", re.I)
+# Заглушки из шаблонов сайтов: они выглядят как адрес, но письмо уйдёт в никуда.
+PLACEHOLDER = {"you@email.com", "youremail123@gmail.com", "your@email.com", "email@example.com",
+               "name@example.com", "user@example.com", "test@test.com", "mail@mail.com"}
 
 
 def hosts_from_discovery(pages: int) -> Counter[str]:
@@ -54,7 +57,8 @@ def hosts_from_discovery(pages: int) -> Counter[str]:
 
 
 def pick(emails: list[str]) -> str:
-    good = [e.strip().strip(".,;:<>") for e in emails if "@" in e and not SKIP_EMAIL.search(e)]
+    good = [e.strip().strip(".,;:<>").lower() for e in emails
+            if "@" in e and not SKIP_EMAIL.search(e) and e.strip().strip(".,;:<>").lower() not in PLACEHOLDER]
     if not good:
         return ""
     # Предпочитаем общий адрес личному: security@ и hello@ читают, а smith@ уходит в спам.
