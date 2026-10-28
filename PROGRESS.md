@@ -917,11 +917,13 @@ python3 -m nidhipati_proof.cli verify examples/proof-of-spend.example.json --pub
 
 ### G46 — Monetization steps 2–3: LinkedIn /audit + 5 юрфирм (28.10.2026)
 
-- **LinkedIn:** пост «A 6-row synthetic spend export produced 9 findings» с ссылкой
-  `https://karta.rta.lat/audit`; опубликован через Tor Browser, виден в ленте профиля.
+- **LinkedIn:** первый пост «AI agent bill: four leaks» live. Пост с `/audit`
+  был опубликован с неверным `karta.rta.lat/audit`, удалён; новый пост LinkedIn
+  не дал — **дневной лимит**. Ссылка на `https://rta.lat/audit/` в посте пока
+  **не стоит**; POOL-BOARD шаг 2 — `[блок: дневной лимит]`.
 - **Юрфирмы Индии (5):** CAM `cam.mumbai@cyrilshroff.com`, Khaitan
   `mumbai@khaitanco.com`, Luthra `delhi@luthra.com`, Saraf `Delhi@sarafpartners.com`,
   Wadia Ghandy `contact@wadiaghandy.com` — шаблон 3, $99/мес, ссылка `https://rta.lat`.
 - **Честно:** шаблон 3 — про проверку правовых норм (RTA/AILegal), не про artifact
   attest. Взял по прямому указанию владельца; в ledger продукт помечен `RTA`.
-- POOL-BOARD: шаг 2 и шаг 3 `[готово, 28.10]`. Ответов пока 0.
+- POOL-BOARD: шаг 3 `[готово, 28.10]`, шаг 2 `[блок: дневной лимит]`.
