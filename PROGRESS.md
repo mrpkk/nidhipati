@@ -905,3 +905,12 @@ python3 -m nidhipati_proof.cli verify examples/proof-of-spend.example.json --pub
 - **Analytics India Magazine:** гостевой питч `info@aimmediahouse.com` — «A transfer is not a mandate».
 - **Substack:** magic link не пришёл; **Discord:** регистрация пустая/блок; **Telegram:** бот не админ — owner.
 - **Follow-up 28.10:** 11 писем; PayAI pass; ответов 0.
+
+### G45 — Monetization step 1: 3 письма FinOps $500 (28.10.2026)
+
+- По `MONETIZATION-STRATEGY.md`, шаблон 1: Helicone `help@helicone.ai`, Langfuse
+  `contact@langfuse.com`, Agent402 `mike@agent402.tools`.
+- Оффер: 5-дневный аудит одного месяца логов, $500 USDC, отчёт с утечками
+  и порядком исправления; «если ничего — так и скажем».
+- Ссылка на метод/данные: https://karta.rta.lat/report.
+- Отправлено 3/3; статус `[готово, 28.10]` в POOL-BOARD; ответов пока 0.
