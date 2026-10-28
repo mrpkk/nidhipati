@@ -977,3 +977,12 @@ Review ($2 500 — другая услуга). Смешивать их с ауд
 - Варианты: `nidhipati.com` (~$10), `nidhipati.is-a.dev` (free GitHub PR),
   `nidhipati.github.io` (free, PH may reject).
 - **Нужен выбор владельца.** Дата 04.11 и kit/4 PNG остаются готовыми.
+
+### G49 — PROGRESS slice: цена аудита $500 на всех страницах (28.10.2026)
+
+- На `pricing.html` осталась строка «India (PPP): audit $1,250» — старый прайс.
+- Исправлено на «audit $500 flat; retainer $750/mo».
+- Добавлен `tests/test_site_pricing.py`: `pricing.html`, `free-spend-audit.html`,
+  `verify-receipt.html` обязаны содержать `$500`, не содержать «First 3 paid audits»
+  и «audit $1,250/$2,500».
+- Полный прогон **95 passed**.
