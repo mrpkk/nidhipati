@@ -927,3 +927,19 @@ python3 -m nidhipati_proof.cli verify examples/proof-of-spend.example.json --pub
 - **Честно:** шаблон 3 — про проверку правовых норм (RTA/AILegal), не про artifact
   attest. Взял по прямому указанию владельца; в ledger продукт помечен `RTA`.
 - POOL-BOARD: шаг 3 `[готово, 28.10]`, шаг 2 `[блок: дневной лимит]`.
+
+### G47 — Substack, Discord, Product Hunt: проверка (28.10.2026)
+
+- **Substack:** проверил INBOX, Spam, All Mail — письма со ссылкой нет. Повторный
+  email-вход отправлен, но magic link не пришёл. Нужен пароль/другой email; капчу
+  не обхожу. POOL-BOARD: `[снято: email не приходит]`.
+- **Discord:** владелец сказал не тратить время — тормоза даже через Tor.
+  POOL-BOARD: `[снято владельцем]`.
+- **Product Hunt:** форма принимает `https://rta.lat/audit/`, но **узнаёт ṚTA**
+  и предлагает «новая публикация ṚTA?». `attest.rta.lat` и `mrpkk.github.io`
+  отклонены. Вывод: нужен **отдельный root domain** для Nidhipati/audit.
+  Варианты: `nidhipati.com` (платно, ~$10), `nidhipati.is-a.dev` (бесплатно,
+  GitHub PR), `nidhipati.github.io` (бесплатно, но PH может отклонить github.io).
+  Пока страница не создана; дата 04.11 остаётся, kit/4 PNG готовы.
+- **LinkedIn step 2:** daily limit; первый пост live, `/audit`-пост не вышел.
+- **Step 3:** 5 юрфирм отправлены; 0 ответов.
