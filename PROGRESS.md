@@ -962,3 +962,18 @@ Review ($2 500 — другая услуга). Смешивать их с ауд
 **Долг:** `pricing.html`, `free-spend-audit.html`, `verify-receipt.html` собраны старым генератором,
 которого нет в `tools/`. Пока правились руками — при следующей правке цены их легко забыть. Свести
 их в `build_site.py` — отдельная задача.
+
+### G48 — Product Hunt: нужен root domain (28.10.2026)
+
+- Проверено формой `producthunt.com/posts/new`:
+  - `mrpkk.github.io/nidhipati/` → invalid;
+  - `attest.rta.lat` → invalid;
+  - `rta.lat/audit/` → PH распознаёт **ṚTA** и предлагает «new launch for ṚTA?»;
+    как новый продукт — отказ.
+- Причина: PH связывает продукт по **корневому домену**, а `rta.lat` уже занят ṚTA.
+- Создан публичный лендинг `mrpkk/nidhipati.github.io` (index.html), но это
+  **project page** `mrpkk.github.io/nidhipati.github.io/`, не root; PH github.io
+  уже отклонял. Это не решение, а заготовка.
+- Варианты: `nidhipati.com` (~$10), `nidhipati.is-a.dev` (free GitHub PR),
+  `nidhipati.github.io` (free, PH may reject).
+- **Нужен выбор владельца.** Дата 04.11 и kit/4 PNG остаются готовыми.
