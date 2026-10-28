@@ -881,3 +881,16 @@ python3 -m nidhipati_proof.cli verify examples/proof-of-spend.example.json --pub
 - Проекты: https://peerlist.io/maximpkk/project/nidhipati ·
   https://peerlist.io/maximpkk/project/attest. KARTA не трогал.
 - Доска: `[готово, 28.10]`; реестр обновлён; browser-lock release; факт в хаб.
+
+### G43 — LinkedIn, VK, Product Hunt, Peerlist (28.10.2026)
+
+- **Peerlist:** профиль `peerlist.io/maximpkk` + проекты Nidhipati и attest.
+- **LinkedIn:** вход через Tor Browser (Marionette 2828), пост «AI agent bill: four
+  leaks» опубликован; виден в `recent-activity/all/`. Точный activity URL не поймал.
+- **VK Pravritti:** пост `wall-239990460_297` — free scan + RWA attestation.
+- **Product Hunt:** дата **04.11.2026, 12:01 AM PT**; `docs/PRODUCTHUNT-LAUNCH.md`
+  + 4 PNG (thumbnail, 3 gallery). Не запускал, ждёт владельца.
+- **Substack:** email-вход отправлен, письмо не пришло — owner.
+- **Discord:** страница регистрации пустая/блок; аккаунт не создан — owner.
+- **Telegram:** бот не админ; нужен owner/группы.
+- **Follow-up 28.10:** 11 писем ушли; PayAI — человеческий pass; ответов 0.
