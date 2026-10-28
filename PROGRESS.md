@@ -894,3 +894,14 @@ python3 -m nidhipati_proof.cli verify examples/proof-of-spend.example.json --pub
 - **Discord:** страница регистрации пустая/блок; аккаунт не создан — owner.
 - **Telegram:** бот не админ; нужен owner/группы.
 - **Follow-up 28.10:** 11 писем ушли; PayAI — человеческий pass; ответов 0.
+
+### G44 — POOL-BOARD: LinkedIn, VK, Peerlist, Product Hunt, AIM (28.10.2026)
+
+- **POOL-BOARD** прочитан; строки отмечены `[взял]`/`[готово]`, ACCOUNTS обновлён.
+- **Peerlist:** профиль + проекты Nidhipati/attest.
+- **LinkedIn:** Tor Browser Marionette 2828; пост «AI agent bill: four leaks» в ленте.
+- **VK Pravritti:** `wall-239990460_297`.
+- **Product Hunt:** дата **04.11.2026 00:01 PT**; `docs/PRODUCTHUNT-LAUNCH.md` + 4 PNG.
+- **Analytics India Magazine:** гостевой питч `info@aimmediahouse.com` — «A transfer is not a mandate».
+- **Substack:** magic link не пришёл; **Discord:** регистрация пустая/блок; **Telegram:** бот не админ — owner.
+- **Follow-up 28.10:** 11 писем; PayAI pass; ответов 0.
