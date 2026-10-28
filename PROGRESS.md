@@ -870,3 +870,14 @@ python3 -m nidhipati_proof.cli verify examples/proof-of-spend.example.json --pub
   Zoniqx (29.10), Franklin (нет нового факта).
 - Трекер: `OUTREACH-LEDGER.csv`, статус `follow-up-1`. Ответов пока 0.
 - Это единственный follow-up; 31.10 — второй и последний, потом закрытие.
+
+### G42 — Peerlist: профиль + два проекта (28.10.2026)
+
+- Взял строку **Peerlist** (зона Ганеша), браузер по `browser-lock.sh take ganesha`.
+- Tor Browser `peerlist.io/login` → Cloudflare Turnstile; не обходил.
+- В новом xvfb-профиле Thorium 9241 вход по существующему аккаунту
+  (`PEERLIST_EMAIL`/`PEERLIST_PAS` из `~/.env.agents`) прошёл.
+- Профиль: https://peerlist.io/maximpkk (Maxim Mazunin, headline про Proof of Spend/RWA).
+- Проекты: https://peerlist.io/maximpkk/project/nidhipati ·
+  https://peerlist.io/maximpkk/project/attest. KARTA не трогал.
+- Доска: `[готово, 28.10]`; реестр обновлён; browser-lock release; факт в хаб.
