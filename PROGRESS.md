@@ -943,3 +943,22 @@ python3 -m nidhipati_proof.cli verify examples/proof-of-spend.example.json --pub
   Пока страница не создана; дата 04.11 остаётся, kit/4 PNG готовы.
 - **LinkedIn step 2:** daily limit; первый пост live, `/audit`-пост не вышел.
 - **Step 3:** 5 юрфирм отправлены; 0 ответов.
+
+## 28.10.2026 · Цена аудита сведена к $500 на всех страницах
+
+Решение владельца: аудит **$500**. На attest это сделано раньше, на сайте nidhipati оставалось
+«$1 250 первые три, далее $2 500».
+
+| Где | Было | Стало |
+|---|---|---|
+| Генератор `build_site.py` (4 места) | $2 500 / $1 250 | **$500 flat** |
+| `docs/pricing.html` | «First 3 paid audits $1,250; then $2,500 or 20%» | «Audit $500 flat» |
+| `docs/free-spend-audit.html` | $1 250 → $2 500 | $500 |
+| `docs/verify-receipt.html` | $1 250 → $2 500 | $500 |
+
+**Не тронуто осознанно:** RWA reserve report ($1 250 за актив — другая услуга) и Agent Wallet Security
+Review ($2 500 — другая услуга). Смешивать их с аудитом расходов нельзя: это разные работы.
+
+**Долг:** `pricing.html`, `free-spend-audit.html`, `verify-receipt.html` собраны старым генератором,
+которого нет в `tools/`. Пока правились руками — при следующей правке цены их легко забыть. Свести
+их в `build_site.py` — отдельная задача.
