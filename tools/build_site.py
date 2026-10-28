@@ -171,7 +171,7 @@ def index_body() -> str:
   <table>
     <tr><th>Offer</th><th>Price</th><th>What</th></tr>
     <tr><td>Free scan</td><td>0</td><td>One flow / one week, 48h report</td></tr>
-    <tr><td>Spend audit</td><td>$2,500 or 20% of verified savings</td><td>Duplicates, escalation, failed-but-billed, refunds, routing</td></tr>
+    <tr><td>Spend audit</td><td>$500 flat</td><td>Duplicates, escalation, failed-but-billed, refunds, routing</td></tr>
     <tr><td>Control retainer</td><td>$1,500/mo</td><td>Budgets, alerts, receipt checks, monthly report</td></tr>
     <tr><td>RWA reserve report</td><td>$2,500–5,000</td><td>Proof of reserve / NAV, signed, sourced</td></tr>
     <tr><td>Prediction resolution</td><td>$500–2,000</td><td>Evidence, sources, conflicts, signed report</td></tr>
@@ -439,7 +439,7 @@ def audit_sample_body() -> str:
   <div class="panel">
     <h3>Free scan</h3>
     <p>One flow, no account, no GitHub. Send the export; the report comes back in writing.
-    First three audits: $1,250. Then $2,500.</p>
+    One audit: $500 flat, five working days.</p>
     <div style="height:14px"></div>
     <a class="btn primary" href="__FORM__">Request a free scan</a>
   </div>
@@ -461,7 +461,7 @@ FAQS = {
     "": [
         ("Do you need my private keys?", "No. The first scan needs public transaction hashes, a CSV/invoice export, or a description. We never ask for keys or seed phrases."),
         ("Is this a statutory audit?", "No. It is technical evidence and a signed receipt. RWA/NAV work is a supporting report; a licensed auditor or lawyer gives the regulated opinion."),
-        ("How much does it cost?", "Free scan for one flow. Paid audit: $2,500 or 20% of verified savings. Control retainer: $1,500/mo. No custody."),
+        ("How much does it cost?", "Free scan for one flow. Paid audit: $500 flat. Control retainer: $1,500/mo. No custody."),
         ("Are you certified?", "No certifications are claimed. We are a new practice with an open-source validator and a written report."),
     ],
     "agent-spend-audit": [
@@ -473,7 +473,7 @@ FAQS = {
     "audit-sample": [
         ("Is this a real client?", "No. It is our own 44-row fixture, run through the real CLI, output unedited. We publish it so you can see the shape before paying."),
         ("Why are the amounts so small?", "The fixture is small on purpose: four error classes fired on 44 rows. On a real month the same checks decide whether an agent is a product or a leak."),
-        ("How much is an audit?", "First three audits $1,250 each, then $2,500. Retainer $1,500/mo afterwards. USDC on Base."),
+        ("How much is an audit?", "$500 flat, five working days. Retainer $1,500/mo afterwards. USDC on Base."),
     ],
     "x402-receipt": [
         ("Does v0.1 verify the chain?", "No. It checks schema, signature, mandate, amount, usage, refund and verdict. On-chain verification is v0.2 and the result says onchain_verified=false."),
@@ -534,7 +534,7 @@ https://github.com/mrpkk/nidhipati/blob/main/docs/PROOF-OF-SPEND.md
 
 ## Pricing
 
-Free scan, no account needed (email, no GitHub). Audit $1,250 for the first three, then $2,500. Control retainer $1,500/mo. USDC on Base/Solana. No custody.
+Free scan, no account needed (email, no GitHub). Audit $500 flat. Control retainer $1,500/mo. USDC on Base/Solana. No custody.
 """,
         encoding="utf-8",
     )
