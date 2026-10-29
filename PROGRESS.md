@@ -918,7 +918,7 @@ python3 -m nidhipati_proof.cli verify examples/proof-of-spend.example.json --pub
 ### G46 — Monetization steps 2–3: LinkedIn /audit + 5 юрфирм (28.10.2026)
 
 - **LinkedIn:** первый пост «AI agent bill: four leaks» live. Пост с `/audit`
-  был опубликован с неверным `karta.rta.lat/audit`, удалён; новый пост LinkedIn
+  был опубликован с неверным `rta.lat/audit/`, удалён; новый пост LinkedIn
   не дал — **дневной лимит**. Ссылка на `https://rta.lat/audit/` в посте пока
   **не стоит**; POOL-BOARD шаг 2 — `[блок: дневной лимит]`.
 - **Юрфирмы Индии (5):** CAM `cam.mumbai@cyrilshroff.com`, Khaitan
