@@ -18,27 +18,94 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from typing import Any
 
 from . import __version__
+from . import x402_gate
 from .mcp_stdio import handle_request
 
 MAX_BODY = 1 << 20  # 1 МБ: отчёт по счетам бывает большим, но не бесконечным
 SERVER_NAME = "nidhipati"
+MCP_URL = "https://rta.lat/nidhipati/mcp"
+# Платная работа после бесплатного лимита; None — платного режима нет.
+GATE = x402_gate.config(SERVER_NAME, MCP_URL)
+QUOTA = x402_gate.DailyQuota(GATE.free_per_day) if GATE is not None else None
 
 
 class Handler(BaseHTTPRequestHandler):
     server_version = f"{SERVER_NAME}/{__version__}"
     protocol_version = "HTTP/1.1"
 
-    def _send(self, code: int, payload: dict[str, Any] | None) -> None:
+    def _send(self, code: int, payload: dict[str, Any] | None,
+              headers: dict[str, str] | None = None) -> None:
         body = b"" if payload is None else json.dumps(payload, ensure_ascii=False).encode()
         self.send_response(code)
         if body:
             self.send_header("Content-Type", "application/json")
         self.send_header("Content-Length", str(len(body)))
+        for name, value in (headers or {}).items():
+            self.send_header(name, value)
         self.end_headers()
         if body:
             self.wfile.write(body)
 
+    def _gate(self, raw: bytes) -> bool:
+        """Пропустить запрос или ответить 402. True — работаем дальше.
+
+        Обнаружение (`initialize`, `tools/list`) бесплатно: каталог, который
+        проверяет нас ежечасно, не должен платить за право узнать, что мы живы.
+        """
+        if GATE is None or QUOTA is None or x402_gate.is_free_method(raw):
+            return True
+        subs = self.headers.get(x402_gate.SUBS_HEADER) or ""
+        if x402_gate.token_ok(GATE, subs):
+            return True
+        payment = next((self.headers.get(h) for h in x402_gate.PAYMENT_HEADERS
+                        if self.headers.get(h)), "")
+        if payment:
+            try:
+                receipt = x402_gate.verify(GATE, payment)
+            except x402_gate.FacilitatorDown as exc:
+                # Не отказ: проверить не смогли. Клиент повторяет с тем же платежом.
+                self._send(503, {"error": "verification_unavailable", "reason": str(exc),
+                                 "message": "Retry with the same payment; it was not rejected."},
+                           {"Retry-After": "30"})
+                return False
+            except x402_gate.PaymentRejected as exc:
+                self._send(402, {"error": "payment_rejected", "reason": str(exc)},
+                           x402_gate.challenge_headers(GATE))
+                return False
+            self._receipt = x402_gate.receipt_header(receipt)
+            return True
+        key = x402_gate.client_key({k.lower(): v for k, v in self.headers.items()},
+                                   self.client_address[0] if self.client_address else "")
+        allowed, used, retry_after = QUOTA.hit(key)
+        if allowed:
+            return True
+        body = x402_gate.challenge(GATE, used=used)
+        self._send(402, body, {**x402_gate.challenge_headers(GATE, body),
+                               "Retry-After": str(retry_after)})
+        return False
+
     def do_GET(self) -> None:  # noqa: N802 — имя метода задано stdlib
+        if self.path.rstrip("/").endswith("/pricing") and GATE is not None:
+            page = x402_gate.pricing_page(
+                GATE, title="nidhipati — proof of spend for AI agents",
+                what=("Receipts, spend audit, NAV, reserve and reconciliation checks "
+                      "for agents that move money."),
+                docs="https://rta.lat/nidhipati/llms-install.md")
+            body = page.encode()
+            self.send_response(200)
+            self.send_header("Content-Type", "text/html; charset=utf-8")
+            self.send_header("Content-Length", str(len(body)))
+            self.end_headers()
+            self.wfile.write(body)
+            return
+        if self.path.rstrip("/").endswith("/pricing.json") and GATE is not None:
+            self._send(200, {"service": SERVER_NAME, "price_usd": GATE.price_usd,
+                             "free_per_day": GATE.free_per_day,
+                             "subscription_usd": GATE.sub_price_usd,
+                             "subscription_period_days": 30,
+                             "network": GATE.network, "pay_to": GATE.pay_to,
+                             "resource": GATE.resource})
+            return
         if self.path.rstrip("/").endswith("/health") or self.path in ("/", "/health"):
             self._send(200, {"status": "ok", "service": SERVER_NAME, "version": __version__,
                              "transport": "streamable-http"})
@@ -57,6 +124,12 @@ class Handler(BaseHTTPRequestHandler):
         self._send(405, {"error": "use POST /mcp"})
 
     def do_POST(self) -> None:  # noqa: N802
+        if self.path.rstrip("/").endswith("/subscribe") and GATE is not None:
+            payment = next((self.headers.get(h) for h in x402_gate.PAYMENT_HEADERS
+                            if self.headers.get(h)), "")
+            status, body, extra = x402_gate.subscribe(GATE, payment)
+            self._send(status, body, extra)
+            return
         if not self.path.rstrip("/").endswith(("/mcp", "mcp")) and self.path != "/":
             self._send(404, {"error": "not found: POST /mcp"})
             return
@@ -69,6 +142,9 @@ class Handler(BaseHTTPRequestHandler):
             self._send(413, {"error": f"body above {MAX_BODY} bytes"})
             return
         raw = self.rfile.read(length).decode("utf-8", "replace") if length else ""
+        self._receipt: dict[str, str] = {}
+        if not self._gate(raw.encode("utf-8", "replace")):
+            return                            # 402/503 уже отправлен
         try:
             message = json.loads(raw)
         except json.JSONDecodeError as exc:
@@ -78,9 +154,9 @@ class Handler(BaseHTTPRequestHandler):
         reply = handle_request(message) if isinstance(message, dict) else handle_request(
             {"jsonrpc": "2.0", "id": None, "method": "__batch__", "params": {}})
         if isinstance(message, dict) and message.get("id") is None:
-            self._send(202, None)          # уведомление: ответа не ждут
+            self._send(202, None, self._receipt)   # уведомление: ответа не ждут
             return
-        self._send(200, reply)
+        self._send(200, reply, self._receipt)
 
     def log_message(self, fmt: str, *args: Any) -> None:
         # В журнал — строка запроса без тела: в телах бывают суммы клиентов.
