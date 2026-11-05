@@ -44,6 +44,13 @@ def test_health_reports_the_service(base_url):
     assert data["transport"] == "streamable-http"
 
 
+def test_root_card_lists_the_five_checks(base_url):
+    with urllib.request.urlopen(f"{base_url}/", timeout=10) as resp:
+        data = json.load(resp)
+    assert data["service"] == "nidhipati" and data["mcp"].endswith("/mcp")
+    assert len(data["checks"]) == 5 and "verify_receipt" in data["checks"]
+
+
 def test_tools_list_over_http(base_url):
     code, body = post(f"{base_url}/mcp", {"jsonrpc": "2.0", "id": 1, "method": "tools/list"})
     assert code == 200

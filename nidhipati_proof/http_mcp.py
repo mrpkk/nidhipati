@@ -19,11 +19,22 @@ from typing import Any
 
 from . import __version__
 from . import x402_gate
-from .mcp_stdio import handle_request
+from .mcp_stdio import TOOLS, handle_request
 
 MAX_BODY = 1 << 20  # 1 МБ: отчёт по счетам бывает большим, но не бесконечным
 SERVER_NAME = "nidhipati"
 MCP_URL = "https://rta.lat/nidhipati/mcp"
+# Карточка на `/`: что это и какие проверки есть. Список берётся из TOOLS,
+# чтобы страница не обещала того, чего сервер не делает.
+CARD = {
+    "status": "ok",
+    "service": SERVER_NAME,
+    "version": __version__,
+    "what": "Proof of spend for AI agents: receipts, spend audit, reserve, "
+            "resolution and reconciliation checks over MCP.",
+    "checks": [tool["name"] for tool in TOOLS],
+    "mcp": MCP_URL,
+}
 # Платная работа после бесплатного лимита; None — платного режима нет.
 GATE = x402_gate.config(SERVER_NAME, MCP_URL)
 QUOTA = x402_gate.DailyQuota(GATE.free_per_day) if GATE is not None else None
@@ -106,9 +117,13 @@ class Handler(BaseHTTPRequestHandler):
                              "network": GATE.network, "pay_to": GATE.pay_to,
                              "resource": GATE.resource})
             return
-        if self.path.rstrip("/").endswith("/health") or self.path in ("/", "/health"):
+        if self.path.rstrip("/").endswith("/health"):
             self._send(200, {"status": "ok", "service": SERVER_NAME, "version": __version__,
                              "transport": "streamable-http"})
+            return
+        if self.path in ("/", "") or self.path.rstrip("/").endswith("/nidhipati"):
+            # Туннель отдаёт префикс /nidhipati как есть — карточка нужна и там.
+            self._send(200, CARD)
             return
         if self.path.rstrip("/").endswith(("/mcp", "mcp")):
             # Plain GET: catalog health probe. SSE Accept: tell the client to
