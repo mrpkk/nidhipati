@@ -18,6 +18,7 @@ from .policy import evaluate_policy
 from .idempotency import InMemoryIdempotencyStore
 from .store import PaymentStore, OrderRecord
 from .handler import handle_callback, HandleResult
+from .receipt import build_payment_evidence, canonical_hash
 from .paygate import PayGateCardAdapter, verify_paygate_signature
 
 __all__ = [
@@ -33,6 +34,8 @@ __all__ = [
     "OrderRecord",
     "handle_callback",
     "HandleResult",
+    "build_payment_evidence",
+    "canonical_hash",
     "PayGateCardAdapter",
     "verify_paygate_signature",
 ]
