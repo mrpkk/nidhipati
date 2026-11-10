@@ -2,7 +2,7 @@
 
 **Proof of Spend for AI agents.** A signed receipt that proves what an agent was authorized to pay, what it actually paid, what it used and what was refunded. Not a token, not custody, not another payment rail.
 
-> Рельсы двигают деньги. Nidhipati доказывает, что движение было правильным.
+> Rails move money. Nidhipati proves the movement was authorized and correct.
 
 [![tests](https://github.com/mrpkk/nidhipati/actions/workflows/test.yml/badge.svg)](https://github.com/mrpkk/nidhipati/actions/workflows/test.yml)
 [![MCP Registry](https://img.shields.io/badge/MCP%20Registry-io.github.mrpkk%2Fnidhipati-7ee2b8)](https://registry.modelcontextprotocol.io/v0/servers?search=nidhipati)
