@@ -11,7 +11,7 @@ from .handler import handle_callback
 from .fulfillment import ManualFulfillment, maybe_fulfill
 from .paygate import PayGateCardAdapter
 from .direct import DirectBaseAdapter, ChainUnavailable, TransferRejected, adapter_from_env
-from .checkout import checkout_page
+from .checkout import PRODUCTS, checkout_page
 from .intake import notify_owner, send_intake, valid_email
 from .receipt import build_payment_evidence
 from .store import PaymentStore, OrderRecord
@@ -287,7 +287,20 @@ def _handle_confirm(payload: Mapping[str, Any]):
     # Письма: покупателю — форма заявки, владельцу — уведомление. Ошибка письма
     # не отменяет оплату: деньги уже в сети, заказ записан. Но сказать об этом
     # нужно честно, иначе покупатель будет ждать письмо, которого не будет.
-    email = str((fresh.meta or {}).get("customer_email") or "") if fresh else ""
+    #
+    # Форму заявки шлём только по каталогу: продукт есть и цена совпадает.
+    # Иначе любой создал бы заказ на 0.001 USDC с чужим адресом и отправлял
+    # письма от имени проекта — почта проекта стала бы чужим инструментом.
+    email = ""
+    intake_skip = None
+    if fresh:
+        catalog = PRODUCTS.get(fresh.product_id)
+        if not catalog:
+            intake_skip = "product_not_in_catalog"
+        elif _atoms_for(catalog["price_usd"]) != int((fresh.meta or {}).get("min_atoms") or 0):
+            intake_skip = "amount_does_not_match_catalog_price"
+        else:
+            email = str((fresh.meta or {}).get("customer_email") or "")
     intake_error = ""
     if email:
         intake_error = send_intake(email, order=fresh.__dict__ if fresh else {}, evidence=evidence)
@@ -305,6 +318,7 @@ def _handle_confirm(payload: Mapping[str, Any]):
         "fulfillment": fulfillment,
         "intake_email_sent": bool(email) and not intake_error,
         "intake_email_error": intake_error or None,
+        "intake_skipped_reason": intake_skip,
         "owner_notified": not owner_error,
         "evidence": evidence,
     })
