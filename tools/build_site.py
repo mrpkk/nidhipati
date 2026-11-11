@@ -201,7 +201,9 @@ def audit_body() -> str:
     <h3>What you get</h3>
     <p>A written report: finding, evidence, estimated overpay, fix. We mark estimates as estimates; “recovered” means verified against the provider invoice or transaction.</p>
     <div style="height:14px"></div>
-    <a class="btn primary" href="__FORM__">Request a free scan</a>
+    <a class="btn primary" href="__CHECKOUT__">Pay the $500 audit — verified on-chain</a>
+    <a class="btn" href="__FORM__">Request a free scan first</a>
+    <p class="micro">The checkout creates the order, shows the address and amount, and checks your transfer in the blockchain. The intake form arrives by email in the same step. No account, no card.</p>
   </div>
 </div></section>
 
@@ -217,7 +219,9 @@ def audit_body() -> str:
   </table>
   <p class="micro">Example format only. No real client numbers are shown.</p>
 </div></section>
-""".replace("__FORM__", FORM)
+""".replace("__FORM__", FORM).replace(
+    "__CHECKOUT__",
+    "https://nidhipati.rta.lat/pay/checkout?product=agent-spend-audit")
 
 
 def x402_body() -> str:
