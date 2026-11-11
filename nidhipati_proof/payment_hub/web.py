@@ -11,6 +11,8 @@ from .handler import handle_callback
 from .fulfillment import ManualFulfillment, maybe_fulfill
 from .paygate import PayGateCardAdapter
 from .direct import DirectBaseAdapter, ChainUnavailable, TransferRejected, adapter_from_env
+from .checkout import checkout_page
+from .intake import notify_owner, send_intake, valid_email
 from .receipt import build_payment_evidence
 from .store import PaymentStore, OrderRecord
 from .models import CreatePaymentRequest, PaymentStatus
@@ -199,6 +201,9 @@ def _handle_create_direct(payload: Mapping[str, Any], order_id: str, amount_fiat
     atoms = _atoms_for(amount_fiat)
     if atoms <= 0:
         return _json(400, {"error": "amount_fiat_must_be_a_number", "amount_fiat": amount_fiat})
+    email = str(payload.get("customer_email") or "").strip()
+    if email and not valid_email(email):
+        return _json(400, {"error": "customer_email_is_not_valid", "customer_email": email})
     req = CreatePaymentRequest(
         order_id=order_id,
         amount_fiat=amount_fiat,
@@ -206,6 +211,7 @@ def _handle_create_direct(payload: Mapping[str, Any], order_id: str, amount_fiat
         product_id=product_id,
         callback_url="",  # у прямого рельса колбэка нет: оплату подтверждает покупатель хешем
         payout_address=adapter.payout_address,
+        customer_email=email or None,
         settlement_asset=adapter.asset,
         settlement_network=adapter.network,
     )
@@ -225,7 +231,8 @@ def _handle_create_direct(payload: Mapping[str, Any], order_id: str, amount_fiat
         checkout_url=None,
         provider_ref=adapter.payout_address,
         meta={"asset": adapter.asset, "network": adapter.network,
-              "min_atoms": atoms, "amount_usdc": f"{atoms / 1_000_000:.6f}"},
+              "min_atoms": atoms, "amount_usdc": f"{atoms / 1_000_000:.6f}",
+              "customer_email": email or None},
     )
     store.upsert_order(rec)
     return _json(200, {
@@ -277,6 +284,14 @@ def _handle_confirm(payload: Mapping[str, Any]):
                                 hook=ManualFulfillment.from_env(), event=facts)
     fresh = store.get_order(order_id)
     evidence = build_payment_evidence(order=fresh, provider_event=facts, fulfillment=fulfillment)
+    # Письма: покупателю — форма заявки, владельцу — уведомление. Ошибка письма
+    # не отменяет оплату: деньги уже в сети, заказ записан. Но сказать об этом
+    # нужно честно, иначе покупатель будет ждать письмо, которого не будет.
+    email = str((fresh.meta or {}).get("customer_email") or "") if fresh else ""
+    intake_error = ""
+    if email:
+        intake_error = send_intake(email, order=fresh.__dict__ if fresh else {}, evidence=evidence)
+    owner_error = notify_owner(order=fresh.__dict__ if fresh else {}, evidence=evidence)
     return _json(200, {
         "ok": True,
         "paid": True,
@@ -288,6 +303,9 @@ def _handle_confirm(payload: Mapping[str, Any]):
         "block": facts.get("block"),
         "confirmations": facts.get("confirmations"),
         "fulfillment": fulfillment,
+        "intake_email_sent": bool(email) and not intake_error,
+        "intake_email_error": intake_error or None,
+        "owner_notified": not owner_error,
         "evidence": evidence,
     })
 

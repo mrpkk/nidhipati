@@ -22,8 +22,10 @@ from . import x402_gate
 from .mcp_stdio import TOOLS, handle_request
 try:
     from .payment_hub.web import handle_pay_request
+    from .payment_hub.checkout import checkout_page
 except Exception:  # pragma: no cover - payment hub optional in minimal env
     handle_pay_request = None  # type: ignore
+    checkout_page = None  # type: ignore
 
 MAX_BODY = 1 << 20  # 1 МБ: отчёт по счетам бывает большим, но не бесконечным
 SERVER_NAME = "nidhipati"
@@ -100,6 +102,23 @@ class Handler(BaseHTTPRequestHandler):
         return False
 
     def do_GET(self) -> None:  # noqa: N802 — имя метода задано stdlib
+        # Витрина оплаты — HTML, поэтому до JSON-обработчика хаба.
+        if "/pay/checkout" in (self.path or ""):
+            from urllib.parse import parse_qs, urlsplit
+            qs = parse_qs(urlsplit(self.path).query)
+            product = (qs.get("product") or ["agent-spend-audit"])[0]
+            page = checkout_page(product)
+            if page is None:
+                self._send(404, {"error": "unknown_product", "product": product})
+                return
+            body = page[0].encode()
+            self.send_response(200)
+            self.send_header("Content-Type", "text/html; charset=utf-8")
+            self.send_header("Cache-Control", "no-store")
+            self.send_header("Content-Length", str(len(body)))
+            self.end_headers()
+            self.wfile.write(body)
+            return
         # Payment hub endpoints (provider callbacks/status). No x402 gate.
         if handle_pay_request is not None and "/pay/" in (self.path or ""):
             res = handle_pay_request("GET", self.path, {k: v for k, v in self.headers.items()})
