@@ -20,6 +20,11 @@ class ManualFulfillment:
 
     note: str = "manual_fulfillment_required"
 
+    @classmethod
+    def from_env(cls) -> "ManualFulfillment":
+        import os
+        return cls(note=os.environ.get("NIDHIPATI_FULFILLMENT_NOTE") or "manual_fulfillment_required")
+
     def fulfill(self, *, order: OrderRecord, event: dict[str, Any] | None = None) -> dict[str, Any]:
         return {
             "ok": True,
