@@ -20,6 +20,10 @@ from typing import Any
 from . import __version__
 from . import x402_gate
 from .mcp_stdio import TOOLS, handle_request
+try:
+    from .payment_hub.web import handle_pay_request
+except Exception:  # pragma: no cover - payment hub optional in minimal env
+    handle_pay_request = None  # type: ignore
 
 MAX_BODY = 1 << 20  # 1 МБ: отчёт по счетам бывает большим, но не бесконечным
 SERVER_NAME = "nidhipati"
@@ -96,6 +100,13 @@ class Handler(BaseHTTPRequestHandler):
         return False
 
     def do_GET(self) -> None:  # noqa: N802 — имя метода задано stdlib
+        # Payment hub endpoints (provider callbacks/status). No x402 gate.
+        if handle_pay_request is not None and "/pay/" in (self.path or ""):
+            res = handle_pay_request("GET", self.path, {k: v for k, v in self.headers.items()})
+            if res is not None:
+                status, payload, headers = res
+                self._send(status, payload, headers)
+                return
         if self.path.rstrip("/").endswith("/pricing") and GATE is not None:
             page = x402_gate.pricing_page(
                 GATE, title="nidhipati — proof of spend for AI agents",
@@ -139,6 +150,20 @@ class Handler(BaseHTTPRequestHandler):
         self._send(405, {"error": "use POST /mcp"})
 
     def do_POST(self) -> None:  # noqa: N802
+        # Payment hub callbacks (provider POST). No x402 gate.
+        if handle_pay_request is not None and "/pay/" in (self.path or ""):
+            length = int(self.headers.get("Content-Length") or 0)
+            if length > MAX_BODY:
+                self.rfile.read(min(length, MAX_BODY))
+                self.close_connection = True
+                self._send(413, {"error": f"body above {MAX_BODY} bytes"})
+                return
+            raw = self.rfile.read(length) if length else b""
+            res = handle_pay_request("POST", self.path, {k: v for k, v in self.headers.items()}, raw)
+            if res is not None:
+                status, payload, headers = res
+                self._send(status, payload, headers)
+                return
         if self.path.rstrip("/").endswith("/subscribe") and GATE is not None:
             payment = next((self.headers.get(h) for h in x402_gate.PAYMENT_HEADERS
                             if self.headers.get(h)), "")
