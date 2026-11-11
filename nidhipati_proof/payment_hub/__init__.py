@@ -21,6 +21,13 @@ from .handler import handle_callback, HandleResult
 from .fulfillment import FulfillmentHook, ManualFulfillment, maybe_fulfill
 from .receipt import build_payment_evidence, canonical_hash
 from .paygate import PayGateCardAdapter, verify_paygate_signature
+from .direct import (
+    ChainUnavailable,
+    DirectBaseAdapter,
+    TransferRejected,
+    adapter_from_env,
+)
+from .base_rpc import confirm_usdc_transfer
 
 __all__ = [
     "CreatePaymentRequest",
@@ -42,4 +49,9 @@ __all__ = [
     "canonical_hash",
     "PayGateCardAdapter",
     "verify_paygate_signature",
+    "DirectBaseAdapter",
+    "ChainUnavailable",
+    "TransferRejected",
+    "adapter_from_env",
+    "confirm_usdc_transfer",
 ]

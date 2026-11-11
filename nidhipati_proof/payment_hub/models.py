@@ -21,7 +21,12 @@ class PaymentPolicy:
     # Technical policy hints; provider ToS/compliance must be checked separately.
     blocked_country_codes: tuple[str, ...] = ()
     allowed_settlement_assets: tuple[str, ...] = ("USDC", "USDT")
-    allowed_networks: tuple[str, ...] = ("polygon", "tron", "ethereum", "base", "arbitrum")
+    # Тестовые сети — для проверки живого цикла оплаты. Боевой рельс выбирается
+    # конфигурацией сервиса, а не этим списком: список только отсекает лишнее.
+    allowed_networks: tuple[str, ...] = (
+        "polygon", "tron", "ethereum", "base", "arbitrum",
+        "polygon-amoy", "base-sepolia",
+    )
 
     def country_blocked(self, code: str | None) -> bool:
         if not code:

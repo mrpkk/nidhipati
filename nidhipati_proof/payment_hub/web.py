@@ -3,12 +3,14 @@ from __future__ import annotations
 import json
 import os
 import urllib.parse
+from decimal import Decimal, InvalidOperation
 from pathlib import Path
 from typing import Any, Mapping
 
 from .handler import handle_callback
 from .fulfillment import ManualFulfillment, maybe_fulfill
 from .paygate import PayGateCardAdapter
+from .direct import DirectBaseAdapter, ChainUnavailable, TransferRejected, adapter_from_env
 from .receipt import build_payment_evidence
 from .store import PaymentStore, OrderRecord
 from .models import CreatePaymentRequest, PaymentStatus
@@ -46,7 +48,22 @@ def _json(status: int, payload: dict[str, Any]) -> tuple[int, dict[str, Any], di
 def handle_pay_get(path: str, query: Mapping[str, str]) -> tuple[int, dict[str, Any], dict[str, str]] | None:
     p = path.rstrip("/")
     if p.endswith("/pay/health"):
-        return _json(200, {"status": "ok", "service": "nidhipati-payment-hub", "provider": "paygate.to(target)", "wiring": "create+callback+order+evidence"})
+        return _json(200, {
+            "status": "ok",
+            "service": "nidhipati-payment-hub",
+            "rails": {
+                "direct.base": {
+                    "settlement": "USDC/Base",
+                    "payout_configured": bool(os.environ.get("NIDHIPATI_PAYOUT_ADDRESS")),
+                    "wiring": "create+confirm+order+evidence",
+                },
+                "paygate.to": {
+                    "settlement": "USDC/Polygon",
+                    "callback_base_configured": bool(os.environ.get("PAYGATE_CALLBACK_BASE_URL")),
+                    "signature_key_configured": bool(os.environ.get("PAYGATE_CALLBACK_PUBLIC_KEY_PEM") or os.environ.get("PAYGATE_CALLBACK_PUBLIC_KEY_FILE")),
+                },
+            },
+        })
     if "/pay/order/" in p:
         order_id = p.rsplit("/pay/order/", 1)[-1].split("/", 1)[0]
         store = get_store()
@@ -58,11 +75,13 @@ def handle_pay_get(path: str, query: Mapping[str, str]) -> tuple[int, dict[str, 
     if p.endswith("/pay/config"):
         # Non-secret config view for ops/debug
         return _json(200, {
-            "provider": "paygate.to",
-            "settlement": "USDC/Polygon",
+            "rails": ["direct.base", "paygate.to"],
+            "settlement": {"direct.base": "USDC/Base", "paygate.to": "USDC/Polygon"},
             "callback_base_configured": bool(os.environ.get("PAYGATE_CALLBACK_BASE_URL")),
             "signature_key_configured": bool(os.environ.get("PAYGATE_CALLBACK_PUBLIC_KEY_PEM") or os.environ.get("PAYGATE_CALLBACK_PUBLIC_KEY_FILE")),
             "payout_configured": bool(os.environ.get("NIDHIPATI_PAYOUT_ADDRESS")),
+            "network": os.environ.get("PAYMENT_HUB_NETWORK", "base"),
+            "asset": os.environ.get("PAYMENT_HUB_ASSET", "USDC"),
             "fulfillment_note_configured": bool(os.environ.get("NIDHIPATI_FULFILLMENT_NOTE")),
             "db": os.environ.get("NIDHIPATI_PAYMENT_DB") or "~/.config/nidhipati/payments.db",
         })
@@ -107,6 +126,16 @@ def handle_pay_request(method: str, raw_url: str, headers: Mapping[str, str], bo
                 except Exception:
                     return _json(400, {"error": "invalid_json"})
             return _handle_create(payload)
+        if path.rstrip("/").endswith("/pay/confirm"):
+            payload: dict[str, Any] = {}
+            if body:
+                try:
+                    data = json.loads(body.decode("utf-8"))
+                    if isinstance(data, dict):
+                        payload = data
+                except Exception:
+                    return _json(400, {"error": "invalid_json"})
+            return _handle_confirm(payload)
     return _json(405, {"error": "method_not_allowed", "path": path})
 
 
@@ -128,6 +157,141 @@ def _handle_callback(parsed: urllib.parse.SplitResult, params: Mapping[str, str]
     })
 
 
+def _rail_of(payload: Mapping[str, Any]) -> str:
+    """Какой рельс выбран: прямой (USDC/Base) или карточный (PayGate.to).
+
+    По умолчанию — прямой: он работает без KYC и без регистрации у провайдера.
+    Карточный включается явно (`rail: "paygate.to"`), когда владелец примет его
+    ToS.
+    """
+    rail = str(payload.get("rail") or os.environ.get("NIDHIPATI_PAYMENT_RAIL") or "direct").strip().lower()
+    if rail in ("direct", "direct.base", "usdc", "usdc/base", "base"):
+        return "direct.base"
+    return "paygate.to"
+
+
+def _atoms_for(amount_fiat: str) -> int:
+    """Цена в долларах → атомы USDC (1:1). Ошибка разбора — честный отказ."""
+    try:
+        return int((Decimal(amount_fiat) * 1_000_000).to_integral_value())
+    except (InvalidOperation, ValueError, TypeError):
+        return -1
+
+
+def _handle_create_direct(payload: Mapping[str, Any], order_id: str, amount_fiat: str,
+                          currency: str, product_id: str):
+    """Прямой рельс: покупатель сам шлёт USDC на адрес и присылает хеш.
+
+    Витрины у этого рельса нет — вместо неё инструкция: адрес, сумма, сеть и
+    адрес подтверждения. Ключ выдаётся в тот же ответ, что и квитанция, поэтому
+    цепочка «заказ → оплата → подтверждение → выдача» не разорвана.
+    """
+    store = get_store()
+    existing = store.get_order(order_id)
+    if existing:
+        return _json(200, {"ok": True, "duplicate": True, "order": existing.__dict__})
+    adapter = adapter_from_env()
+    if not adapter.payout_address:
+        return _json(400, {
+            "error": "payout_not_configured",
+            "hint": "Set NIDHIPATI_PAYOUT_ADDRESS in /home/iamthat/.config/nidhipati/payment.env",
+        })
+    atoms = _atoms_for(amount_fiat)
+    if atoms <= 0:
+        return _json(400, {"error": "amount_fiat_must_be_a_number", "amount_fiat": amount_fiat})
+    req = CreatePaymentRequest(
+        order_id=order_id,
+        amount_fiat=amount_fiat,
+        currency=currency,
+        product_id=product_id,
+        callback_url="",  # у прямого рельса колбэка нет: оплату подтверждает покупатель хешем
+        payout_address=adapter.payout_address,
+        settlement_asset=adapter.asset,
+        settlement_network=adapter.network,
+    )
+    result = adapter.create_payment(req)
+    if not result.ok or not result.provider_ref:
+        rec = OrderRecord(order_id, product_id, amount_fiat, currency, PaymentStatus.FAILED.value,
+                          provider=adapter.provider, meta={"reason": result.reason})
+        store.upsert_order(rec)
+        return _json(400, {"ok": False, "error": result.reason, "order": rec.__dict__})
+    rec = OrderRecord(
+        order_id=order_id,
+        product_id=product_id,
+        amount_fiat=amount_fiat,
+        currency=currency,
+        status=PaymentStatus.PENDING.value,
+        provider=adapter.provider,
+        checkout_url=None,
+        provider_ref=adapter.payout_address,
+        meta={"asset": adapter.asset, "network": adapter.network,
+              "min_atoms": atoms, "amount_usdc": f"{atoms / 1_000_000:.6f}"},
+    )
+    store.upsert_order(rec)
+    return _json(200, {
+        "ok": True,
+        "order": rec.__dict__,
+        "payment": {
+            "asset": adapter.asset,
+            "network": adapter.network,
+            "address": adapter.payout_address,
+            "amount": f"{atoms / 1_000_000:.6f}",
+            "how": (f"Send {atoms / 1_000_000:.6f} {adapter.asset} on {adapter.network} to "
+                    f"{adapter.payout_address}, then POST the transaction hash to /pay/confirm."),
+        },
+        "confirm_endpoint": "/pay/confirm",
+        "order_endpoint": f"/pay/order/{order_id}",
+    })
+
+
+def _handle_confirm(payload: Mapping[str, Any]):
+    """Подтверждение оплаты по хешу: сверка в сети, идемпотентная выдача."""
+    order_id = str(payload.get("order_id") or "").strip()
+    tx_hash = str(payload.get("tx_hash") or "").strip()
+    if not order_id or not tx_hash:
+        return _json(400, {"error": "order_id_and_tx_hash_required"})
+    store = get_store()
+    order = store.get_order(order_id)
+    if not order:
+        return _json(404, {"error": "not_found", "order_id": order_id})
+    adapter = adapter_from_env()
+    min_atoms = int((order.meta or {}).get("min_atoms") or 0)
+    if min_atoms <= 0:
+        min_atoms = _atoms_for(order.amount_fiat)
+    try:
+        event = adapter.confirm(tx_hash, order_id=order_id, min_atoms=min_atoms)
+    except TransferRejected as exc:
+        return _json(402, {"error": str(exc), "order_id": order_id,
+                           "required_usdc": f"{min_atoms / 1_000_000:.6f}"})
+    except ChainUnavailable as exc:
+        return _json(503, {"error": f"could not check the chain: {exc}"})
+    facts = dict(event.raw)
+    # Один перевод — одна выдача: повторный confirm того же хеша не выдаёт снова.
+    if not store.mark_once(f"tx:{event.txid_in}"):
+        return _json(409, {"error": "this transaction was already used",
+                           "order_id": order_id, "tx_hash": event.txid_in})
+    store.update_status(order_id, PaymentStatus.PAID.value,
+                         provider=adapter.provider, provider_ref=adapter.payout_address,
+                         txid_in=event.txid_in, signature_verified=None)
+    fulfillment = maybe_fulfill(store=store, order_id=order_id,
+                                hook=ManualFulfillment.from_env(), event=facts)
+    fresh = store.get_order(order_id)
+    evidence = build_payment_evidence(order=fresh, provider_event=facts, fulfillment=fulfillment)
+    return _json(200, {
+        "ok": True,
+        "paid": True,
+        "order_id": order_id,
+        "status": fresh.status if fresh else None,
+        "amount_usdc": event.amount,
+        "payer": facts.get("payer"),
+        "tx_hash": event.txid_in,
+        "block": facts.get("block"),
+        "confirmations": facts.get("confirmations"),
+        "fulfillment": fulfillment,
+        "evidence": evidence,
+    })
+
+
 def _handle_create(payload: dict[str, Any]):
     order_id = str(payload.get("order_id") or "").strip()
     amount_fiat = str(payload.get("amount_fiat") or "").strip()
@@ -137,6 +301,8 @@ def _handle_create(payload: dict[str, Any]):
     provider_name = payload.get("provider_name")
     if not order_id or not amount_fiat:
         return _json(400, {"error": "order_id_and_amount_fiat_required"})
+    if _rail_of(payload) == "direct.base":
+        return _handle_create_direct(payload, order_id, amount_fiat, currency, product_id)
     store = get_store()
     existing = store.get_order(order_id)
     if existing:

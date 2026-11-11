@@ -28,7 +28,8 @@ def test_create_order_happy_path(monkeypatch, tmp_path):
     # reset store cache
     web._STORE = None; web._STORE_PATH = None
     monkeypatch.setattr(web, "get_adapter", lambda: PayGateCardAdapter(http_get=fake_get))
-    status, payload, _ = web._handle_create({"order_id": "o100", "amount_fiat": "10", "currency": "USD", "product_id": "nidhipati.verify"})
+    # Карточный рельс выбирается явно: по умолчанию хаб берёт прямой (USDC/Base).
+    status, payload, _ = web._handle_create({"order_id": "o100", "amount_fiat": "10", "currency": "USD", "product_id": "nidhipati.verify", "rail": "paygate.to"})
     assert status == 200
     assert payload["ok"] is True
     assert "checkout_url" in payload and payload["checkout_url"]
