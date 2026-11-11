@@ -131,6 +131,18 @@
   function run(){
     var text = el("records").value;
     var budget = el("budget").value;
+    // Пустое поле — не ошибка разбора, а отсутствие данных. Раньше посетитель
+    // видел «Cannot read the file» и уходил, решив, что инструмент сломан.
+    if (!text || !text.trim()){
+      el("summary").textContent = "Nothing to check yet.";
+      el("errors").style.display = "block";
+      el("errors").textContent =
+        "Paste a CSV of agent charges, or load the sample to see what this finds. " +
+        "Required columns: ts, agent_id, tool, quote, settled, status.";
+      el("findings").querySelector("tbody").innerHTML = "";
+      lastReport = "";
+      return;
+    }
     render(SpendAudit.analyzeCSV(text, {budgetPerAgent: budget}));
   }
   el("sample").addEventListener("click", function(){ el("records").value = sample; run(); });
