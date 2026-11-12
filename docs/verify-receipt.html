@@ -5,13 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Verify a Proof of Spend receipt in your browser</title>
 <meta name="description" content="Paste a signed Proof of Spend JSON and an Ed25519 public key. Verify signature, mandate, amount, usage, refund and verdict locally. No upload, no keys, no custody.">
-<link rel="canonical" href="https://mrpkk.github.io/nidhipati/verify-receipt.html">
+<link rel="canonical" href="https://nidhipati.ailegal.legal/site/verify-receipt.html">
 <meta property="og:title" content="Verify a Proof of Spend receipt in your browser">
 <meta property="og:description" content="Paste a signed Proof of Spend JSON and an Ed25519 public key. Verify signature, mandate, amount, usage, refund and verdict locally. No upload, no keys, no custody.">
-<meta property="og:url" content="https://mrpkk.github.io/nidhipati/verify-receipt.html">
+<meta property="og:url" content="https://nidhipati.ailegal.legal/site/verify-receipt.html">
 <meta property="og:type" content="website">
 <link rel="stylesheet" href="styles.css">
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Nidhipati", "applicationCategory": "BusinessApplication", "operatingSystem": "Web, CLI", "description": "Proof of Spend and spend audit for AI agents. Verify mandate, amount, asset, network, payee and refund in a signed receipt.", "url": "https://mrpkk.github.io/nidhipati/verify-receipt.html", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD", "description": "Free scan"}}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Nidhipati", "applicationCategory": "BusinessApplication", "operatingSystem": "Web, CLI", "description": "Proof of Spend and spend audit for AI agents. Verify mandate, amount, asset, network, payee and refund in a signed receipt.", "url": "https://nidhipati.ailegal.legal/site/verify-receipt.html", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD", "description": "Free scan"}}</script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Is the receipt uploaded?", "acceptedAnswer": {"@type": "Answer", "text": "No. Verification runs in the browser with WebCrypto; there is no server call."}}, {"@type": "Question", "name": "Does it check the chain?", "acceptedAnswer": {"@type": "Answer", "text": "No. It verifies the signature and internal consistency. On-chain settlement is not checked in this build; the report says so."}}, {"@type": "Question", "name": "Can I use it for a merchant payment?", "acceptedAnswer": {"@type": "Answer", "text": "It gives you evidence that the receipt was signed and internally valid. Pair it with the mandate/policy and, where needed, an on-chain check."}}]}</script>
 </head>
 <body>

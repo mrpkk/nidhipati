@@ -1,3 +1,3 @@
 User-agent: *
 Allow: /
-Sitemap: https://mrpkk.github.io/nidhipati/sitemap.xml
+Sitemap: https://nidhipati.ailegal.legal/site/sitemap.xml

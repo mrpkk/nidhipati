@@ -6,13 +6,13 @@ Nidhipati is a draft product with an open spec and a reference validator. It is 
 
 ## Pages
 
-- https://mrpkk.github.io/nidhipati/
-- https://mrpkk.github.io/nidhipati/agent-spend-audit.html
-- https://mrpkk.github.io/nidhipati/audit-sample.html
-- https://mrpkk.github.io/nidhipati/x402-receipt.html
-- https://mrpkk.github.io/nidhipati/rwa-proof-of-reserve.html
-- https://mrpkk.github.io/nidhipati/prediction-resolution.html
-- https://mrpkk.github.io/nidhipati/stablecoin-reconciliation.html
+- https://nidhipati.ailegal.legal/site/
+- https://nidhipati.ailegal.legal/site/agent-spend-audit.html
+- https://nidhipati.ailegal.legal/site/audit-sample.html
+- https://nidhipati.ailegal.legal/site/x402-receipt.html
+- https://nidhipati.ailegal.legal/site/rwa-proof-of-reserve.html
+- https://nidhipati.ailegal.legal/site/prediction-resolution.html
+- https://nidhipati.ailegal.legal/site/stablecoin-reconciliation.html
 
 ## Spec
 
