@@ -146,3 +146,70 @@ def checkout_page(product: str) -> tuple[str, str, str] | None:
         product=product,
     )
     return html, spec["title"], spec["price_usd"]
+
+
+CARD_HTML = """<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pay by card — {title}</title>
+<meta name="robots" content="noindex">
+<style>
+body{{font:16px/1.5 system-ui,sans-serif;max-width:640px;margin:6vh auto;padding:0 20px;color:#16181d}}
+h1{{font-size:1.5rem;margin:0 0 8px}} .p{{font-size:2rem;font-weight:600;margin:16px 0}}
+.s{{color:#5a6070;font-size:.92rem}} .box{{border:1px solid #dfe3ea;border-radius:12px;padding:16px;margin:16px 0}}
+button{{font:inherit;padding:12px 18px;border-radius:10px;border:0;background:#1c5fd4;color:#fff;cursor:pointer}}
+button[disabled]{{opacity:.5;cursor:default}} .bad{{color:#b3261e}} .ok{{color:#166b3c}}
+input{{font:inherit;padding:10px;border:1px solid #cfd5df;border-radius:8px;width:100%;box-sizing:border-box}}
+</style></head><body>
+<main>
+<h1>{title}</h1>
+<p class="s">{summary}</p>
+<p class="p">{price} USD</p>
+<div class="box">
+<input id="email" placeholder="email for the receipt (required)" autocomplete="email">
+<p class="s">Card is processed by PayGate.to; the settlement arrives to us in USDC. We never see your card number.</p>
+<button id="go">Pay {price} USD by card</button>
+<p id="out" class="s">Nothing charged yet.</p>
+</div>
+<p class="s">{delivery}</p>
+<p class="s">After payment you get a receipt by email and a signed payment record you can verify offline. Questions: <a href="mailto:maxim.pkk@gmail.com?subject=Payment%20question">ask first</a>.</p>
+</main>
+<script>
+const PRODUCT = "{product}", PRICE = "{price}", RAIL = "paygate.to";
+const out = document.getElementById("out");
+function say(t, c) {{ out.textContent = t; out.className = c || "s"; }}
+document.getElementById("go").onclick = async () => {{
+  const btn = document.getElementById("go");
+  const email = document.getElementById("email").value.trim();
+  if (!email || !email.includes("@")) {{ say("email is required — the receipt goes there", "bad"); return; }}
+  btn.disabled = true; say("Opening the secure card page…");
+  const orderId = "card-" + (crypto.randomUUID ? crypto.randomUUID() : String(Date.now()));
+  try {{
+    const r = await fetch("/pay/create", {{method:"POST", headers:{{"Content-Type":"application/json"}},
+      body: JSON.stringify({{order_id:orderId, amount_fiat:PRICE, currency:"USD", product_id:PRODUCT,
+                            customer_email:email, rail:RAIL}})}});
+    const d = await r.json();
+    const url = d.checkout_url || (d.order && d.order.checkout_url);
+    if (!d.ok || !url) {{ say(d.error || "could not create the payment", "bad"); btn.disabled = false; return; }}
+    window.location.href = url;
+  }} catch (e) {{ say("network error: " + e.message, "bad"); btn.disabled = false; }}
+}};
+</script>
+</body></html>
+"""
+
+
+def card_page(product: str, amount: str | None = None) -> tuple[str, str, str] | None:
+    """Страница оплаты картой: одна кнопка → провайдерская форма → USDC нам.
+
+    `amount` приходит из query и потому недоверенный: он задаёт только сумму
+    заказа. Выдача продукта ручная, поэтому подменить цену и получить товар
+    дешевле нельзя — владелец видит сумму в заказе до выдачи.
+    """
+    spec = PRODUCTS.get(product)
+    if not spec:
+        return None
+    price = str(amount or spec["price_usd"])
+    html = CARD_HTML.format(title=spec["title"], price=price, summary=spec["summary"],
+                            delivery=spec["delivery"], product=product)
+    return html, spec["title"], price

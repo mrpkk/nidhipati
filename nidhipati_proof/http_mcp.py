@@ -22,10 +22,11 @@ from . import x402_gate
 from .mcp_stdio import TOOLS, handle_request
 try:
     from .payment_hub.web import handle_pay_request
-    from .payment_hub.checkout import checkout_page
+    from .payment_hub.checkout import card_page, checkout_page
 except Exception:  # pragma: no cover - payment hub optional in minimal env
     handle_pay_request = None  # type: ignore
     checkout_page = None  # type: ignore
+    card_page = None  # type: ignore
 
 MAX_BODY = 1 << 20  # 1 МБ: отчёт по счетам бывает большим, но не бесконечным
 SERVER_NAME = "nidhipati"
@@ -103,11 +104,14 @@ class Handler(BaseHTTPRequestHandler):
 
     def do_GET(self) -> None:  # noqa: N802 — имя метода задано stdlib
         # Витрина оплаты — HTML, поэтому до JSON-обработчика хаба.
-        if "/pay/checkout" in (self.path or ""):
+        if "/pay/checkout" in (self.path or "") or "/pay/card" in (self.path or ""):
             from urllib.parse import parse_qs, urlsplit
             qs = parse_qs(urlsplit(self.path).query)
             product = (qs.get("product") or ["agent-spend-audit"])[0]
-            page = checkout_page(product)
+            if "/pay/card" in self.path:
+                page = card_page(product, (qs.get("amount") or [None])[0])
+            else:
+                page = checkout_page(product)
             if page is None:
                 self._send(404, {"error": "unknown_product", "product": product})
                 return

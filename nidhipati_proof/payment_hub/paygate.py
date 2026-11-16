@@ -24,7 +24,11 @@ HttpGet = Callable[[str, Mapping[str, str] | None, float], tuple[int, bytes, Map
 
 
 def _default_http_get(url: str, headers: Mapping[str, str] | None = None, timeout: float = 20.0):
-    req = urllib.request.Request(url, headers=dict(headers or {}), method="GET")
+    # Провайдер отвечает 403 на User-Agent по умолчанию от python-urllib, поэтому
+    # клиент представляется собой явно — без выдачи себя за браузер.
+    merged = {"User-Agent": "Nidhipati-PaymentHub/1.0"}
+    merged.update({str(k): str(v) for k, v in (headers or {}).items()})
+    req = urllib.request.Request(url, headers=merged, method="GET")
     with urllib.request.urlopen(req, timeout=timeout) as r:  # noqa: S310 - target is explicit provider API
         return r.status, r.read(), dict(r.headers)
 
@@ -93,7 +97,11 @@ class PayGateCardAdapter:
             f"{self.api_base}/control/wallet.php?address={urllib.parse.quote(req.payout_address)}"
             f"&callback={urllib.parse.quote(cb, safe='')}"
         )
-        status, body, _ = self.http_get(wallet_url, {}, 20.0)
+        try:
+            status, body, _ = self.http_get(wallet_url, {}, 20.0)
+        except Exception as exc:  # сеть/провайдер: честный отказ, а не падение запроса
+            return CreatePaymentResult(False, req.order_id, PaymentStatus.FAILED,
+                                       reason=f"wallet_unreachable:{type(exc).__name__}")
         if status >= 400:
             return CreatePaymentResult(False, req.order_id, PaymentStatus.FAILED, reason=f"wallet_http_{status}")
         try:
@@ -172,7 +180,10 @@ class PayGateCardAdapter:
         if not ref.ipn_token:
             return None
         url = f"{self.api_base}/control/payment-status.php?ipn_token={urllib.parse.quote(ref.ipn_token)}"
-        status, body, _ = self.http_get(url, {}, 20.0)
+        try:
+            status, body, _ = self.http_get(url, {}, 20.0)
+        except Exception:
+            return None
         if status >= 400:
             return None
         try:

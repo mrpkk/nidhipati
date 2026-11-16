@@ -6,7 +6,7 @@ from dataclasses import dataclass
 from typing import Any, Mapping
 
 from .base import PaymentProviderAdapter
-from .models import PaymentStatus
+from .models import PaymentStatus, ProviderRef
 from .store import PaymentStore
 
 
@@ -39,6 +39,23 @@ def handle_callback(
 ) -> HandleResult:
     event = adapter.normalize_callback(params=params, headers=headers, raw_url=raw_url)
     order_id = event.order_id
+    # Без подписи провайдера тело колбэка — недоверенный ввод: кто угодно может
+    # прислать txid и объявить заказ оплаченным. Тогда статус спрашиваем у самого
+    # провайдера по серверному токену заказа (он лежит в meta и наружу не выдаётся).
+    if event.signature_verified is None and order_id:
+        order = store.get_order(order_id)
+        token = (order.meta or {}).get("ipn_token") if order else None
+        if not token:
+            return HandleResult(False, False, order_id, PaymentStatus.PENDING.value,
+                                reason="callback_unverified_and_no_provider_token")
+        verified = adapter.check_status(ProviderRef(provider=event.provider, ipn_token=token))
+        if not verified or verified.status is not PaymentStatus.PAID:
+            return HandleResult(False, False, order_id, PaymentStatus.PENDING.value,
+                                reason="provider_not_confirmed")
+        event.status = PaymentStatus.PAID
+        event.txid_out = event.txid_out or verified.txid_out
+        event.amount = verified.amount or event.amount
+        event.raw = {**dict(event.raw), "provider_status_verified": True}
     key = _event_key(order_id, event.provider, event.raw)
     if not store.record_event(event_key=key, order_id=order_id, provider=event.provider, status=event.status.value, raw=dict(event.raw)):
         return HandleResult(True, True, order_id, event.status.value, reason="duplicate_event")

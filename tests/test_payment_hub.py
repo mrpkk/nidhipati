@@ -120,3 +120,18 @@ def test_paygate_signature_verify():
     assert verify_paygate_signature(
         registered_callback_base=base, raw_query_string=raw_qs + "&tampered=1", signature_b64=sig, public_key_pem=pub
     ) is False
+
+
+def test_paygate_wallet_failure_is_clean_refusal():
+    """Падение сети у провайдера — отказ в ответе, а не исключение в обработчике."""
+
+    def boom(*args, **kwargs):
+        raise OSError("provider timeout")
+
+    adapter = PayGateCardAdapter(http_get=boom)
+    req = CreatePaymentRequest(order_id="o1", amount_fiat="1", currency="USD",
+                               product_id="p", callback_url="https://cb.example/pay/callback",
+                               payout_address="0xabc")
+    result = adapter.create_payment(req)
+    assert result.ok is False
+    assert result.reason and result.reason.startswith("wallet_unreachable")

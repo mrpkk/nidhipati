@@ -23,9 +23,15 @@ def test_store_order_and_idempotency():
 
 
 def test_handle_callback_idempotent():
+    class SignedPayGate(PayGateCardAdapter):
+        """Подпись провайдера проверена — дальше работает только идемпотентность."""
+
+        def verify_callback(self, *, headers, raw_url, body=None):
+            return True
+
     s = PaymentStore(":memory:")
     s.upsert_order(OrderRecord("ord-1", "nidhipati.verify", "9.99", "USD", PaymentStatus.PENDING.value))
-    adapter = PayGateCardAdapter()
+    adapter = SignedPayGate()
     params = {"order_id": "ord-1", "txid_in": "0xin", "value_coin": "9.5", "coin": "polygon_usdc"}
     r1 = handle_callback(store=s, adapter=adapter, params=params, headers={}, raw_url="https://cb?order_id=ord-1&txid_in=0xin")
     r2 = handle_callback(store=s, adapter=adapter, params=params, headers={}, raw_url="https://cb?order_id=ord-1&txid_in=0xin")
