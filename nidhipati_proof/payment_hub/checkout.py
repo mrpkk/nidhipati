@@ -23,6 +23,17 @@ PRODUCTS = {
         "delivery": "5 working days from complete data. Written report, one round of questions.",
         "email_subject": "Nidhipati audit $500 — payment confirmed",
     },
+    "root-check": {
+        "title": "Root Check — idea and portfolio audit",
+        "price_usd": "500",
+        "summary": ("Before you spend a year: ten sourced checks on the idea, the market, "
+                    "the unit economics and the fit with what you already run. A written "
+                    "go / no-go with the root of the problem named."),
+        "delivery": ("5 working days. Written report with sources and confidence, a 60-minute "
+                     "call, and a 30/60/90 plan. If the first three checks fail, we stop and "
+                     "return half."),
+        "email_subject": "Root Check $500 — payment confirmed",
+    },
 }
 
 CHECKOUT_HTML = """<!doctype html>
