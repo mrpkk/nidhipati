@@ -34,8 +34,8 @@ EMAIL_RE = re.compile(r"[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}")
 MAILTO_RE = re.compile(r"mailto:([^\"'?>\s]+)")
 SKIP_EMAIL = re.compile(r"(sentry|wixpress|example\.|@sentry|\.png|\.jpg|\.gif|\.svg)", re.I)
 # Заглушки из шаблонов сайтов: они выглядят как адрес, но письмо уйдёт в никуда.
-PLACEHOLDER = {"you@email.com", "youremail123@gmail.com", "your@email.com", "email@example.com",
-               "name@example.com", "user@example.com", "test@test.com", "mail@mail.com"}
+PLACEHOLDER = {"you@email.com", "placeholder2@example.com", "your@email.com", "email@example.com",
+               "name@example.com", "user@example.com", "test@test.com", "placeholder@example.com"}
 
 
 def hosts_from_discovery(pages: int) -> Counter[str]:
