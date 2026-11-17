@@ -34,6 +34,16 @@ PRODUCTS = {
                      "checks fail, we stop and return half."),
         "email_subject": "Root Check $500 — payment confirmed",
     },
+    "sok-2026": {
+        "title": "SOK 2026 — the year's evidence pack",
+        "price_usd": "500",
+        "summary": ("The juice of the year: 20 project cards, 12 evidence artifacts, "
+                    "6 lessons, 3 bets and a 90-day plan. What is proven, what is not, "
+                    "and what to build next — with a path to every claim."),
+        "delivery": ("5 working days. Written 100–140 page report, sources and dates, "
+                     "written walkthrough with async Q&A. No calls."),
+        "email_subject": "SOK 2026 $500 — payment confirmed",
+    },
 }
 
 CHECKOUT_HTML = """<!doctype html>
