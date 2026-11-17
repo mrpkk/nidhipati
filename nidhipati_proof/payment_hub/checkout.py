@@ -29,9 +29,9 @@ PRODUCTS = {
         "summary": ("Before you spend a year: ten sourced checks on the idea, the market, "
                     "the unit economics and the fit with what you already run. A written "
                     "go / no-go with the root of the problem named."),
-        "delivery": ("5 working days. Written report with sources and confidence, a 60-minute "
-                     "call, and a 30/60/90 plan. If the first three checks fail, we stop and "
-                     "return half."),
+        "delivery": ("5 working days. Written report with sources and confidence, a written "
+                     "walkthrough with async Q&A, and a 30/60/90 plan. If the first three "
+                     "checks fail, we stop and return half."),
         "email_subject": "Root Check $500 — payment confirmed",
     },
 }
