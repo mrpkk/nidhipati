@@ -11,8 +11,8 @@ def test_audit_product_has_a_checkout_page():
     assert page is not None
     html, title, price = page
     assert title == "Agent Spend Audit"
-    assert price == "500"
-    assert "500" in html
+    assert price == "199"
+    assert "199" in html
     # Страница не обещает выдачу автоматом: выдача остаётся ручной.
     assert "intake form" in html.lower()
     assert "noindex" in html

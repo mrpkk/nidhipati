@@ -57,8 +57,8 @@ def _install_fetch(monkeypatch, receipts: dict):
 
 
 def test_catalog_order_gets_the_intake_form(hub, monkeypatch):
-    _install_fetch(monkeypatch, {TX: _receipt(500_000_000)})
-    hub._handle_create({"order_id": "c-1", "amount_fiat": "500",
+    _install_fetch(monkeypatch, {TX: _receipt(199_000_000)})
+    hub._handle_create({"order_id": "c-1", "amount_fiat": "199",
                         "product_id": "agent-spend-audit",
                         "customer_email": "buyer@example.com"})
     status, payload, _ = hub._handle_confirm({"order_id": "c-1", "tx_hash": TX})

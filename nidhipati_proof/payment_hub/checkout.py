@@ -1,6 +1,6 @@
 """Витрина оплаты прямого рельса: страница чека для первого продукта.
 
-Зачем. Аудит за $500 принимался вручную: покупатель отправлял USDC, писал
+Зачем. Аудит за $199 принимался вручную: покупатель отправлял USDC, писал
 владельцу письмо с хешем и ждал ответа. Проверка перевода — работа машины,
 а не человека, и она уже сделана: `DirectBaseAdapter.confirm` читает цепочку.
 Страница делает ровно три вещи — создаёт заказ, показывает адрес и сумму,
@@ -16,33 +16,33 @@ from __future__ import annotations
 PRODUCTS = {
     "agent-spend-audit": {
         "title": "Agent Spend Audit",
-        "price_usd": "500",
+        "price_usd": "199",
         "summary": ("One month of agent logs in, a written report out: duplicates, "
                     "failed-but-billed calls, quote-vs-settled, missing refunds, "
                     "and the order to fix them."),
         "delivery": "5 working days from complete data. Written report, one round of questions.",
-        "email_subject": "Nidhipati audit $500 — payment confirmed",
+        "email_subject": "Nidhipati audit $199 — payment confirmed",
     },
     "root-check": {
         "title": "Root Check — idea and portfolio audit",
-        "price_usd": "500",
+        "price_usd": "199",
         "summary": ("Before you spend a year: ten sourced checks on the idea, the market, "
                     "the unit economics and the fit with what you already run. A written "
                     "go / no-go with the root of the problem named."),
         "delivery": ("5 working days. Written report with sources and confidence, a written "
                      "walkthrough with async Q&A, and a 30/60/90 plan. If the first three "
                      "checks fail, we stop and return half."),
-        "email_subject": "Root Check $500 — payment confirmed",
+        "email_subject": "Root Check $199 — payment confirmed",
     },
     "sok-2026": {
         "title": "SOK 2026 — the year's evidence pack",
-        "price_usd": "500",
+        "price_usd": "199",
         "summary": ("The juice of the year: 20 project cards, 12 evidence artifacts, "
                     "6 lessons, 3 bets and a 90-day plan. What is proven, what is not, "
                     "and what to build next — with a path to every claim."),
         "delivery": ("5 working days. Written 100–140 page report, sources and dates, "
                      "written walkthrough with async Q&A. No calls."),
-        "email_subject": "SOK 2026 $500 — payment confirmed",
+        "email_subject": "SOK 2026 $199 — payment confirmed",
     },
 }
 
@@ -88,7 +88,7 @@ CHECKOUT_HTML = """<!doctype html>
 transaction receipt, not from this page. One transfer pays one order. After the
 payment is confirmed you receive the intake form by email — no account, no card,
 no subscription.</p>
-<p class="s">Questions before you pay: <a href="mailto:maxim.pkk@gmail.com?subject=Nidhipati%20audit%20%24500%20—%20question">ask a question first</a>.</p>
+<p class="s">Questions before you pay: <a href="mailto:maxim.pkk@gmail.com?subject=Nidhipati%20audit%20%24199%20—%20question">ask a question first</a>.</p>
 </main>
 <script>
 const PRODUCT = "{product}";
