@@ -92,7 +92,7 @@ email <maxim.pkk@gmail.com> or [Telegram](https://t.me/mrpkk) with the downloade
 (not raw rows). GitHub is optional:
 [open a private scan request](https://github.com/mrpkk/nidhipati/issues/new?template=free-spend-audit.yml);
 the issue is public, so ask the question only and never paste records or keys. Paid: first 3
-audits **$1,250**; then $2,500 fixed, $1,500/mo retainer, or 20% of verified savings.
+audit **$199** flat, $1,500/mo retainer, or 20% of verified savings.
 $5,000 finding guarantee (identified overcharges, not recovery). Full terms, including what
 is *not* included: [docs/OFFER.md](docs/OFFER.md).
 
