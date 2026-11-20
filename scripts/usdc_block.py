@@ -36,8 +36,9 @@ FIND_RE = re.compile(r"0x[a-fA-F0-9]{40}")           # поиск адресов
 _KEYS = ("NIDHIPATI_PAYOUT_ADDRESS", "X402_PAY_TO", "WALLET_BINANCE_USDC_BASE")
 
 
-def payout_address(env_path: Path = ENV) -> str:
+def payout_address(env_path: Path | None = None) -> str:
     """Адрес получателя из ~/.env. Порядок ключей — от самого точного к общему."""
+    env_path = env_path or ENV
     try:
         text = env_path.read_text()
     except OSError:
@@ -107,8 +108,11 @@ def main() -> int:
     ap.add_argument("--check", action="store_true")
     ap.add_argument("--verify", action="store_true",
                     help="только сверить адрес на всех страницах с ~/.env")
+    ap.add_argument("--sync", action="store_true",
+                    help="обновить страницы и сразу проверить (процедура смены кошелька)")
+    ap.add_argument("--env", default="", help="другой файл окружения (для проверки процедуры)")
     a = ap.parse_args()
-    address = payout_address()
+    address = payout_address(Path(a.env) if a.env else None)
     if not address:
         print("нет адреса в ~/.env (NIDHIPATI_PAYOUT_ADDRESS / X402_PAY_TO)", file=sys.stderr)
         return 2
@@ -117,6 +121,24 @@ def main() -> int:
         for rel, status in rows:
             print(f"{status:8} {rel}")
         bad = [r for r, st in rows if st in ("stale", "missing", "absent")]
+        print(f"адрес: {address[:10]}…{address[-4:]}")
+        return 1 if bad else 0
+
+    if a.sync:
+        for rel, _amount in TARGETS:
+            path = Path(rel) if Path(rel).is_absolute() else ROOT / rel
+            if not path.exists():
+                print(f"{rel}: НЕ СУЩЕСТВУЕТ")
+                continue
+            html = path.read_text(encoding="utf-8")
+            updated = inject(html, address)
+            if updated != html:
+                path.write_text(updated, encoding="utf-8")
+                print(f"обновлён: {rel}")
+        rows = verify_targets(address)
+        for rel, status in rows:
+            print(f"{status:8} {rel}")
+        bad = [r for r, st in rows if st != "ok"]
         print(f"адрес: {address[:10]}…{address[-4:]}")
         return 1 if bad else 0
 

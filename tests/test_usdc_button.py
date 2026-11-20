@@ -96,3 +96,36 @@ def test_all_live_targets_carry_the_env_address():
     assert len(rows) == len(TARGETS)
     bad = [r for r, st in rows if st != "ok"]
     assert not bad, bad
+
+
+# ── процедура смены кошелька: verify → sync → verify ──────────────────────
+
+def test_wallet_rotation_procedure(tmp_path):
+    """Сменили кошелёк — страницы обязаны отстать, а --sync их догнать.
+
+    Проверяем саму процедуру на копиях: живой ~/.env и живые страницы не трогаем.
+    """
+    import subprocess
+    import sys
+
+    old = "0x" + "1" * 40
+    new = "0x" + "2" * 40
+    page = tmp_path / "page.html"
+    # как на живых страницах: блок между маркерами, иначе inject допишет второй
+    page.write_text(f"<html><body><!-- usdc:start --><pre>{old}</pre><!-- usdc:end -->"
+                    f"</body></html>", encoding="utf-8")
+    env = tmp_path / "env"
+    env.write_text(f"NIDHIPATI_PAYOUT_ADDRESS={new}\n", encoding="utf-8")
+
+    script = Path(__file__).resolve().parents[1] / "scripts" / "usdc_block.py"
+    # 1) кошелёк сменён → verify видит расхождение и возвращает 1
+    stale = subprocess.run([sys.executable, str(script), "--verify", "--env", str(env)],
+                           capture_output=True, text=True,
+                           env={"PATH": "/usr/bin:/bin", "HOME": str(tmp_path)})
+    assert "stale" in stale.stdout or "missing" in stale.stdout, stale.stdout
+
+    # 2) --sync подставляет адрес из окружения в целевые страницы и перепроверяет
+    from scripts.usdc_block import inject, verify_targets
+    fresh = inject(page.read_text(encoding="utf-8"), new)
+    page.write_text(fresh, encoding="utf-8")
+    assert verify_targets(new, targets=[(str(page), "199")]) == [(str(page), "ok")]
