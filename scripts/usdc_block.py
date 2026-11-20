@@ -25,6 +25,16 @@ TARGETS = [
     ("docs/audit.html", "199"),
     ("docs/pricing.html", "199"),
     ("/media/Sruti/iamthat/work/sales/landing/root-check/index.html", "199"),
+    # Ниже — офферы, которые тоже показывают адрес. Смена кошелька без них
+    # означает, что человек платит на старый адрес, а мы этого не заметили.
+    ("/media/Sruti/iamthat/work/sales/landing/drift-offer/index.html", "79"),
+    ("/media/Sruti/iamthat/work/sales/landing/aibiz-review/index.html", "49"),
+    ("/media/Sruti/iamthat/work/sales/landing/karta-report/index.html", "19"),
+    ("/media/Sruti/iamthat/work/sales/landing/crypto-mcp/index.html", "19"),
+    ("/media/Sruti/iamthat/work/sales/landing/data-rescue/index.html", "0"),
+    ("/media/Sruti/iamthat/work/sales/landing/data-rescue-kit/index.html", "29"),
+    ("/media/Sruti/iamthat/work/sales/landing/pdf-to-excel/index.html", "0"),
+    ("/media/Sruti/iamthat/work/sales/landing/wordpress-fix/index.html", "0"),
 ]
 ENV = Path.home() / ".env"
 AMOUNT = "199"
@@ -72,9 +82,17 @@ def block(address: str, amount: str = AMOUNT, network: str = NETWORK) -> str:
 {END}"""
 
 
-def inject(html: str, address: str) -> str:
-    """Ставит блок на место маркеров; без маркеров — перед <footer>."""
-    new = block(address)
+def has_marker(html: str) -> bool:
+    return START in html and END in html
+
+
+def inject(html: str, address: str, amount: str = AMOUNT) -> str:
+    """Ставит блок на место маркеров; без маркеров — перед <footer>.
+
+    Цена — параметр: на странице за $19 блок с «199 USDC» был бы обманом, и
+    раньше `--sync` подставлял всем одну сумму.
+    """
+    new = block(address, amount=amount)
     if START in html and END in html:
         head, rest = html.split(START, 1)
         _, tail = rest.split(END, 1)
@@ -124,6 +142,7 @@ def main() -> int:
         print(f"адрес: {address[:10]}…{address[-4:]}")
         return 1 if bad else 0
 
+    skipped: list[str] = []
     if a.sync:
         for rel, _amount in TARGETS:
             path = Path(rel) if Path(rel).is_absolute() else ROOT / rel
@@ -131,7 +150,13 @@ def main() -> int:
                 print(f"{rel}: НЕ СУЩЕСТВУЕТ")
                 continue
             html = path.read_text(encoding="utf-8")
-            updated = inject(html, address)
+            if not has_marker(html):
+                # Без маркеров не трогаем: у страниц разные цены ($19/$29/$49/$79),
+                # и вставка блока с одной суммой была бы обманом покупателя.
+                print(f"пропуск (нет маркеров usdc:start/end): {rel}")
+                skipped.append(rel)
+                continue
+            updated = inject(html, address, amount=_amount)
             if updated != html:
                 path.write_text(updated, encoding="utf-8")
                 print(f"обновлён: {rel}")
@@ -140,6 +165,8 @@ def main() -> int:
             print(f"{status:8} {rel}")
         bad = [r for r, st in rows if st != "ok"]
         print(f"адрес: {address[:10]}…{address[-4:]}")
+        if skipped:
+            print(f"пропущено без маркеров: {len(skipped)} — им нужен блок с их ценой вручную")
         return 1 if bad else 0
 
     for rel, _amount in TARGETS:
@@ -148,7 +175,10 @@ def main() -> int:
             print(f"{rel}: НЕ СУЩЕСТВУЕТ")
             continue
         html = path.read_text(encoding="utf-8")
-        updated = inject(html, address)
+        if not has_marker(html):
+            print(f"{rel}: нет маркеров — пропуск (цена страницы не 199)")
+            continue
+        updated = inject(html, address, amount=_amount)
         if a.check:
             print(f"{rel}: {'уже так' if updated == html else 'будет обновлён'}")
             continue

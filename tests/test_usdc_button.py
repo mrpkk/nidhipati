@@ -129,3 +129,27 @@ def test_wallet_rotation_procedure(tmp_path):
     fresh = inject(page.read_text(encoding="utf-8"), new)
     page.write_text(fresh, encoding="utf-8")
     assert verify_targets(new, targets=[(str(page), "199")]) == [(str(page), "ok")]
+
+
+def test_all_pages_with_address_are_covered():
+    """Адрес живёт на 11 страницах: смена кошелька без любой из них = деньги в никуда."""
+    from scripts.usdc_block import TARGETS, verify_targets
+    env_address = payout_address()
+    if not env_address:
+        pytest.skip("нет ~/.env с адресом получателя")
+    rows = verify_targets(env_address)
+    assert len(rows) >= 10, f"покрытие страниц сократилось: {len(rows)}"
+    bad = [(r, st) for r, st in rows if st != "ok"]
+    assert not bad, bad
+
+
+def test_sync_never_injects_foreign_price(tmp_path):
+    """Страница без маркеров не должна получить блок с чужой ценой ($199 на $19-странице)."""
+    from scripts.usdc_block import has_marker, inject
+    plain = "<html><body><pre>0x" + "1" * 40 + "</pre></body></html>"
+    assert has_marker(plain) is False          # такие страницы --sync пропускает
+
+    marked = f"<html><!-- usdc:start -->old<!-- usdc:end --></html>"
+    assert has_marker(marked) is True
+    out = inject(marked, "0x" + "2" * 40, amount="19")
+    assert "19 USDC" in out and "199 USDC" not in out
