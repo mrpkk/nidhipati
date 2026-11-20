@@ -50,6 +50,8 @@ class ShellDelivery:
 
     command: list[str]
     timeout: int = 180
+    # Куда писать артефакты. Пусто — берём KARTA_REPORTS_DIR (старое поведение).
+    out_dir: str | None = None
 
     def fulfill(self, *, order: OrderRecord, event: dict[str, Any] | None = None) -> dict[str, Any]:
         import json as _json
@@ -68,11 +70,19 @@ class ShellDelivery:
                                                 "invalid", "localhost", "test"}:
             return {"ok": False, "mode": "shell", "reason": "test_email_blocked",
                     "order_id": order.order_id, "product_id": order.product_id}
-        base = Path(os.environ.get("KARTA_REPORTS_DIR") or "/tmp/karta-reports")
-        out_dir = base / order.order_id
-        cmd = [*self.command, "--email", email, "--send", "--out", str(out_dir)]
+        if self.out_dir:
+            out_path = Path(self.out_dir) / order.order_id
+        else:
+            base = Path(os.environ.get("KARTA_REPORTS_DIR") or "/tmp/karta-reports")
+            out_path = base / order.order_id
+        cmd = [*self.command, "--email", email, "--send", "--out", str(out_path)]
+        # Номер заказа передаём окружением: у скриптов выдачи он обязателен, а
+        # дописывать флаги в каждую команду — значит забыть в следующей.
+        env = {**os.environ, "PAY_ORDER_ID": order.order_id,
+               "PAY_PRODUCT_ID": order.product_id}
         try:
-            proc = subprocess.run(cmd, capture_output=True, text=True, timeout=self.timeout)
+            proc = subprocess.run(cmd, capture_output=True, text=True,
+                                  timeout=self.timeout, env=env)
             if proc.returncode != 0:
                 # Пустой stdout упавшего скрипта нельзя читать как «выдано, но без письма».
                 return {"ok": False, "mode": "shell", "reason": f"delivery_failed: exit {proc.returncode}",
@@ -99,7 +109,10 @@ def product_hooks() -> dict[str, FulfillmentHook]:
                              ("AIBIZ_REVIEW_CMD", "aibiz-review")):
         cmd = os.environ.get(env_key)
         if cmd:
-            hooks[product] = ShellDelivery(command=cmd.split())
+            hooks[product] = ShellDelivery(
+                command=cmd.split(),
+                out_dir=os.environ.get("AIBIZ_ORDERS_DIR") if product == "aibiz-review" else None,
+            )
     return hooks
 
 
