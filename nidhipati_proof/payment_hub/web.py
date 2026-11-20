@@ -8,7 +8,7 @@ from pathlib import Path
 from typing import Any, Mapping
 
 from .handler import handle_callback
-from .fulfillment import ManualFulfillment, maybe_fulfill
+from .fulfillment import ManualFulfillment, hook_for, maybe_fulfill
 from .paygate import PayGateCardAdapter
 from .direct import DirectBaseAdapter, ChainUnavailable, TransferRejected, adapter_from_env
 from .checkout import PRODUCTS, checkout_page
@@ -148,7 +148,9 @@ def _handle_callback(parsed: urllib.parse.SplitResult, params: Mapping[str, str]
     result = handle_callback(store=store, adapter=adapter, params=params, headers={k.lower(): v for k, v in headers.items()}, raw_url=raw_url)
     fulfillment = None
     if result.ok and result.order_id and result.status in {"paid", "settled"}:
-        fulfillment = maybe_fulfill(store=store, order_id=result.order_id, hook=ManualFulfillment.from_env(), event=dict(params))
+        fulfillment = maybe_fulfill(store=store, order_id=result.order_id,
+                                    hook=hook_for(store.get_order(result.order_id)),
+                                    event=dict(params))
     return _json(200 if result.ok else 400, {
         "ok": result.ok,
         "duplicate": result.duplicate,
@@ -281,7 +283,7 @@ def _handle_confirm(payload: Mapping[str, Any]):
                          provider=adapter.provider, provider_ref=adapter.payout_address,
                          txid_in=event.txid_in, signature_verified=None)
     fulfillment = maybe_fulfill(store=store, order_id=order_id,
-                                hook=ManualFulfillment.from_env(), event=facts)
+                                hook=hook_for(fresh), event=facts)
     fresh = store.get_order(order_id)
     evidence = build_payment_evidence(order=fresh, provider_event=facts, fulfillment=fulfillment)
     # Письма: покупателю — форма заявки, владельцу — уведомление. Ошибка письма

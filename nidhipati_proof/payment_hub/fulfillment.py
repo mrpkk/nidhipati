@@ -36,6 +36,77 @@ class ManualFulfillment:
         }
 
 
+@dataclass
+class ShellDelivery:
+    """Выдача продукта внешним скриптом.
+
+    Зачем: отчёт KARTA собирается в своём репозитории (`onchain-ai-agent`), а
+    касса не должна знать, как верстается PDF. Скрипт печатает JSON с полями
+    `files` и `emailed`; касса только читает ответ.
+
+    Если письма нет или скрипт упал — честный `ok=False`, заказ уходит в ручной
+    разбор (`manual_review`), а не «выдан» молча.
+    """
+
+    command: list[str]
+    timeout: int = 180
+
+    def fulfill(self, *, order: OrderRecord, event: dict[str, Any] | None = None) -> dict[str, Any]:
+        import json as _json
+        import os
+        import subprocess
+        from pathlib import Path
+
+        meta = dict(order.meta or {})
+        email = str(meta.get("customer_email") or "").strip()
+        if not email:
+            return {"ok": False, "mode": "shell", "reason": "customer_email_missing",
+                    "order_id": order.order_id, "product_id": order.product_id}
+        # 20.11.2026: тестовый адрес из документации — не повод отправлять письмо
+        # и портить репутацию домена отскоком. Такие заказы уходят в ручной разбор.
+        if email.rsplit("@", 1)[-1].lower() in {"example.com", "example.net", "example.org",
+                                                "invalid", "localhost", "test"}:
+            return {"ok": False, "mode": "shell", "reason": "test_email_blocked",
+                    "order_id": order.order_id, "product_id": order.product_id}
+        base = Path(os.environ.get("KARTA_REPORTS_DIR") or "/tmp/karta-reports")
+        out_dir = base / order.order_id
+        cmd = [*self.command, "--email", email, "--send", "--out", str(out_dir)]
+        try:
+            proc = subprocess.run(cmd, capture_output=True, text=True, timeout=self.timeout)
+            if proc.returncode != 0:
+                # Пустой stdout упавшего скрипта нельзя читать как «выдано, но без письма».
+                return {"ok": False, "mode": "shell", "reason": f"delivery_failed: exit {proc.returncode}",
+                        "order_id": order.order_id, "product_id": order.product_id}
+            data = _json.loads(proc.stdout or "{}")
+        except Exception as exc:
+            return {"ok": False, "mode": "shell", "reason": f"delivery_failed: {exc.__class__.__name__}",
+                    "order_id": order.order_id, "product_id": order.product_id}
+        ok = bool(data.get("files")) and bool(data.get("emailed"))
+        return {"ok": ok, "mode": "shell", "order_id": order.order_id,
+                "product_id": order.product_id, "files": data.get("files"),
+                "emailed": bool(data.get("emailed")),
+                "reason": data.get("email_reason") or ("sent" if ok else "not_delivered")}
+
+
+def product_hooks() -> dict[str, FulfillmentHook]:
+    """Какие продукты выдаются автоматом. Остальные — руками, как раньше."""
+    import os
+
+    cmd = os.environ.get("KARTA_REPORT_CMD")
+    hooks: dict[str, FulfillmentHook] = {}
+    if cmd:
+        hooks["karta-report"] = ShellDelivery(command=cmd.split())
+    return hooks
+
+
+def hook_for(order: OrderRecord | None, hooks: dict[str, FulfillmentHook] | None = None) -> FulfillmentHook:
+    """Хук по продукту заказа; по умолчанию — ручная выдача."""
+    hooks = hooks if hooks is not None else product_hooks()
+    if order is not None and order.product_id in hooks:
+        return hooks[order.product_id]
+    return ManualFulfillment.from_env()
+
+
 def maybe_fulfill(
     *,
     store: PaymentStore,
