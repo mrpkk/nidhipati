@@ -92,10 +92,14 @@ def product_hooks() -> dict[str, FulfillmentHook]:
     """Какие продукты выдаются автоматом. Остальные — руками, как раньше."""
     import os
 
-    cmd = os.environ.get("KARTA_REPORT_CMD")
     hooks: dict[str, FulfillmentHook] = {}
-    if cmd:
-        hooks["karta-report"] = ShellDelivery(command=cmd.split())
+    # Каждый продукт со своей командой выдачи: одна переменная на товар, чтобы
+    # включение разбора не включало заодно отчёт.
+    for env_key, product in (("KARTA_REPORT_CMD", "karta-report"),
+                             ("AIBIZ_REVIEW_CMD", "aibiz-review")):
+        cmd = os.environ.get(env_key)
+        if cmd:
+            hooks[product] = ShellDelivery(command=cmd.split())
     return hooks
 
 

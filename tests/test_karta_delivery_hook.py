@@ -74,6 +74,18 @@ def test_broken_script_goes_to_manual_review(tmp_path):
     assert res["ok"] is False and res["reason"].startswith("delivery_failed")
 
 
+def test_aibiz_hook_is_separate_from_karta(monkeypatch):
+    """Разбор AIBiz включается своей переменной и не тянет за собой отчёт KARTA."""
+    monkeypatch.delenv("KARTA_REPORT_CMD", raising=False)
+    monkeypatch.setenv("AIBIZ_REVIEW_CMD", "/bin/echo aibiz")
+    aibiz = hook_for(OrderRecord(order_id="o3", product_id="aibiz-review", amount_fiat="49",
+                                 currency="USD", status="paid"))
+    assert isinstance(aibiz, ShellDelivery)
+    karta = hook_for(OrderRecord(order_id="o4", product_id="karta-report", amount_fiat="19",
+                                 currency="USD", status="paid"))
+    assert isinstance(karta, ManualFulfillment)
+
+
 def test_hook_selected_by_product_and_env(monkeypatch):
     monkeypatch.setenv("KARTA_REPORT_CMD", "/bin/echo build")
     karta = hook_for(_order({"customer_email": "b@example.com"}))
