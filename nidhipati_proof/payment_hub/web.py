@@ -376,7 +376,12 @@ def _handle_create(payload: dict[str, Any]):
         provider=adapter.provider,
         checkout_url=result.provider_ref.checkout_url,
         provider_ref=result.provider_ref.address_in,
-        meta={"ipn_token": result.provider_ref.ipn_token, "polygon_address_in": result.provider_ref.polygon_address_in},
+        # 20.11.2026: карточный путь собирал email, но не сохранял его в заказе —
+        # автоматическая выдача (KARTA/AIBiz) не могла написать покупателю и
+        # уходила в manual_review с «customer_email_missing».
+        meta={"ipn_token": result.provider_ref.ipn_token,
+              "polygon_address_in": result.provider_ref.polygon_address_in,
+              "customer_email": str(customer_email) if customer_email else None},
     )
     store.upsert_order(rec)
     return _json(200, {"ok": True, "order": rec.__dict__, "checkout_url": rec.checkout_url})
