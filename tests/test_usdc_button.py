@@ -153,3 +153,41 @@ def test_sync_never_injects_foreign_price(tmp_path):
     assert has_marker(marked) is True
     out = inject(marked, "0x" + "2" * 40, amount="19")
     assert "19 USDC" in out and "199 USDC" not in out
+
+
+# ── обёртка существующих блоков и обновление только адреса ────────────────
+
+def test_wrap_existing_keeps_page_price(tmp_path):
+    """Блок со своей ценой оборачивается как есть: текст и сумму не переписываем."""
+    from scripts.usdc_block import has_marker, wrap_existing
+    html = ('<html><body><div class="card"><h2>Оплата криптой</h2>'
+            f'<p>79 USDC в сети Base</p><pre>{VALID}</pre>'
+            '<div class="inner">вложенный</div></div></body></html>')
+    out = wrap_existing(html, VALID)
+    assert has_marker(out)
+    assert "79 USDC" in out and "вложенный" in out
+    # вложенный div закрыт правильно: маркер END после последнего </div> карточки
+    assert out.index("usdc:end") > out.index("вложенный")
+
+
+def test_sync_updates_only_the_address_not_the_price():
+    """`--sync` не подставляет 199 на страницу за $19 — он меняет только адрес."""
+    from scripts.usdc_block import START, END, update_address_in_block
+    old = "0x" + "1" * 40
+    new = "0x" + "2" * 40
+    html = f'<html>{START}<div class="card"><p>19 USDC</p><pre>{old}</pre></div>{END}</html>'
+    out = update_address_in_block(html, new)
+    assert "19 USDC" in out, "цена страницы не должна меняться"
+    assert new in out and old not in out
+    assert START in out and END in out
+
+
+def test_all_targets_have_markers_now():
+    """После обёртки все 11 страниц обновляемы: иначе смена кошелька их не догонит."""
+    from scripts.usdc_block import TARGETS, has_marker
+    missing = []
+    for rel, _amount in TARGETS:
+        path = Path(rel) if Path(rel).is_absolute() else Path(__file__).resolve().parents[1] / rel
+        if path.exists() and not has_marker(path.read_text(encoding="utf-8")):
+            missing.append(rel)
+    assert not missing, f"без маркеров: {missing}"

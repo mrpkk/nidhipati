@@ -82,6 +82,38 @@ def block(address: str, amount: str = AMOUNT, network: str = NETWORK) -> str:
 {END}"""
 
 
+def wrap_existing(html: str, address: str) -> str:
+    """Обернуть уже существующий крипто-блок маркерами, не меняя его текст.
+
+    Зачем: на восьми страницах адрес есть, но живёт в своей вёрстке со своей ценой
+    («$79», «$19», «1 000 ₽»). Вставлять туда готовый блок с чужой суммой нельзя,
+    а без маркеров `--sync` не может их обновлять. Обёртка решает обе задачи.
+    """
+    if has_marker(html) or address not in html:
+        return html
+    i = html.index(address)
+    start = html.rfind('<div class="card', 0, i)
+    if start < 0:
+        return html
+    # ищем закрытие карточки с учётом вложенности
+    depth, pos = 0, start
+    while True:
+        nxt_open = html.find("<div", pos)
+        nxt_close = html.find("</div>", pos)
+        if nxt_close < 0:
+            return html
+        if 0 <= nxt_open < nxt_close:
+            depth += 1
+            pos = nxt_open + 4
+        else:
+            depth -= 1
+            pos = nxt_close + 6
+            if depth == 0:
+                end = pos
+                break
+    return html[:start] + START + "\n" + html[start:end] + "\n" + END + html[end:]
+
+
 def has_marker(html: str) -> bool:
     return START in html and END in html
 
@@ -101,6 +133,20 @@ def inject(html: str, address: str, amount: str = AMOUNT) -> str:
         i = html.index("<footer")
         return html[:i] + new + "\n" + html[i:]
     return html + "\n" + new
+
+
+def update_address_in_block(html: str, address: str) -> str:
+    """Заменить адрес внутри существующего блока, не трогая текст и цену страницы.
+
+    `inject()` перерисовывает блок целиком и ставит сумму из TARGETS — на странице
+    за $19 это дало бы «199 USDC». Для страниц со своей вёрсткой меняем только адрес.
+    """
+    if not has_marker(html):
+        return html
+    head, rest = html.split(START, 1)
+    block_html, tail = rest.split(END, 1)
+    fixed = FIND_RE.sub(address, block_html) if FIND_RE.search(block_html) else block_html
+    return head + START + fixed + END + tail
 
 
 def verify_targets(address: str, targets=None) -> list[tuple[str, str]]:
@@ -129,6 +175,8 @@ def main() -> int:
     ap.add_argument("--sync", action="store_true",
                     help="обновить страницы и сразу проверить (процедура смены кошелька)")
     ap.add_argument("--env", default="", help="другой файл окружения (для проверки процедуры)")
+    ap.add_argument("--wrap", action="store_true",
+                    help="обернуть существующие крипто-блоки маркерами, не меняя текст")
     a = ap.parse_args()
     address = payout_address(Path(a.env) if a.env else None)
     if not address:
@@ -141,6 +189,18 @@ def main() -> int:
         bad = [r for r, st in rows if st in ("stale", "missing", "absent")]
         print(f"адрес: {address[:10]}…{address[-4:]}")
         return 1 if bad else 0
+
+    if a.wrap:
+        for rel, _amount in TARGETS:
+            path = Path(rel) if Path(rel).is_absolute() else ROOT / rel
+            if not path.exists():
+                continue
+            html = path.read_text(encoding="utf-8")
+            new = wrap_existing(html, address)
+            if new != html:
+                path.write_text(new, encoding="utf-8")
+                print(f"обёрнут: {rel}")
+        return 0
 
     skipped: list[str] = []
     if a.sync:
@@ -156,10 +216,12 @@ def main() -> int:
                 print(f"пропуск (нет маркеров usdc:start/end): {rel}")
                 skipped.append(rel)
                 continue
-            updated = inject(html, address, amount=_amount)
+            updated = update_address_in_block(html, address)
             if updated != html:
                 path.write_text(updated, encoding="utf-8")
-                print(f"обновлён: {rel}")
+                print(f"адрес обновлён: {rel}")
+            elif address not in html:
+                print(f"В БЛОКЕ НЕТ АДРЕСА: {rel}")
         rows = verify_targets(address)
         for rel, status in rows:
             print(f"{status:8} {rel}")
