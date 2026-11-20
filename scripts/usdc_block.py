@@ -19,12 +19,19 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-PAGES = ["docs/audit.html"]
+# Все страницы, где человек платит USDC. Репозиторий — источник, лендинги
+# раздаются копиями; адрес в обоих местах обязан совпадать с ~/.env.
+TARGETS = [
+    ("docs/audit.html", "199"),
+    ("docs/pricing.html", "199"),
+    ("/media/Sruti/iamthat/work/sales/landing/root-check/index.html", "199"),
+]
 ENV = Path.home() / ".env"
 AMOUNT = "199"
 NETWORK = "Base"
 START, END = "<!-- usdc:start -->", "<!-- usdc:end -->"
-ADDRESS_RE = re.compile(r"^0x[a-fA-F0-9]{40}$")
+ADDRESS_RE = re.compile(r"^0x[a-fA-F0-9]{40}$")      # проверка одного значения
+FIND_RE = re.compile(r"0x[a-fA-F0-9]{40}")           # поиск адресов внутри HTML
 
 _KEYS = ("NIDHIPATI_PAYOUT_ADDRESS", "X402_PAY_TO", "WALLET_BINANCE_USDC_BASE")
 
@@ -77,16 +84,47 @@ def inject(html: str, address: str) -> str:
     return html + "\n" + new
 
 
+def verify_targets(address: str, targets=None) -> list[tuple[str, str]]:
+    """(страница, статус): ok | stale | missing. stale — адрес не тот, что в ~/.env."""
+    rows = []
+    for rel, _amount in (targets or TARGETS):
+        path = Path(rel) if Path(rel).is_absolute() else ROOT / rel
+        if not path.exists():
+            rows.append((rel, "absent"))
+            continue
+        found = set(FIND_RE.findall(path.read_text(encoding="utf-8")))
+        if not found:
+            rows.append((rel, "missing"))
+        elif found == {address}:
+            rows.append((rel, "ok"))
+        else:
+            rows.append((rel, "stale"))
+    return rows
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--check", action="store_true")
+    ap.add_argument("--verify", action="store_true",
+                    help="только сверить адрес на всех страницах с ~/.env")
     a = ap.parse_args()
     address = payout_address()
     if not address:
         print("нет адреса в ~/.env (NIDHIPATI_PAYOUT_ADDRESS / X402_PAY_TO)", file=sys.stderr)
         return 2
-    for rel in PAGES:
-        path = ROOT / rel
+    if a.verify:
+        rows = verify_targets(address)
+        for rel, status in rows:
+            print(f"{status:8} {rel}")
+        bad = [r for r, st in rows if st in ("stale", "missing", "absent")]
+        print(f"адрес: {address[:10]}…{address[-4:]}")
+        return 1 if bad else 0
+
+    for rel, _amount in TARGETS:
+        path = Path(rel) if Path(rel).is_absolute() else ROOT / rel
+        if not path.exists():
+            print(f"{rel}: НЕ СУЩЕСТВУЕТ")
+            continue
         html = path.read_text(encoding="utf-8")
         updated = inject(html, address)
         if a.check:

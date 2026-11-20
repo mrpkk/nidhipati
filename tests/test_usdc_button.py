@@ -58,3 +58,41 @@ def test_page_address_matches_env():
     html = PAGE.read_text(encoding="utf-8")
     assert env_address in html, "адрес на странице не совпадает с ~/.env"
     assert payout_address(ENV) == env_address
+
+
+# ── несколько страниц и сверка адреса ──────────────────────────────────────
+
+def test_verify_flags_stale_address(tmp_path):
+    """Смена кошелька в ~/.env обязана ловиться: страница со старым адресом = stale."""
+    from scripts.usdc_block import verify_targets
+    page = tmp_path / "old.html"
+    page.write_text(f'<pre>{VALID}</pre>', encoding="utf-8")
+    other = "0x1111111111111111111111111111111111111111"
+    rows = verify_targets(other, targets=[(str(page), "199")])
+    assert rows == [(str(page), "stale")], rows
+
+
+def test_verify_ok_when_address_matches(tmp_path):
+    from scripts.usdc_block import verify_targets
+    page = tmp_path / "fresh.html"
+    page.write_text(f'<pre>{VALID}</pre>', encoding="utf-8")
+    assert verify_targets(VALID, targets=[(str(page), "199")]) == [(str(page), "ok")]
+
+
+def test_verify_reports_missing_block(tmp_path):
+    from scripts.usdc_block import verify_targets
+    page = tmp_path / "plain.html"
+    page.write_text("<html><body>без адреса</body></html>", encoding="utf-8")
+    assert verify_targets(VALID, targets=[(str(page), "199")]) == [(str(page), "missing")]
+
+
+def test_all_live_targets_carry_the_env_address():
+    """Реальные страницы: цена цен и оффер Root Check. Падает при расхождении с ~/.env."""
+    from scripts.usdc_block import TARGETS, verify_targets
+    env_address = payout_address()
+    if not env_address:
+        pytest.skip("нет ~/.env с адресом получателя")
+    rows = verify_targets(env_address)
+    assert len(rows) == len(TARGETS)
+    bad = [r for r, st in rows if st != "ok"]
+    assert not bad, bad
