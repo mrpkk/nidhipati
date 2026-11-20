@@ -283,7 +283,7 @@ def _handle_confirm(payload: Mapping[str, Any]):
                          provider=adapter.provider, provider_ref=adapter.payout_address,
                          txid_in=event.txid_in, signature_verified=None)
     fulfillment = maybe_fulfill(store=store, order_id=order_id,
-                                hook=hook_for(fresh), event=facts)
+                                hook=hook_for(store.get_order(order_id)), event=facts)
     fresh = store.get_order(order_id)
     evidence = build_payment_evidence(order=fresh, provider_event=facts, fulfillment=fulfillment)
     # Письма: покупателю — форма заявки, владельцу — уведомление. Ошибка письма

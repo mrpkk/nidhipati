@@ -32,6 +32,8 @@ h1 em{font-style:normal;color:var(--gold)}
 .lede{font-size:clamp(17px,2vw,21px);color:var(--muted);max-width:780px;margin:0 0 26px}
 .actions{display:flex;gap:12px;flex-wrap:wrap}
 .micro{margin-top:14px;color:var(--muted);font-size:13px}
+.addr{display:block;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px;
+  word-break:break-all;background:var(--bg,#0b0d12);border:1px solid var(--line);border-radius:8px;padding:8px 10px}
 section{padding:60px 0;border-bottom:1px solid var(--line)}
 h2{font-size:clamp(24px,3.4vw,36px);letter-spacing:-.02em;margin:0 0 12px}
 h3{font-size:18px;margin:0 0 8px}
