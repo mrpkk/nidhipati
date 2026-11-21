@@ -37,6 +37,40 @@ PRODUCTS = {
         "delivery": "5 working days from complete data. Written report, one round of questions.",
         "email_subject": "Nidhipati founding audit $19 — payment confirmed",
     },
+    # 21.11.2026: четыре «скучных» продукта для стабильного пополнения (см.
+    # work/sales/STABLE-INCOME-PRODUCTS-2026-11-21.md). Год/разово — без подписки.
+    "site-guard-year": {
+        "title": "Site Guard — uptime, SSL и домен на год",
+        "price_usd": "49",
+        "summary": ("Проверка сайта каждые 5 минут, срок SSL и домена, алерт в Telegram или на почту. "
+                    "Один сайт, 12 месяцев."),
+        "delivery": "24 часа после оплаты: добавляем сайт, присылаем тестовый алерт.",
+        "email_subject": "Site Guard $49 — оплата получена",
+    },
+    "channel-vault-export": {
+        "title": "Channel Vault — бэкап Telegram-канала",
+        "price_usd": "19",
+        "summary": ("Полный экспорт постов, медиа и списка участников в ZIP. Один канал, один экспорт; "
+                    "восстановление по запросу."),
+        "delivery": "24 часа после оплаты: ZIP в чат или на почту.",
+        "email_subject": "Channel Vault $19 — оплата получена",
+    },
+    "doc-answer-box": {
+        "title": "Doc Answer Box — RAG для одной папки",
+        "price_usd": "49",
+        "summary": ("Загрузите документы — получите ссылку, где можно спрашивать свои файлы и видеть цитаты. "
+                    "Первый месяц, один отдел."),
+        "delivery": "48 часов: папка + 5 контрольных вопросов, затем доступ по ссылке.",
+        "email_subject": "Doc Answer Box $49 — оплата получена",
+    },
+    "sheet-doctor": {
+        "title": "Sheet Doctor — чистка Excel/CSV",
+        "price_usd": "19",
+        "summary": ("Дубли, пробелы, форматы дат, битые строки: чистый файл + отчёт, что было исправлено. "
+                    "Один файл до 50 000 строк."),
+        "delivery": "24 часа: чистый файл и отчёт на почту.",
+        "email_subject": "Sheet Doctor $19 — оплата получена",
+    },
     "root-check": {
         "title": "Root Check — idea and portfolio audit",
         "price_usd": "199",
