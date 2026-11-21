@@ -138,6 +138,14 @@ def handle_pay_request(method: str, raw_url: str, headers: Mapping[str, str], bo
                 else:
                     params.update({k: v for k, v in urllib.parse.parse_qsl(body.decode("utf-8", "replace"), keep_blank_values=True)})
             return _handle_callback(parsed, params, headers)
+        if path.rstrip("/").endswith("/pay/refund"):
+            if not _admin_ok(headers):
+                return _json(403, {"error": "admin_token_required"})
+            try:
+                payload = json.loads(body.decode("utf-8")) if body else {}
+            except Exception:
+                return _json(400, {"error": "bad_json"})
+            return _handle_refund(payload if isinstance(payload, dict) else {})
         if path.rstrip("/").endswith("/pay/create"):
             payload: dict[str, Any] = {}
             if body:
@@ -179,6 +187,61 @@ def _handle_callback(parsed: urllib.parse.SplitResult, params: Mapping[str, str]
         "reason": result.reason,
         "fulfillment": fulfillment,
     })
+
+
+def _admin_ok(headers: Mapping[str, str]) -> bool:
+    """Владельческая операция: сравнение токена в постоянном времени.
+
+    Возврат — не клиентская кнопка: без токена из `~/.config/nidhipati/payment.env`
+    ручка отвечает 403, а не «попробуйте ещё раз».
+    """
+    import hmac
+
+    expected = (os.environ.get("NIDHIPATI_ADMIN_TOKEN") or "").strip()
+    if not expected:
+        return False
+    got = (headers.get("X-Nidhipati-Admin") or headers.get("x-nidhipati-admin") or "").strip()
+    return bool(got) and hmac.compare_digest(got, expected)
+
+
+def _handle_refund(payload: Mapping[str, Any]) -> tuple[int, dict[str, Any], dict[str, str]]:
+    """Отметить заказ возвращённым: статус, причина, хеш возврата.
+
+    Деньги возвращает человек (карта — через провайдера, USDC — переводом), здесь
+    фиксируется факт и доказательство: без `tx_hash`/`refund_ref` возврат не
+    считается закрытым, потому что проверить его нечем.
+    """
+    order_id = str(payload.get("order_id") or "").strip()
+    if not order_id:
+        return _json(400, {"error": "order_id_required"})
+    store = get_store()
+    order = store.get_order(order_id)
+    if not order:
+        return _json(404, {"error": "not_found", "order_id": order_id})
+    if order.status == "refunded":
+        return _json(200, {"ok": True, "duplicate": True, "order": order.__dict__})
+    reason = str(payload.get("reason") or "").strip()[:200]
+    if not reason:
+        return _json(400, {"error": "reason_required",
+                           "hint": "одна строка: что не доставлено и какой срок нарушен"})
+    tx_hash = str(payload.get("tx_hash") or "").strip()
+    refund_ref = str(payload.get("refund_ref") or "").strip()  # возврат карты у провайдера
+    if not tx_hash and not refund_ref:
+        return _json(400, {"error": "evidence_required",
+                           "hint": "нужен tx_hash (USDC) или refund_ref (карта): без него возврат не проверить"})
+    meta = dict(order.meta or {})
+    meta.update({"refund_reason": reason, "refunded_at": __import__("datetime").datetime.now(
+        __import__("datetime").timezone.utc).isoformat(timespec="seconds")})
+    if tx_hash:
+        meta["refund_tx_hash"] = tx_hash
+    if refund_ref:
+        meta["refund_ref"] = refund_ref
+    store.update_status(order_id, "refunded", meta=meta)
+    store.record_event(event_key=f"refund:{order_id}", order_id=order_id,
+                       provider=order.provider or "manual", status="refunded",
+                       raw={"reason": reason, "tx_hash": tx_hash, "refund_ref": refund_ref})
+    fresh = store.get_order(order_id)
+    return _json(200, {"ok": True, "order": fresh.__dict__ if fresh else None})
 
 
 def _rail_of(payload: Mapping[str, Any]) -> str:
