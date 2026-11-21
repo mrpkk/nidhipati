@@ -119,6 +119,7 @@ CHECKOUT_HTML = """<!doctype html>
 <input id="email" type="email" placeholder="your email — the intake form comes here" autocomplete="email">
 <button id="mk">Create order</button>
 <p class="s" id="addrbox" style="display:none">Send exactly <b id="amount">{price} USDC</b> on <b>Base</b> to:<br><span class="addr" id="addr"></span></p>
+<p class="s" id="orderline" style="display:none">Order: <b id="ordername"></b> — keep this page open, or come back to it.</p>
 </div>
 
 <h2>2 — Paste the transaction hash</h2>
@@ -138,7 +139,31 @@ no subscription.</p>
 const PRODUCT = "{product}";
 const PRICE = "{price}";
 const out = document.getElementById("out");
+// Заказ переживает перезагрузку вкладки. Без этого человек, отправивший USDC и
+// обновивший страницу, оставался с orderId = null и не мог подтвердить оплату
+// (21.11.2026: подтверждение отправлялось с null и падало).
+const STORE_KEY = "nidhipati.order." + PRODUCT;
 let orderId = null;
+try {{
+  const saved = localStorage.getItem(STORE_KEY);
+  if (saved) {{
+    orderId = saved;
+    document.getElementById("orderline").style.display = "";
+    document.getElementById("ordername").textContent = saved;
+    document.getElementById("cf").disabled = false;
+    say("Order " + saved + " restored. Paste the transaction hash — nothing is charged twice.", "");
+    // Адрес и сумму тоже возвращаем: иначе после перезагрузки человеку некуда платить,
+    // а новый заказ на ту же покупку — лишний повод запутаться.
+    fetch("/pay/order/" + encodeURIComponent(saved)).then(r => r.json()).then(d => {{
+      const order = d.order || d;
+      const meta = order.meta || {{}};
+      if (!order.provider_ref || !meta.amount_usdc) return;
+      document.getElementById("addr").textContent = order.provider_ref;
+      document.getElementById("amount").textContent = meta.amount_usdc + " " + (meta.asset || "USDC");
+      document.getElementById("addrbox").style.display = "";
+    }}).catch(() => {{}});
+  }}
+}} catch (e) {{ /* приватный режим: просто работаем без сохранения */ }}
 
 function say(text, cls) {{
   out.textContent = text;
@@ -163,6 +188,9 @@ document.getElementById("mk").onclick = async () => {{
     document.getElementById("amount").textContent = d.payment.amount + " " + d.payment.asset;
     document.getElementById("addrbox").style.display = "";
     document.getElementById("cf").disabled = false;
+    document.getElementById("orderline").style.display = "";
+    document.getElementById("ordername").textContent = orderId;
+    try {{ localStorage.setItem(STORE_KEY, orderId); }} catch (e) {{}}
     say("Order " + orderId + " created. Send the transfer, then paste the hash.", "ok");
   }} catch (e) {{ say("network error: " + e.message, "bad"); btn.disabled = false; }}
 }};
