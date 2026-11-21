@@ -26,6 +26,17 @@ PRODUCTS = {
         "delivery": "5 working days from complete data. Written report, one round of questions.",
         "email_subject": "Nidhipati audit $199 — payment confirmed",
     },
+    # 21.11.2026: «founding»-цена для первых 10 — демпинг, чтобы получить
+    # первые продажи, отзывы и обратную связь. После 10 мест — обычные $199.
+    "agent-spend-audit-founding": {
+        "title": "Agent Spend Audit — founding price (first 10)",
+        "price_usd": "19",
+        "summary": ("Same audit as the $199 one: one month of agent logs in, a written report out — "
+                    "duplicates, failed-but-billed calls, quote-vs-settled, missing refunds, "
+                    "and the order to fix them. Founding price for the first 10 teams."),
+        "delivery": "5 working days from complete data. Written report, one round of questions.",
+        "email_subject": "Nidhipati founding audit $19 — payment confirmed",
+    },
     "root-check": {
         "title": "Root Check — idea and portfolio audit",
         "price_usd": "199",
