@@ -151,6 +151,29 @@ class PaymentStore:
             except sqlite3.IntegrityError:
                 return False
 
+    def list_refunded(self, limit: int = 200) -> list[dict]:
+        """Реестр возвратов: заказ, сумма, причина, доказательство, время.
+
+        Нужен для бухгалтерии и для сверки «деньги ушли — запись есть»: без него
+        возвраты собираются вручную по одному заказу.
+        """
+        with self._lock:
+            cur = self._conn.execute(
+                "SELECT order_id, product_id, amount_fiat, currency, provider, meta, updated_at "
+                "FROM orders WHERE status = ? ORDER BY updated_at DESC LIMIT ?",
+                ("refunded", int(limit)))
+            rows = [dict(r) for r in cur.fetchall()]
+        out: list[dict] = []
+        for row in rows:
+            meta = json.loads(row.get("meta") or "{}")
+            out.append({"order_id": row["order_id"], "product_id": row["product_id"],
+                        "amount": row["amount_fiat"], "currency": row["currency"],
+                        "provider": row["provider"],
+                        "reason": meta.get("refund_reason", ""),
+                        "evidence": meta.get("refund_tx_hash") or meta.get("refund_ref") or "",
+                        "refunded_at": meta.get("refunded_at") or row.get("updated_at") or ""})
+        return out
+
     def update_status(self, order_id: str, status: str, **fields: Any) -> bool:
         if not self.get_order(order_id):
             return False

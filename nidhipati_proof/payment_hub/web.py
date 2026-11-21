@@ -47,7 +47,9 @@ def _json(status: int, payload: dict[str, Any]) -> tuple[int, dict[str, Any], di
     return status, payload, {"Cache-Control": "no-store"}
 
 
-def handle_pay_get(path: str, query: Mapping[str, str]) -> tuple[int, dict[str, Any], dict[str, str]] | None:
+def handle_pay_get(path: str, query: Mapping[str, str],
+                   headers: Mapping[str, str] | None = None
+                   ) -> tuple[int, dict[str, Any], dict[str, str]] | None:
     p = path.rstrip("/")
     if p.endswith("/pay/funnel"):
         # Касса: сколько открыли страницу оплаты и сколько создали заказ.
@@ -86,6 +88,12 @@ def handle_pay_get(path: str, query: Mapping[str, str]) -> tuple[int, dict[str, 
                 },
             },
         })
+    if p.endswith("/pay/refunds"):
+        if not _admin_ok(headers or {}):
+            return _json(403, {"error": "admin_token_required"})
+        rows = get_store().list_refunded()
+        return _json(200, {"refunds": rows, "count": len(rows),
+                           "total_fiat": sum(float(r["amount"] or 0) for r in rows)})
     if "/pay/order/" in p:
         order_id = p.rsplit("/pay/order/", 1)[-1].split("/", 1)[0]
         store = get_store()
@@ -121,7 +129,7 @@ def handle_pay_request(method: str, raw_url: str, headers: Mapping[str, str], bo
         # Callback can arrive as GET with query params (common gateway pattern)
         if path.rstrip("/").endswith("/pay/callback") and qs:
             return _handle_callback(parsed, qs, headers)
-        return handle_pay_get(path, qs)
+        return handle_pay_get(path, qs, headers)
 
     if method == "POST":
         if path.rstrip("/").endswith("/pay/callback"):
@@ -241,7 +249,20 @@ def _handle_refund(payload: Mapping[str, Any]) -> tuple[int, dict[str, Any], dic
                        provider=order.provider or "manual", status="refunded",
                        raw={"reason": reason, "tx_hash": tx_hash, "refund_ref": refund_ref})
     fresh = store.get_order(order_id)
-    return _json(200, {"ok": True, "order": fresh.__dict__ if fresh else None})
+    # Покупатель должен узнать о возврате из письма, а не из выписки. Ошибку
+    # отправки не прячем: она попадёт в ответ владельцу.
+    email_note = "skipped"
+    customer = str((fresh.meta or {}).get("customer_email") or "") if fresh else ""
+    if customer:
+        try:
+            from .intake import send_refund_email
+
+            email_note = send_refund_email(customer, fresh.__dict__ if fresh else {},
+                                           reason, tx_hash or refund_ref) or "sent"
+        except Exception as exc:  # noqa: BLE001
+            email_note = f"error:{type(exc).__name__}"
+    return _json(200, {"ok": True, "order": fresh.__dict__ if fresh else None,
+                       "refund_email": email_note})
 
 
 def _rail_of(payload: Mapping[str, Any]) -> str:

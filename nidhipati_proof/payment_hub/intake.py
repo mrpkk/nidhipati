@@ -84,6 +84,40 @@ def _send(to: str, subject: str, body: str) -> str:
         return f"{type(exc).__name__}: {exc}"
 
 
+REFUND_SUBJECT = "nidhipati: возврат отправлен — заказ {order_id}"
+
+
+def refund_body(*, order: dict[str, Any], reason: str, evidence: str) -> str:
+    """Письмо о возврате: сумма, доказательство и честная причина.
+
+    Покупатель не должен узнавать о возврате из выписки: без письма деньги
+    «появляются» без объяснения, а это хуже, чем их отсутствие.
+    """
+    amount = order.get("amount_fiat", "")
+    currency = order.get("currency", "USD")
+    return "\n".join([
+        "Здравствуйте,",
+        "",
+        f"Возврат по заказу {order.get('order_id', '')} отправлен.",
+        f"Сумма: {amount} {currency} — ровно столько, сколько было оплачено, без удержаний.",
+        f"Подтверждение: {evidence}",
+        f"Причина: {reason}",
+        "",
+        "Деньги идут на тот же адрес/карту, с которых была оплата. Если через час их не видно —",
+        "ответьте на это письмо, мы проверим цепочку ещё раз.",
+        "",
+        "Ничего присылать не нужно: ни заявлений, ни сканов.",
+    ])
+
+
+def send_refund_email(to: str, order: dict[str, Any], reason: str, evidence: str) -> str:
+    """Отправить письмо о возврате. "" — успех, иначе причина (не бросаем)."""
+    if not valid_email(to or ""):
+        return "no_customer_email"
+    return _send(to, REFUND_SUBJECT.format(order_id=order.get("order_id", "")),
+                 refund_body(order=order, reason=reason, evidence=evidence))
+
+
 def intake_body(*, order: dict[str, Any], evidence: dict[str, Any] | None) -> str:
     """Текст письма покупателю: подтверждение и вопросы."""
     amount = order.get("amount_fiat", "")
