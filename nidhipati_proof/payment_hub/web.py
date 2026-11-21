@@ -49,6 +49,26 @@ def _json(status: int, payload: dict[str, Any]) -> tuple[int, dict[str, Any], di
 
 def handle_pay_get(path: str, query: Mapping[str, str]) -> tuple[int, dict[str, Any], dict[str, str]] | None:
     p = path.rstrip("/")
+    if p.endswith("/pay/funnel"):
+        # Касса: сколько открыли страницу оплаты и сколько создали заказ.
+        # Без этого «0 покупок» неотличимо от «до кассы не дошли».
+        import json as _j  # не _json: так зовут HTTP-хелпер ниже
+        from .checkout import FUNNEL_PATH
+        try:
+            data = _j.loads(FUNNEL_PATH.read_text())
+        except (OSError, ValueError):
+            data = {}
+        rows: dict[str, dict[str, int | str]] = {}
+        for key, value in data.items():
+            kind, _, product = key.partition(":")
+            row = rows.setdefault(product, {"views": 0, "orders": 0})
+            row["views" if kind == "view" else "orders"] = int(value)
+        for row in rows.values():
+            v = int(row["views"])
+            row["view_to_order"] = f"{int(row['orders']) / v:.3f}" if v else "—"
+        return _json(200, {"products": rows,
+                           "total_views": sum(int(r["views"]) for r in rows.values()),
+                           "total_orders": sum(int(r["orders"]) for r in rows.values())})
     if p.endswith("/pay/health"):
         return _json(200, {
             "status": "ok",
@@ -237,6 +257,11 @@ def _handle_create_direct(payload: Mapping[str, Any], order_id: str, amount_fiat
               "customer_email": email or None},
     )
     store.upsert_order(rec)
+    try:
+        from .checkout import funnel_bump
+        funnel_bump("order", product_id)
+    except Exception:
+        pass
     return _json(200, {
         "ok": True,
         "order": rec.__dict__,

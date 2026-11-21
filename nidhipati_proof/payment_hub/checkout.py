@@ -11,6 +11,9 @@
 """
 from __future__ import annotations
 
+import os
+from pathlib import Path
+
 #: Продукты, которые можно оплатить этой витриной. Цена — в долларах, актив
 #: USDC считается один к одному; адрес приходит из конфигурации сервиса.
 PRODUCTS = {
@@ -33,6 +36,47 @@ PRODUCTS = {
                      "walkthrough with async Q&A, and a 30/60/90 plan. If the first three "
                      "checks fail, we stop and return half."),
         "email_subject": "Root Check $199 — payment confirmed",
+    },
+    "drift-kill-switch": {
+        "title": "Drift — spend limit and kill switch",
+        "price_usd": "79",
+        "summary": ("A hard per-task budget, an allowlist of payees and a kill switch "
+                    "in front of your agent. Setup in your stack, a signed refusal "
+                    "receipt for every blocked call, and a short runbook."),
+        "delivery": "48 hours after access. Config, tests on a dry run, and a written runbook.",
+        "email_subject": "Drift kill switch $79 — payment confirmed",
+    },
+    "karta-report": {
+        "title": "KARTA — agent spend report 72/2500",
+        "price_usd": "19",
+        "summary": ("The written report: 72 money-moving MCP servers scanned, 2 500 tools, "
+                    "which ones can spend without a ceiling, and what to fix first."),
+        "delivery": "Instant PDF + JSON. One round of questions by email.",
+        "email_subject": "KARTA report $19 — payment confirmed",
+    },
+    "aibiz-review": {
+        "title": "AIBiz — one business card, reviewed",
+        "price_usd": "49",
+        "summary": ("One business model card reviewed against 69 live cards: unit economics, "
+                    "risks, first three steps to revenue, and what to drop."),
+        "delivery": "3 working days. Written review with sources, async questions.",
+        "email_subject": "AIBiz review $49 — payment confirmed",
+    },
+    "crypto-mcp-month": {
+        "title": "Crypto MCP — 30 days of market data",
+        "price_usd": "19",
+        "summary": ("One key, 30 days: prices, pools, on-chain balances and DeFi positions "
+                    "through the Crypto MCP server. For agents and scripts that need live numbers."),
+        "delivery": "Key by email within 1 hour, 30 days, 100k calls. No auto-renew.",
+        "email_subject": "Crypto MCP $19 — key issued",
+    },
+    "data-rescue-kit": {
+        "title": "Data Rescue Kit — CSV/Excel cleaner",
+        "price_usd": "29",
+        "summary": ("The script behind the 24-hour cleanup service: remove duplicates and empty rows, "
+                    "normalize dates and amounts, merge files, get a JSON report. Python CLI, MIT-style use."),
+        "delivery": "Archive by email within 1 hour: CLI, tests, samples, README.",
+        "email_subject": "Data Rescue Kit $29 — files",
     },
     "sok-2026": {
         "title": "SOK 2026 — the year's evidence pack",
@@ -218,6 +262,31 @@ document.getElementById("go").onclick = async () => {{
 </script>
 </body></html>
 """
+
+
+FUNNEL_PATH = Path(os.environ.get("NIDHIPATI_FUNNEL")
+                    or (Path.home() / ".config" / "nidhipati" / "funnel.json"))
+
+
+def funnel_bump(kind: str, product: str) -> None:
+    """Счётчик кассы: сколько раз открыли страницу оплаты и сколько создали заказ.
+
+    Зачем: покупатель может остановиться на самой кассе — и мы об этом не знали,
+    потому что считать умели только «заказ создан». Только числа, без адресов.
+    """
+    import json as _json
+    try:
+        data = _json.loads(FUNNEL_PATH.read_text())
+        data = data if isinstance(data, dict) else {}
+    except (OSError, ValueError):
+        data = {}
+    key = f"{kind}:{product[:32]}"
+    data[key] = int(data.get(key, 0)) + 1
+    try:
+        FUNNEL_PATH.parent.mkdir(parents=True, exist_ok=True)
+        FUNNEL_PATH.write_text(_json.dumps(data, ensure_ascii=False, sort_keys=True))
+    except OSError:
+        pass
 
 
 def card_page(product: str, amount: str | None = None) -> tuple[str, str, str] | None:

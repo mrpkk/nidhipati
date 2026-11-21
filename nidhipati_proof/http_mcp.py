@@ -110,6 +110,11 @@ class Handler(BaseHTTPRequestHandler):
             product = (qs.get("product") or ["agent-spend-audit"])[0]
             if "/pay/card" in self.path:
                 page = card_page(product, (qs.get("amount") or [None])[0])
+                try:
+                    from .payment_hub.checkout import funnel_bump
+                    funnel_bump("view", product)
+                except Exception:
+                    pass
             else:
                 page = checkout_page(product)
             if page is None:
