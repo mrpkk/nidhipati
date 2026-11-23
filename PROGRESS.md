@@ -366,3 +366,31 @@ pytest tests/test_price_anchor.py → 3 passed
 (`stripe.com/docs/products-prices/manage-prices`, 200).
 
 **БЛОКЕР:** публичный домен 530 (туннель), проверка витрины только локальная.
+
+## 23.11.2026 — возврат: реестр /pay/refunds закрыт тестом
+
+**Что уже было:** `POST /pay/refund` (только админ-токен, обязательна причина и доказательство —
+`tx_hash` для USDC или `refund_ref` для карты), идемпотентность, письмо покупателю, документ
+`docs/REFUND.md` с обоими рельсами. 13 тестов: 403 без токена, 400 без доказательства, статус
+`refunded` в заказе и на странице `/pay/order/<id>`, дубль, 404, «токен не настроен = закрыто»,
+шаблон письма.
+
+**Чего не хватало:** реестр `GET /pay/refunds` (он есть в коде) **не был покрыт ни одним тестом**.
+
+**Добавлено:** тест `test_refunds_registry_lists_the_refund_for_the_owner`:
+- без токена → **403** `admin_token_required`;
+- после возврата с `refund_ref` → **200**, в списке есть заказ со `refunded_at` и причиной.
+
+**Проверено:**
+```
+pytest tests/test_refund_status.py → 14 passed
+pytest tests/test_refund_status.py tests/test_payment_hub.py → 22 passed
+local GET /pay/refunds (без токена) → 403 (ожидаемо)
+```
+
+**Рынок (проверено HTTP 200):** возвраты у провайдера — отдельный поток с состояниями и отказами
+(`docs.stripe.com/refunds`, `stripe.com/docs/refunds#refund-failures`, 200); правила по картам задаёт
+платёжная система, а не продавец (`visa.co.uk/support/consumer/visa-rules.html`, 200) — поэтому у нас
+`refund_ref` от провайдера, а не «наша» ссылка.
+
+**БЛОКЕР:** публичный домен 530 (туннель) — проверка локальная, на 8291.

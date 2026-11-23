@@ -185,3 +185,21 @@ def test_runbook_mentions_email_and_registry():
     doc = (ROOT / "docs" / "REFUND.md").read_text(encoding="utf-8")
     assert "/pay/refunds" in doc and "refund_email" in doc
     assert "X-Nidhipati-Admin" in doc
+
+
+def test_refunds_registry_lists_the_refund_for_the_owner(api):
+    """Реестр /pay/refunds: без токена закрыт, с токеном показывает возврат и доказательство."""
+    call, _ = api
+    code, body, _ = call("GET", "/pay/refunds")
+    assert code == 403 and body["error"] == "admin_token_required"
+
+    call("POST", "/pay/refund",
+         {"order_id": "ord-refund", "reason": "карта: клиент отказался", "refund_ref": "paygate-rf-9"},
+         {"X-Nidhipati-Admin": "s3cret-admin"})
+    code, body, _ = call("GET", "/pay/refunds", None, {"X-Nidhipati-Admin": "s3cret-admin"})
+    assert code == 200
+    rows = body.get("refunds") or body.get("orders") or []
+    assert rows, body
+    row = next(r for r in rows if r.get("order_id") == "ord-refund")
+    assert row.get("refunded_at")
+    assert "refund_reason" in row or "reason" in row
