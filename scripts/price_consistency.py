@@ -64,6 +64,14 @@ def scan_text(text: str, known: dict[str, int]) -> list[dict]:
         elif expected not in found:
             issues.append({"level": "error", "slug": slug,
                            "why": f"на странице ${found}, в кассе ${expected}"})
+        # 23.11.2026: у founding-цены должен быть виден якорь — иначе $19 выглядит
+        # как обычная цена, а не как скидка с $199.
+        if slug.endswith("-founding"):
+            base = slug[: -len("-founding")]
+            base_price = known.get(base)
+            if base_price and base_price not in found:
+                issues.append({"level": "warn", "slug": slug,
+                               "why": f"нет якоря: база ${base_price} не показана рядом с ${expected}"})
     return issues
 
 
