@@ -159,6 +159,32 @@ class PaymentStore:
             except sqlite3.IntegrityError:
                 return False
 
+    def reconciliation(self) -> dict:
+        """Сколько денег осталось: по статусам, в USD. Возврат не считается выручкой.
+
+        26.11.2026: реестр возвратов показывал только возвращённое, и на вопрос «сколько
+        мы реально оставили» не отвечал никто — цифру собирали руками. Суммы по разным
+        валютам не складываем: смешанная сумма — это не деньги, а недоразумение.
+        """
+        with self._lock:
+            rows = self._conn.execute(
+                "SELECT status, currency, COUNT(*) AS n, amount_fiat FROM orders "
+                "GROUP BY status, currency, amount_fiat").fetchall()
+        by_status: dict[str, dict] = {}
+        for row in rows:
+            bucket = by_status.setdefault(row["status"], {"count": 0, "usd": 0.0, "other": {}})
+            bucket["count"] += int(row["n"])
+            if (row["currency"] or "").upper() == "USD":
+                bucket["usd"] = round(bucket["usd"] + float(row["amount_fiat"] or 0) * int(row["n"]), 2)
+            else:
+                code = (row["currency"] or "?").upper()
+                bucket["other"][code] = round(bucket["other"].get(code, 0.0)
+                                             + float(row["amount_fiat"] or 0) * int(row["n"]), 2)
+        paid = by_status.get("paid", {}).get("usd", 0.0) + by_status.get("settled", {}).get("usd", 0.0)
+        refunded = by_status.get("refunded", {}).get("usd", 0.0)
+        return {"by_status": by_status, "paid_usd": round(paid, 2),
+                "refunded_usd": round(refunded, 2), "kept_usd": round(paid - refunded, 2)}
+
     def list_refunded(self, limit: int = 200) -> list[dict]:
         """Реестр возвратов: заказ, сумма, причина, доказательство, время.
 

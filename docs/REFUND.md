@@ -77,3 +77,16 @@ Nothing is required from you; if it does not appear in an hour, reply here.
 21.11.2026: `POST /pay/refund` — 403 без токена и при незаданном токене, 400 без доказательства,
 404 на неизвестный заказ, 200 с `status: refunded` и сохранённым хешем/ссылкой, повтор — `duplicate`;
 `GET /pay/order/<id>` показывает `refunded`. Тесты: `tests/test_refund_status.py`.
+
+## 5. Сколько осталось (26.11.2026)
+
+Реестр возвратов показывает только возвращённое. Чтобы не считать «на глаз», касса отдаёт сверку:
+
+```
+curl -s -H "X-Nidhipati-Admin: $NIDHIPATI_ADMIN_TOKEN" \
+  https://nidhipati.ailegal.legal/pay/refunds | python3 -m json.tool | grep -A3 totals
+```
+
+`totals.paid_usd` — оплачено, `totals.refunded_usd` — возвращено, **`totals.kept_usd` — осталось**
+(оплачено минус возвращено; возврат в выручку не попадает). Суммы по разным валютам не складываются:
+рядом лежит `by_status[*].other` с разбивкой по коду валюты.

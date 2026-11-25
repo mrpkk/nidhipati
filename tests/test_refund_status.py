@@ -203,3 +203,49 @@ def test_refunds_registry_lists_the_refund_for_the_owner(api):
     row = next(r for r in rows if r.get("order_id") == "ord-refund")
     assert row.get("refunded_at")
     assert "refund_reason" in row or "reason" in row
+
+
+def test_reconciliation_excludes_refunded_from_kept_money():
+    """Возвращённые деньги — не выручка. Цифра «осталось» должна считаться, а не браться на глаз."""
+    from nidhipati_proof.payment_hub.store import OrderRecord, PaymentStore
+
+    store = PaymentStore()
+    for i, (status, amount) in enumerate([("paid", "199"), ("settled", "19"), ("refunded", "19"),
+                                          ("pending", "79")]):
+        store.upsert_order(OrderRecord(order_id=f"o{i}", product_id="p", amount_fiat=amount,
+                                       currency="USD", status=status, provider="test",
+                                       provider_ref=f"r{i}"))
+    rec = store.reconciliation()
+    assert rec["paid_usd"] == 218.0
+    assert rec["refunded_usd"] == 19.0
+    assert rec["kept_usd"] == 199.0, "возврат не может оставаться в выручке"
+    assert rec["by_status"]["pending"]["count"] == 1
+
+
+def test_reconciliation_keeps_other_currencies_separate():
+    """Складывать рубли с долларами в одну «выручку» — это не цифра, а выдумка."""
+    from nidhipati_proof.payment_hub.store import OrderRecord, PaymentStore
+
+    store = PaymentStore()
+    store.upsert_order(OrderRecord(order_id="u1", product_id="p", amount_fiat="19", currency="USD",
+                                   status="paid", provider="t", provider_ref="a"))
+    store.upsert_order(OrderRecord(order_id="r1", product_id="p", amount_fiat="1500",
+                                   currency="RUB", status="paid", provider="t", provider_ref="b"))
+    rec = store.reconciliation()
+    assert rec["paid_usd"] == 19.0
+    assert rec["by_status"]["paid"]["other"] == {"RUB": 1500.0}
+
+
+def test_refunds_registry_reports_totals(api):
+    """Владелец открывает /pay/refunds и сразу видит, сколько осталось, а не считает письма."""
+    call, _ = api
+    from nidhipati_proof.payment_hub.store import OrderRecord
+    from nidhipati_proof.payment_hub.web import get_store
+
+    get_store().upsert_order(OrderRecord(order_id="paid-2", product_id="p", amount_fiat="199",
+                                         currency="USD", status="paid", provider="t", provider_ref="x"))
+    code, body, _ = call("GET", "/pay/refunds", headers={"X-Nidhipati-Admin": "s3cret-admin"})
+    assert code == 200, body
+    totals = body["totals"]
+    assert totals["paid_usd"] >= 199.0
+    assert totals["kept_usd"] == round(totals["paid_usd"] - totals["refunded_usd"], 2)

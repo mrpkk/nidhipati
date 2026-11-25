@@ -91,9 +91,12 @@ def handle_pay_get(path: str, query: Mapping[str, str],
     if p.endswith("/pay/refunds"):
         if not _admin_ok(headers or {}):
             return _json(403, {"error": "admin_token_required"})
-        rows = get_store().list_refunded()
+        store = get_store()
+        rows = store.list_refunded()
         return _json(200, {"refunds": rows, "count": len(rows),
-                           "total_fiat": sum(float(r["amount"] or 0) for r in rows)})
+                           "total_fiat": sum(float(r["amount"] or 0) for r in rows),
+                           # 26.11.2026: «сколько осталось» — оплачено минус возвращено.
+                           "totals": store.reconciliation()})
     if "/pay/order/" in p:
         order_id = p.rsplit("/pay/order/", 1)[-1].split("/", 1)[0]
         store = get_store()
