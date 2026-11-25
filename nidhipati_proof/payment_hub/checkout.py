@@ -16,6 +16,21 @@ from pathlib import Path
 
 #: Продукты, которые можно оплатить этой витриной. Цена — в долларах, актив
 #: USDC считается один к одному; адрес приходит из конфигурации сервиса.
+#: «Founding-цена для первых 10» — обещание на витринах. Пока счётчик не проверяется,
+#: 11-й покупатель платил бы $19 при закрытом оффере: обещание без кода (26.11.2026).
+FOUNDING_PRODUCT = "agent-spend-audit-founding"
+FULL_PRODUCT = "agent-spend-audit"
+FOUNDING_SEATS = 10
+
+
+def founding_seats_left(store) -> int | None:
+    """Сколько мест по founding-цене осталось. None — счётчик недоступен (не врём цифрой)."""
+    try:
+        return max(0, FOUNDING_SEATS - store.count_paid(FOUNDING_PRODUCT))
+    except Exception:  # noqa: BLE001 — сломанный счётчик не должен блокировать продажу
+        return None
+
+
 PRODUCTS = {
     "agent-spend-audit": {
         "title": "Agent Spend Audit",

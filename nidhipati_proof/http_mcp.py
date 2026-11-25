@@ -109,6 +109,17 @@ class Handler(BaseHTTPRequestHandler):
             qs = parse_qs(urlsplit(self.path).query)
             product = (qs.get("product") or ["agent-spend-audit"])[0]
             if "/pay/card" in self.path:
+                # Оффер «первые 10» закрывается кодом, а не на словах: 11-й покупатель
+                # получает обычную цену $199, а не истёкшую founding-цену.
+                try:
+                    from .payment_hub.checkout import FOUNDING_PRODUCT, FULL_PRODUCT, founding_seats_left
+                    if product == FOUNDING_PRODUCT:
+                        from .payment_hub.web import get_store
+                        left = founding_seats_left(get_store())
+                        if left == 0:
+                            product = FULL_PRODUCT
+                except Exception:  # noqa: BLE001 — не блокируем оплату из-за счётчика
+                    pass
                 page = card_page(product, (qs.get("amount") or [None])[0])
                 try:
                     from .payment_hub.checkout import funnel_bump

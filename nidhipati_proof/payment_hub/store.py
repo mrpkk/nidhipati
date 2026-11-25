@@ -130,6 +130,14 @@ class PaymentStore:
             )
         return rec
 
+    def count_paid(self, product_id: str) -> int:
+        """Сколько оплаченных заказов по продукту — для лимита «первые 10» (26.11.2026)."""
+        row = self._conn.execute(
+            "SELECT COUNT(*) FROM orders WHERE product_id = ? AND status IN ('paid', 'settled')",
+            (product_id,),
+        ).fetchone()
+        return int(row[0]) if row else 0
+
     def get_order(self, order_id: str) -> OrderRecord | None:
         cur = self._conn.execute("SELECT * FROM orders WHERE order_id=?", (order_id,))
         row = cur.fetchone()
