@@ -62,3 +62,23 @@ def test_price_table_written_from_cashier(tmp_path):
     text = target.read_text(encoding="utf-8")
     assert "`karta-report` | $19" in text
     assert "источник: касса" in text
+
+
+def test_double_question_mark_link_is_an_error():
+    """`?product=x?ref=y` — касса не найдёт товар; страница при этом выглядит рабочей."""
+    text = '<a href="https://x/pay/card?product=karta-report?ref=scan-page">$19</a>'
+    issues = pc.scan_text(text, KNOWN)
+    assert issues and issues[0]["level"] == "error"
+    assert "двойной вопросительный" in issues[0]["why"]
+
+
+def test_all_price_pages_are_covered():
+    """Любой модуль attest, который продаёт через кассу, обязан быть в списке сверки."""
+    import re
+    from pathlib import Path
+
+    attest_dir = Path("/media/Sruti/iamthat/work/sales/attest/attest")
+    covered = {p.name for p in pc.EXTRA_PAGES}
+    selling = {p.name for p in attest_dir.glob("*.py") if "pay/card?product=" in p.read_text(encoding="utf-8", errors="ignore")}
+    missing = selling - covered
+    assert not missing, f"продают, но не сверяются: {sorted(missing)}"

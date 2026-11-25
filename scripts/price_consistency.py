@@ -24,10 +24,21 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 LANDING = Path("/media/Sruti/iamthat/work/sales/landing")
+#: Страницы вне nidhipati, где тоже стоят цены и ссылки на кассу. 26.11.2026: в списке был
+#: только `store_page.py`, а `hub_page.py`, `tools_page.py`, `product_pages.py` и `scan.py` тоже
+#: продают через кассу — их цены никто не сверял.
 EXTRA_PAGES = (
     Path("/media/Sruti/iamthat/work/sales/attest/attest/store_page.py"),
+    Path("/media/Sruti/iamthat/work/sales/attest/attest/hub_page.py"),
+    Path("/media/Sruti/iamthat/work/sales/attest/attest/tools_page.py"),
+    Path("/media/Sruti/iamthat/work/sales/attest/attest/product_pages.py"),
+    Path("/media/Sruti/iamthat/work/sales/attest/attest/scan.py"),
+    Path("/media/Sruti/iamthat/work/sales/attest/attest/service.py"),
 )
 PRODUCT_RE = re.compile(r"product=([a-z0-9][a-z0-9-]{2,40})")
+#: Ссылка вида `?product=x?ref=y` — второй «?» вместо «&». Касса получит товар «x?ref=y»
+#: и ответит «неизвестный товар», а страница будет выглядеть рабочей (найдено 26.11.2026).
+MALFORMED_RE = re.compile(r"[?&]product=[a-z0-9-]+\?[a-z]")
 PRICE_RE = re.compile(r"\$\s?(\d{1,4})(?![\d])")
 WINDOW = 260          # сколько символов вокруг ссылки считаем «ценой этой карточки»
 
@@ -46,9 +57,17 @@ def page_files() -> list[Path]:
     return files
 
 
+def malformed_links(text: str) -> list[dict]:
+    """Ссылки, где второй параметр приклеен через «?» — касса такой товар не найдёт."""
+    return [{"level": "error", "why": "двойной вопросительный в ссылке кассы: "
+                                      "product=…?ref=… — касса не найдёт товар",
+             "snippet": m.group(0)[:80]}
+            for m in MALFORMED_RE.finditer(text or "")]
+
+
 def scan_text(text: str, known: dict[str, int]) -> list[dict]:
     """Найти ссылки на кассу и цену рядом с каждой. Возвращает замечания."""
-    issues: list[dict] = []
+    issues: list[dict] = malformed_links(text)
     for match in PRODUCT_RE.finditer(text):
         slug = match.group(1)
         window = text[max(0, match.start() - WINDOW): match.end() + WINDOW]
@@ -69,7 +88,9 @@ def scan_text(text: str, known: dict[str, int]) -> list[dict]:
         if slug.endswith("-founding"):
             base = slug[: -len("-founding")]
             base_price = known.get(base)
-            if base_price and base_price not in found:
+            # Якорь ищем по всему документу, а не только в окне: на /scan он стоит строкой ниже,
+            # и «нет якоря» было ложной тревогой (26.11.2026).
+            if base_price and base_price not in found and f"${base_price}" not in text:
                 issues.append({"level": "warn", "slug": slug,
                                "why": f"нет якоря: база ${base_price} не показана рядом с ${expected}"})
     return issues
