@@ -18,7 +18,7 @@ sys.path.insert(0, str(ROOT))
 
 @pytest.fixture()
 def api(tmp_path, monkeypatch):
-    from nidhipati_proof.payment_hub import web as payweb
+    from nidhipati_proof.payment_hub import web as payweb  # noqa: F401
 
     monkeypatch.setenv("NIDHIPATI_PAYMENT_DB", str(tmp_path / "pay.db"))
     monkeypatch.setenv("NIDHIPATI_PAYOUT_ADDRESS", "0x" + "ab" * 20)
@@ -34,6 +34,9 @@ def api(tmp_path, monkeypatch):
         "order_id": "ord-refund", "amount_fiat": "19", "currency": "USD",
         "product_id": "crypto-mcp-month", "customer_email": "buyer@example.com"})
     assert code == 200, order
+    # 26.11.2026: возврат возможен только по оплаченному заказу, поэтому фикстура
+    # переводит его в paid — раньше тесты «возвращали» ещё не оплаченный.
+    payweb.get_store().update_status("ord-refund", "paid")
     return call, order
 
 
@@ -249,3 +252,26 @@ def test_refunds_registry_reports_totals(api):
     totals = body["totals"]
     assert totals["paid_usd"] >= 199.0
     assert totals["kept_usd"] == round(totals["paid_usd"] - totals["refunded_usd"], 2)
+
+
+def test_unpaid_order_cannot_be_refunded(api):
+    """«Возврат» неоплаченного заказа — это возврат денег, которых не было."""
+    call, _ = api
+    code, body, _ = call("POST", "/pay/create", {
+        "order_id": "pending-1", "amount_fiat": "199", "currency": "USD",
+        "product_id": "crypto-mcp-month", "customer_email": "buyer@example.com"})
+    assert code == 200, body
+    code, body, _ = call("POST", "/pay/refund", {
+        "order_id": "pending-1", "reason": "передумал", "tx_hash": "0xdead"},
+        headers={"X-Nidhipati-Admin": "s3cret-admin"})
+    assert code == 409 and body["code"] == "NOT_PAID", body
+    assert "hint" in body
+
+
+def test_paid_order_refund_still_works(api):
+    call, order = api
+    code, body, _ = call("POST", "/pay/refund", {
+        "order_id": "ord-refund", "reason": "не доставлено в срок", "tx_hash": "0xabc"},
+        headers={"X-Nidhipati-Admin": "s3cret-admin"})
+    assert code == 200 and body["ok"] is True, body
+    assert body["order"]["status"] == "refunded"

@@ -215,6 +215,11 @@ def _admin_ok(headers: Mapping[str, str]) -> bool:
     return bool(got) and hmac.compare_digest(got, expected)
 
 
+#: Статусы, по которым деньги действительно приходили. `delivered`/`fulfilled` добавляются,
+#: если появятся в потоке: возврат после выдачи — отдельное решение, но деньги были.
+REFUNDABLE_STATUSES = ("paid", "settled", "delivered", "fulfilled")
+
+
 def _handle_refund(payload: Mapping[str, Any]) -> tuple[int, dict[str, Any], dict[str, str]]:
     """Отметить заказ возвращённым: статус, причина, хеш возврата.
 
@@ -231,6 +236,14 @@ def _handle_refund(payload: Mapping[str, Any]) -> tuple[int, dict[str, Any], dic
         return _json(404, {"error": "not_found", "order_id": order_id})
     if order.status == "refunded":
         return _json(200, {"ok": True, "duplicate": True, "order": order.__dict__})
+    # 26.11.2026: возвращать можно только то, что было оплачено. Заказ в статусе pending —
+    # это брошенная корзина: «возврат» по нему записал бы возвращённые деньги, которых не было,
+    # и отправил покупателю письмо о возврате неоплаченного заказа.
+    if order.status not in REFUNDABLE_STATUSES:
+        return _json(409, {"error": "not_paid", "status": order.status,
+                           "code": "NOT_PAID", "retryable": False,
+                           "hint": "возврат возможен только по оплаченному заказу; "
+                                   "для pending сначала подтвердите оплату"})
     reason = str(payload.get("reason") or "").strip()[:200]
     if not reason:
         return _json(400, {"error": "reason_required",
