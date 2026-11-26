@@ -264,6 +264,23 @@ def _handle_refund(payload: Mapping[str, Any]) -> tuple[int, dict[str, Any], dic
     store.record_event(event_key=f"refund:{order_id}", order_id=order_id,
                        provider=order.provider or "manual", status="refunded",
                        raw={"reason": reason, "tx_hash": tx_hash, "refund_ref": refund_ref})
+    # Отзыв доступа: если хук умеет — отзываем сразу, если нет — фиксируем «нужен ручной отзыв».
+    revoke_note = "skipped"
+    try:
+        _order_for_hook = store.get_order(order_id)
+        _hook = hook_for(_order_for_hook)
+        _revoke = getattr(_hook, "revoke", None)
+        if callable(_revoke):
+            res = _revoke(order=_order_for_hook, reason=reason) or {}
+            revoke_note = "revoked" if res.get("revoked") else str(res.get("note") or "not_revoked")
+        else:
+            revoke_note = "hook_has_no_revoke"
+    except Exception as exc:  # noqa: BLE001 — возврат денег не должен зависеть от отзыва
+        revoke_note = f"revoke_error:{type(exc).__name__}"
+    meta_revoke = dict((store.get_order(order_id).meta or {}))
+    meta_revoke["revoke_note"] = revoke_note
+    store.update_status(order_id, "refunded", meta=meta_revoke)
+
     fresh = store.get_order(order_id)
     # Покупатель должен узнать о возврате из письма, а не из выписки. Ошибку
     # отправки не прячем: она попадёт в ответ владельцу.
@@ -278,7 +295,7 @@ def _handle_refund(payload: Mapping[str, Any]) -> tuple[int, dict[str, Any], dic
         except Exception as exc:  # noqa: BLE001
             email_note = f"error:{type(exc).__name__}"
     return _json(200, {"ok": True, "order": fresh.__dict__ if fresh else None,
-                       "refund_email": email_note})
+                       "refund_email": email_note, "revoke": revoke_note})
 
 
 def _rail_of(payload: Mapping[str, Any]) -> str:

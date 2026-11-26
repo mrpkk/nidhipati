@@ -275,3 +275,28 @@ def test_paid_order_refund_still_works(api):
         headers={"X-Nidhipati-Admin": "s3cret-admin"})
     assert code == 200 and body["ok"] is True, body
     assert body["order"]["status"] == "refunded"
+
+
+def test_refund_reports_what_happened_to_access(api):
+    """Деньги вернули — а доступ? Ответ обязан это назвать, а не молчать."""
+    call, _ = api
+    code, body, _ = call("POST", "/pay/refund", {
+        "order_id": "ord-refund", "reason": "не доставлено", "tx_hash": "0xabc"},
+        headers={"X-Nidhipati-Admin": "s3cret-admin"})
+    assert code == 200, body
+    assert "revoke" in body, body
+    assert body["revoke"] in ("revoked", "manual_revocation_required", "hook_has_no_revoke") \
+        or body["revoke"].startswith("revoke_error")
+    meta = body["order"]["meta"]
+    assert meta.get("revoke_note") == body["revoke"]
+
+
+def test_manual_hook_says_revocation_is_manual():
+    from nidhipati_proof.payment_hub.fulfillment import ManualFulfillment
+
+    class _Order:
+        order_id = "o1"
+        product_id = "p"
+
+    res = ManualFulfillment().revoke(order=_Order(), reason="refund")
+    assert res["revoked"] is False and res["note"] == "manual_revocation_required"

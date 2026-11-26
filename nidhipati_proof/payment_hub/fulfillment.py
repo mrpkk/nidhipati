@@ -10,6 +10,14 @@ from .store import OrderRecord, PaymentStore
 class FulfillmentHook(Protocol):
     """Idempotent fulfillment: called after a paid/settled event."""
 
+    def revoke(self, *, order: OrderRecord, reason: str = "") -> dict[str, Any]:
+        """Отзыв выданного доступа после возврата. Ручная выдача — значит и отзыв ручной.
+
+        26.11.2026: возврат денег не отзывал доступ: покупатель получал деньги назад и продолжал
+        пользоваться продуктом. Автоматически отозвать можно только у хуков, которые это умеют.
+        """
+        return {"ok": False, "revoked": False, "note": "manual_revocation_required", "reason": reason}
+
     def fulfill(self, *, order: OrderRecord, event: dict[str, Any] | None = None) -> dict[str, Any]:
         ...
 
@@ -24,6 +32,14 @@ class ManualFulfillment:
     def from_env(cls) -> "ManualFulfillment":
         import os
         return cls(note=os.environ.get("NIDHIPATI_FULFILLMENT_NOTE") or "manual_fulfillment_required")
+
+    def revoke(self, *, order: OrderRecord, reason: str = "") -> dict[str, Any]:
+        """Отзыв выданного доступа после возврата. Ручная выдача — значит и отзыв ручной.
+
+        26.11.2026: возврат денег не отзывал доступ: покупатель получал деньги назад и продолжал
+        пользоваться продуктом. Автоматически отозвать можно только у хуков, которые это умеют.
+        """
+        return {"ok": False, "revoked": False, "note": "manual_revocation_required", "reason": reason}
 
     def fulfill(self, *, order: OrderRecord, event: dict[str, Any] | None = None) -> dict[str, Any]:
         return {
@@ -52,6 +68,14 @@ class ShellDelivery:
     timeout: int = 180
     # Куда писать артефакты. Пусто — берём KARTA_REPORTS_DIR (старое поведение).
     out_dir: str | None = None
+
+    def revoke(self, *, order: OrderRecord, reason: str = "") -> dict[str, Any]:
+        """Отзыв выданного доступа после возврата. Ручная выдача — значит и отзыв ручной.
+
+        26.11.2026: возврат денег не отзывал доступ: покупатель получал деньги назад и продолжал
+        пользоваться продуктом. Автоматически отозвать можно только у хуков, которые это умеют.
+        """
+        return {"ok": False, "revoked": False, "note": "manual_revocation_required", "reason": reason}
 
     def fulfill(self, *, order: OrderRecord, event: dict[str, Any] | None = None) -> dict[str, Any]:
         import json as _json
