@@ -82,3 +82,42 @@ def test_all_price_pages_are_covered():
     selling = {p.name for p in attest_dir.glob("*.py") if "pay/card?product=" in p.read_text(encoding="utf-8", errors="ignore")}
     missing = selling - covered
     assert not missing, f"продают, но не сверяются: {sorted(missing)}"
+
+
+def test_committed_prices_file_matches_the_cashier():
+    """docs/PRICES.md — снимок кассы; если он устарел, люди видят прошлые цены."""
+    import importlib.util
+    from pathlib import Path
+
+    committed = Path(__file__).resolve().parents[1] / "docs" / "PRICES.md"
+    assert committed.is_file(), "нет docs/PRICES.md"
+    spec = importlib.util.spec_from_file_location("price_consistency_live",
+                                                  Path(__file__).resolve().parents[1] / "scripts" / "price_consistency.py")
+    live = importlib.util.module_from_spec(spec)
+    sys.modules["price_consistency_live"] = live
+    spec.loader.exec_module(live)
+    import tempfile
+
+    with tempfile.TemporaryDirectory() as tmp:
+        generated = live.write_table(Path(tmp) / "PRICES.md")
+        fresh = generated.read_text(encoding="utf-8")
+    assert fresh == committed.read_text(encoding="utf-8"), \
+        "docs/PRICES.md разошёлся с кассой — перегенерируйте: python3 scripts/price_consistency.py --write docs/PRICES.md"
+
+
+def test_every_cashier_product_is_offered_somewhere():
+    """Товар в кассе, которого нет ни на одной странице, — это деньги, которые никто не найдёт."""
+    import pathlib
+    import sys as _sys
+
+    _sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    from nidhipati_proof.payment_hub.checkout import PRODUCTS
+
+    blob = ""
+    for root in ("/media/Sruti/iamthat/work/sales/landing",
+                 "/media/Sruti/iamthat/work/sales/attest/attest"):
+        for path in pathlib.Path(root).rglob("*"):
+            if path.is_file() and path.suffix in (".py", ".html", ".md") and "venv" not in str(path):
+                blob += path.read_text(encoding="utf-8", errors="ignore")
+    missing = [key for key in PRODUCTS if key not in blob]
+    assert not missing, f"в кассе есть, на страницах нет: {missing}"
